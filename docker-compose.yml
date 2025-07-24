@@ -1,6 +1,27 @@
 version: "3.9"
 
+networks:
+  app:
+
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        USER: user
+        UID: 1000
+        GID: 1000
+    command: >
+      sh -c "composer install &&
+      php artisan serve --host=0.0.0.0"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - app
+
   frontend:
     build:
       context: ./frontend
@@ -11,3 +32,7 @@ services:
       - ./frontend:/code
     environment:
       - NODE_INSTALL=true
+    depends_on:
+      - backend
+    networks:
+      - app

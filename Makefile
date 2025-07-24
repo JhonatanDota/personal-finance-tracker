@@ -11,7 +11,7 @@ setup:
 	docker-compose exec backend bash -c "php artisan migrate:fresh"
 
 sh:
-	docker-compose exec frontend bash
+	docker-compose exec backend bash
 
 sh-front:
 	docker-compose exec frontend bash

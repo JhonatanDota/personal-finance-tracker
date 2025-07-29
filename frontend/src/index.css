@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: rgb(2, 4, 54);
+}
+
+
+.auth-input-container {
+    @apply flex items-center gap-1.5 p-2.5 border-[1.5px] rounded-sm focus-within:border-[#F97316] focus-within:shadow-sm transition-colors duration-150
+}
+
+.auth-input {
+    @apply text-base focus:outline-none
+}
+
+.auth-input-icon {
+    @apply w-7 h-7 fill-[#F97316]
+}
+
+.input-error-message {
+    @apply font-bold text-sm text-red-400
+}

@@ -11,29 +11,29 @@ import { handleErrors } from "../../requests/handleErrors";
 import { auth } from "../../requests/authRequests";
 
 import {
-  LoginSchemaType,
-  loginSchemaData,
-} from "../../schemas/auth/loginSchema";
+  RegisterSchemaType,
+  registerSchemaData,
+} from "../../schemas/auth/registerSchema";
 
-import { MdEmail, MdLock } from "react-icons/md";
+import { MdPerson2, MdEmail, MdLock, MdLockReset } from "react-icons/md";
 
 import AuthInput from "./components/AuthInput";
 import AuthPageTitle from "./components/AuthPageTitle";
 import AuthSubmitButton from "./components/AuthSubmitButton";
 
-export default function Login() {
+export default function Register() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginSchemaType>({
-    resolver: zodResolver(loginSchemaData),
+  } = useForm<RegisterSchemaType>({
+    resolver: zodResolver(registerSchemaData),
   });
 
   const navigate = useNavigate();
   const [logging, setLogging] = useState<boolean>(false);
 
-  async function onSubmit(data: LoginSchemaType): Promise<void> {
+  async function onSubmit(data: RegisterSchemaType): Promise<void> {
     setLogging(true);
 
     try {
@@ -54,34 +54,56 @@ export default function Login() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col p-4 md:p-6 gap-6 w-full max-w-md rounded-md bg-white"
       >
-        <AuthPageTitle title="Login" barColor="#7D2AE8" />
+        <AuthPageTitle title="Registrar-se" barColor="#F97316" />
 
         <div className="flex flex-col gap-3">
           <AuthInput
+            type="text"
+            placeholder="Nome"
+            icon={MdPerson2}
+            iconFillColor="#7D2AE8"
+            error={errors.name?.message}
+            register={register("name")}
+          />
+
+          <AuthInput
             type="email"
-            placeholder="Por favor, insira seu email"
+            placeholder="Email"
             icon={MdEmail}
-            iconFillColor="#F97316"
+            iconFillColor="#7D2AE8"
             error={errors.email?.message}
             register={register("email")}
           />
 
           <AuthInput
             type="password"
-            placeholder="Por favor, insira sua senha"
+            placeholder="Senha"
             icon={MdLock}
-            iconFillColor="#F97316"
+            iconFillColor="#7D2AE8"
             error={errors.password?.message}
             register={register("password")}
           />
+
+          <AuthInput
+            type="password"
+            placeholder="Confirme a senha"
+            icon={MdLockReset}
+            iconFillColor="#7D2AE8"
+            error={errors.passwordConfirmation?.message}
+            register={register("passwordConfirmation")}
+          />
         </div>
 
-        <AuthSubmitButton text="Entrar" bgColor="#7D2AE8" disabled={logging} />
+        <AuthSubmitButton
+          text="Registrar"
+          bgColor="#F97316"
+          disabled={logging}
+        />
 
         <span className="text-center text-sm">
-          Ainda não tem uma conta?{" "}
-          <Link className="font-extrabold text-[#7D2AE8]" to="/register">
-            Registre-se!
+          Já tem uma conta?{" "}
+          <Link className="font-extrabold text-[#F97316]" to="/login">
+            Faça o Login!
           </Link>
         </span>
       </form>

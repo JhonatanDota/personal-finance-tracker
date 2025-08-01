@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse, HttpStatusCode } from "axios";
 import toast from "react-hot-toast";
 
+import { removeToken } from "../functions/auth";
+
 interface ErrorResponse {
   message: string;
   errors: {
@@ -55,7 +57,10 @@ function handleUnauthorizedRequestError(response: AxiosResponse): void {
 
   if (route === "auth") {
     toast("Email ou senha incorretos.");
+    return;
   }
+
+  removeToken();
 }
 
 function handleInternalServerRequestError(): void {

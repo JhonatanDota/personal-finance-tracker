@@ -20,6 +20,7 @@ import { MdEmail, MdLock } from "react-icons/md";
 import AuthInput from "./components/AuthInput";
 import AuthPageTitle from "./components/AuthPageTitle";
 import AuthSubmitButton from "./components/AuthSubmitButton";
+import { handleSuccessAuth } from "../../functions/auth";
 
 export default function Login() {
   const {
@@ -39,7 +40,7 @@ export default function Login() {
     try {
       const loginResponse = await auth(data);
 
-      console.log(loginResponse);
+      handleSuccessAuth(loginResponse.data);
       navigate("/admin");
     } catch (error) {
       handleErrors(error);

@@ -2,13 +2,15 @@ import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { handleErrors } from "../../requests/handleErrors";
 
-import { auth } from "../../requests/authRequests";
+import { register as registerRequest } from "../../requests/authRequests";
+
+import toast from "react-hot-toast";
 
 import {
   RegisterSchemaType,
@@ -25,26 +27,26 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchemaData),
   });
 
-  const navigate = useNavigate();
-  const [logging, setLogging] = useState<boolean>(false);
+  const [registering, setRegistering] = useState<boolean>(false);
 
   async function onSubmit(data: RegisterSchemaType): Promise<void> {
-    setLogging(true);
+    setRegistering(true);
 
     try {
-      const loginResponse = await auth(data);
+      await registerRequest(data);
 
-      console.log(loginResponse);
-      navigate("/admin");
+      reset();
+      toast.success("Registrado com sucesso!");
     } catch (error) {
       handleErrors(error);
     } finally {
-      setLogging(false);
+      setRegistering(false);
     }
   }
 
@@ -97,7 +99,7 @@ export default function Register() {
         <AuthSubmitButton
           text="Registrar"
           bgColor="#F97316"
-          disabled={logging}
+          disabled={registering}
         />
 
         <span className="text-center text-sm">

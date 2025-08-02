@@ -4,6 +4,8 @@ import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
+import Dashboard from "../pages/dashboard/Dashboard";
+
 import RouteGuard from "./RouteGuard";
 import RoutePublic from "./RoutePublic";
 
@@ -25,6 +27,15 @@ export default function Routes() {
           <RoutePublic>
             <Register />
           </RoutePublic>
+        }
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <RouteGuard>
+            <Dashboard />
+          </RouteGuard>
         }
       />
     </RouterDomRoutes>

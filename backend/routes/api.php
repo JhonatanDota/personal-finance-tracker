@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+// =========================================================================
+// Categories
+// =========================================================================
+
+Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::get('/categories', [CategoryController::class, 'list']);
 });

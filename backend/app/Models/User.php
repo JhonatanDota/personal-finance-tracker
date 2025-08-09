@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -73,10 +75,10 @@ class User extends Authenticatable implements JWTSubject
     // =========================================================================
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasMany
      **/
-    public function company()
+    public function categories(): HasMany
     {
-        return $this->HasOne(Company::class, 'owner_id');
+        return $this->hasMany(Category::class);
     }
 }

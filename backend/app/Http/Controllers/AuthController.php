@@ -13,6 +13,8 @@ use App\Http\Requests\Auth\RegisterRequest;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Http\Resources\User\UserResource;
+
 class AuthController extends Controller
 {
     private UserRepository $userRepository;
@@ -53,7 +55,7 @@ class AuthController extends Controller
 
         $user = $this->userRepository->create($inputs);
 
-        return response()->json($user, Response::HTTP_CREATED);
+        return response()->json(new UserResource($user), Response::HTTP_CREATED);
     }
 
     /**
@@ -66,7 +68,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
 
     /**

@@ -20,4 +20,16 @@ class CategoryRepository
     {
         return $user->categories;
     }
+
+    /**
+     * Create Category.
+     *
+     * @param array $data
+     * @return Category
+     */
+
+    public function create(array $data): Category
+    {
+        return Category::create($data);
+    }
 }

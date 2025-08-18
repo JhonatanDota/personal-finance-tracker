@@ -10,6 +10,13 @@ class Category extends Model
     use HasFactory;
 
     /**
+     * The maximum length of the name field.
+     * 
+     * @var int
+     */
+    const NAME_MAX_LENGTH = 100;
+
+    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool

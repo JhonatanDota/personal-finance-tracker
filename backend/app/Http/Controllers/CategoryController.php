@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\JsonResponse;
 
 use App\Repositories\CategoryRepository;
+
+use App\Http\Requests\Category\CreateCategoryRequest;
+
+use App\Http\Resources\Category\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -26,6 +32,22 @@ class CategoryController extends Controller
     {
         $categories = $this->repository->getFromUser(Auth::user());
 
-        return response()->json($categories);
+        return response()->json(CategoryResource::collection($categories));
+    }
+
+    /**
+     * Create Category.
+     *
+     * @param CreateCategoryRequest $request
+     * @return JsonResponse
+     */
+
+    public function store(CreateCategoryRequest $request): JsonResponse
+    {
+        $inputs = $request->validated();
+
+        $category = $this->repository->create($inputs);
+
+        return response()->json(new CategoryResource($category), Response::HTTP_CREATED);
     }
 }

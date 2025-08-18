@@ -33,5 +33,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 // =========================================================================
 
 Route::group(['middleware' => ['jwt.auth']], function () {
-    Route::get('/categories', [CategoryController::class, 'list']);
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'list']);
+        Route::post('/', [CategoryController::class, 'store']);
+    });
 });

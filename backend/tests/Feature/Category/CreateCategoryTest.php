@@ -53,6 +53,18 @@ class CreateCategoryTest extends TestCase
         ]);
     }
 
+    public function testTryCreateCategoryWithEmptyName()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->json('POST', 'api/categories/', [
+            'name' => '',
+            'type' => CategoriesEnum::INCOME->value,
+        ]);
+
+        $response->assertUnprocessable();
+    }
+
     public function testTryCreateCategoryWithNameNotString()
     {
         $this->actingAs($this->user);

@@ -19,6 +19,9 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
+    depends_on:
+      - database
+    restart: on-failure
     networks:
       - app
 
@@ -36,3 +39,20 @@ services:
       - backend
     networks:
       - app
+
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: financial_tracker
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - database_data:/var/lib/mysql
+    networks:
+      - app
+
+volumes:
+  database_data:

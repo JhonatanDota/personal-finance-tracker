@@ -3,7 +3,18 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /app
 
-RUN apt-get update -y && apt-get install -y openssl zip unzip git curl
+RUN apt-get update -y && apt-get install -y \
+    openssl \
+    zip \
+    unzip \
+    git \
+    curl \
+    libonig-dev \
+    libzip-dev \
+    default-mysql-client \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip \
+    && apt-get clean
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ARG UID=1000

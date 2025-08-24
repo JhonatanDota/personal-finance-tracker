@@ -11,8 +11,11 @@ use Illuminate\Http\JsonResponse;
 use App\Repositories\CategoryRepository;
 
 use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 
 use App\Http\Resources\Category\CategoryResource;
+
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -49,5 +52,21 @@ class CategoryController extends Controller
         $category = $this->repository->create($inputs);
 
         return response()->json(new CategoryResource($category), Response::HTTP_CREATED);
+    }
+
+    /**
+     * Update Category.
+     *
+     * @param Category $category
+     * @param UpdateCategoryRequest $request
+     * @return JsonResponse
+     */
+    public function update(Category $category, UpdateCategoryRequest $request): JsonResponse
+    {
+        $inputs = $request->validated();
+
+        $category = $this->repository->update($category, $inputs);
+
+        return response()->json(new CategoryResource($category));
     }
 }

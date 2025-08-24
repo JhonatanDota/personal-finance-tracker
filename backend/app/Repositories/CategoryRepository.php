@@ -32,4 +32,18 @@ class CategoryRepository
     {
         return Category::create($data);
     }
+
+    /**
+     * Update Category.
+     *
+     * @param int $id
+     * @param array $data
+     * @return Category
+     */
+    public function update(Category $category, array $data): Category
+    {
+        $category->update($data);
+
+        return $category->refresh();
+    }
 }

@@ -21,23 +21,19 @@ trait CustomPaginate
      *
      * @param LengthAwarePaginator $paginator The paginator instance.
      * @param string $resourceClass The JsonResource class to apply to each item.
-     * @param int|null $perPage Optional number of items per page.
      *
      * @return array
      */
     public function toSimplePaginateWithResource(
         LengthAwarePaginator $paginator,
-        string $resourceClass,
-        int|null $perPage = self::DEFAULT_PER_PAGE
+        string $resourceClass
     ): array {
-        $perPage = $this->applyPerPageLimit($perPage);
-
         return [
             'data' => $resourceClass::collection($paginator->items()),
             'meta' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page'    => $paginator->lastPage(),
-                'per_page'     => $perPage,
+                'per_page'     => $paginator->perPage(),
                 'total'        => $paginator->total(),
             ],
         ];
@@ -47,20 +43,17 @@ trait CustomPaginate
      * Converts a LengthAwarePaginator into a simplified JSON structure without a Resource.
      *
      * @param LengthAwarePaginator $paginator The paginator instance.
-     * @param int|null $perPage Optional number of items per page.
      *
      * @return array
      */
-    public function toSimplePaginate(LengthAwarePaginator $paginator, int|null $perPage = self::DEFAULT_PER_PAGE): array
+    public function toSimplePaginate(LengthAwarePaginator $paginator): array
     {
-        $perPage = $this->applyPerPageLimit($perPage);
-
         return [
             'data' => $paginator->items(),
             'meta' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page'    => $paginator->lastPage(),
-                'per_page'     => $perPage,
+                'per_page'     => $paginator->perPage(),
                 'total'        => $paginator->total(),
             ],
         ];
@@ -69,8 +62,8 @@ trait CustomPaginate
     /**
      * Applies the maximum per-page limit to the given value.
      *
-     * @param int $perPage Requested number of items per page.
-     * @return int|null Limited number of items per page.
+     * @param int|null $perPage Requested number of items per page.
+     * @return int Limited number of items per page.
      */
     protected function applyPerPageLimit(int|null $perPage): int
     {

@@ -38,26 +38,6 @@ class CustomPaginateTest extends TestCase
         $this->assertEquals(5, $result['meta']['total']);
     }
 
-    public function testReturnSimplePaginateWithCustomPerPageWithinLimit()
-    {
-        $items = Collection::times(15, fn($i) => (object)['id' => $i + 1]);
-        $paginator = new LengthAwarePaginator($items, 15, 20, 1);
-
-        $result = $this->toSimplePaginate($paginator, 15);
-
-        $this->assertEquals(15, $result['meta']['per_page']);
-    }
-
-    public function testReturnSimplePaginatePerPageExceedingMax()
-    {
-        $items = Collection::times(200, fn($i) => (object)['id' => $i + 1]);
-        $paginator = new LengthAwarePaginator($items, 200, 150, 1);
-
-        $result = $this->toSimplePaginate($paginator, 150);
-
-        $this->assertEquals(100, $result['meta']['per_page']); // MAX_PER_PAGE
-    }
-
     public function testReturnSimplePaginateWithResource()
     {
         $items = Collection::times(5, fn($i) => (object)['id' => $i + 1]);
@@ -84,16 +64,8 @@ class CustomPaginateTest extends TestCase
         $this->assertEmpty($result['data']);
         $this->assertEquals(0, $result['meta']['total']);
         $this->assertEquals(1, $result['meta']['current_page']);
-    }
-
-    public function testReturnSimplePaginateDefaultPerPageWhenNullPassed()
-    {
-        $items = Collection::times(5, fn($i) => (object)['id' => $i + 1]);
-        $paginator = new LengthAwarePaginator($items, 5, 10, 1);
-
-        $result = $this->toSimplePaginate($paginator, null);
-
-        $this->assertEquals(self::DEFAULT_PER_PAGE, $result['meta']['per_page']);
+        $this->assertEquals(1, $result['meta']['last_page']);
+        $this->assertEquals(10, $result['meta']['per_page']);
     }
 
     public function testReturnSimplePaginateMultiplePages()
@@ -107,5 +79,23 @@ class CustomPaginateTest extends TestCase
         $this->assertEquals(5, $result['meta']['last_page']);
         $this->assertCount(10, $result['data']);
         $this->assertEquals(50, $result['meta']['total']);
+    }
+
+    public function testApplyPerPageLimitReturnsDefaultWhenNullPassed()
+    {
+        $result = $this->applyPerPageLimit(null);
+        $this->assertEquals(self::DEFAULT_PER_PAGE, $result);
+    }
+
+    public function testApplyPerPageLimitReturnsRequestedValueWithinLimit()
+    {
+        $result = $this->applyPerPageLimit(50);
+        $this->assertEquals(50, $result);
+    }
+
+    public function testApplyPerPageLimitCapsValueAtMax()
+    {
+        $result = $this->applyPerPageLimit(200);
+        $this->assertEquals(self::MAX_PER_PAGE, $result);
     }
 }

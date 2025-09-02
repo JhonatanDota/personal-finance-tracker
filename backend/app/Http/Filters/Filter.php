@@ -3,14 +3,14 @@
 namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 abstract class Filter
 {
     /**
      * The request instance.
      *
-     * @var \Illuminate\Http\Request
+     * @var Illuminate\Foundation\Http\FormRequest
      */
     protected $request;
 
@@ -24,10 +24,10 @@ abstract class Filter
     /**
      * Initialize a new filter instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Illuminate\Foundation\Http\FormRequest $request
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct(FormRequest $request)
     {
         $this->request = $request;
     }

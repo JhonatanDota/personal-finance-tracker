@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,15 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         Route::get('/', [CategoryController::class, 'list']);
         Route::post('/', [CategoryController::class, 'store']);
         Route::patch('/{category}', [CategoryController::class, 'update']);
+    });
+});
+
+// =========================================================================
+// Transactions
+// =========================================================================
+
+Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'list']);
     });
 });

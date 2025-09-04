@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use App\Traits\Filterable;
+
 class Transaction extends Model
 {
     use HasFactory;
+    use Filterable;
 
     /**
      * The maximum length of the description field.

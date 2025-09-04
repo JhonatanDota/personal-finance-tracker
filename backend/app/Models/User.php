@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,11 +76,13 @@ class User extends Authenticatable implements JWTSubject
     // Relationships
     // =========================================================================
 
-    /**
-     * @return HasMany
-     **/
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function transactions(): HasManyThrough
+    {
+        return $this->HasManyThrough(Transaction::class, Category::class);
     }
 }

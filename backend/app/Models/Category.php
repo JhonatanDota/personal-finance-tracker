@@ -40,8 +40,23 @@ class Category extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'id' => 'integer',
         'user_id' => 'integer',
         'name' => 'string',
         'type' => 'string',
     ];
+
+    // =========================================================================
+    // Relationships
+    // =========================================================================
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

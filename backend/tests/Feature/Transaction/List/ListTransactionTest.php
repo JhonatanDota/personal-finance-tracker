@@ -68,7 +68,7 @@ class ListTransactionTest extends TestCase
 
         Category::factory(2)
             ->for($this->user)
-            ->has(Transaction::factory()->count(2))
+            ->has(Transaction::factory(2))
             ->create();
 
         Transaction::factory(3)->create();

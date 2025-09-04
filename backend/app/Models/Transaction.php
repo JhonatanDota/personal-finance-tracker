@@ -13,6 +13,13 @@ class Transaction extends Model
     use Filterable;
 
     /**
+     * The maximum length of the name field.
+     * 
+     * @var int
+     */
+    const NAME_MAX_LENGTH = 70;
+
+    /**
      * The maximum length of the description field.
      * 
      * @var int
@@ -40,6 +47,7 @@ class Transaction extends Model
      */
     protected $fillable = [
         'category_id',
+        'name',
         'value',
         'description',
         'date',
@@ -53,6 +61,7 @@ class Transaction extends Model
     protected $casts = [
         'id' => 'integer',
         'category_id' => 'integer',
+        'name' => 'string',
         'value' => 'float',
         'description' => 'string',
         'date' => 'date',

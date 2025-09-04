@@ -7,6 +7,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
 
+use App\Http\Resources\Category\CategoryResource;
+
 class ListCategoryTest extends TestCase
 {
     private User $user;
@@ -56,17 +58,17 @@ class ListCategoryTest extends TestCase
         $response->assertExactJson([]);
     }
 
-    public function testUserCanViewOwnCategories()
+    public function testUserCanViewOwnCategories(): void
     {
         $this->actingAs($this->user);
 
-        Category::factory(3)->create([
+        Category::factory(5)->create([
             'user_id' => $this->user->id
         ]);
 
         $response = $this->json('GET', 'api/categories/');
 
         $response->assertOk();
-        $response->assertExactJson($this->user->categories->toArray());
+        $response->assertExactJson(CategoryResource::collection($this->user->categories)->resolve());
     }
 }

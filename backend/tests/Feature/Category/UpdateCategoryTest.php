@@ -82,6 +82,10 @@ class UpdateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+
+        $response->assertJsonFragment([
+            'name' => ['O campo name deve ser uma string.'],
+        ]);
     }
 
     public function testTryUpdateWithNameTooLong()
@@ -97,6 +101,10 @@ class UpdateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+
+        $response->assertJsonFragment([
+            'name' => ['O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.'],
+        ]);
     }
 
     public function testTryUpdateWithNameNotString()
@@ -112,6 +120,10 @@ class UpdateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+
+        $response->assertJsonFragment([
+            'name' => ['O campo name deve ser uma string.'],
+        ]);
     }
 
     public function testUpdateNameSuccessfully()

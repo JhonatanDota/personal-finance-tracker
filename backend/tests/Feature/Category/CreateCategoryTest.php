@@ -63,6 +63,10 @@ class CreateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+
+        $response->assertJsonFragment([
+            'name' => ['O campo name é obrigatório.'],
+        ]);
     }
 
     public function testTryCreateCategoryWithNameNotString()
@@ -101,7 +105,7 @@ class CreateCategoryTest extends TestCase
         ]);
 
         $response->assertJsonFragment([
-            'name' => ['O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  '  caracteres.'],
+            'name' => ['O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.'],
         ]);
     }
 

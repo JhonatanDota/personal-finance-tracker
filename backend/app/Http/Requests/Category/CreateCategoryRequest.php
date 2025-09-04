@@ -62,7 +62,7 @@ class CreateCategoryRequest extends FormRequest
 
             'name.required' => 'O campo name é obrigatório.',
             'name.string' => 'O campo name deve ser uma string.',
-            'name.max' => 'O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  '  caracteres.',
+            'name.max' => 'O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.',
 
             'type.required' => 'O campo type é obrigatório.',
             'type.in' => 'O campo type deve conter um valor válido',

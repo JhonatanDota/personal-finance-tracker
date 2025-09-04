@@ -40,7 +40,7 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name.string' => 'O campo name deve ser uma string.',
-            'name.max' => 'O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  '  caracteres.',
+            'name.max' => 'O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.',
         ];
     }
 }

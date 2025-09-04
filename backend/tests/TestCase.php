@@ -11,17 +11,21 @@ use Faker\Generator;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Models\User;
+
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseTransactions;
 
+    protected User $user;
     protected Generator $faker;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->user = User::factory()->create();
         $this->faker = Faker::create();
     }
 

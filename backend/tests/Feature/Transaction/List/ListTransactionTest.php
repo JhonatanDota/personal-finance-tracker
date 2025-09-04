@@ -4,7 +4,6 @@ namespace Tests\Feature\Category;
 
 use Tests\TestCase;
 
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Transaction;
 
@@ -12,21 +11,6 @@ use App\Http\Resources\Transaction\TransactionResource;
 
 class ListTransactionTest extends TestCase
 {
-    private User $user;
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create();
-    }
-
-
     public function testTryListTransactionsNotLogged(): void
     {
         $response = $this->json('GET', 'api/transactions/');

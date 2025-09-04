@@ -13,20 +13,6 @@ use App\Enums\CategoriesEnum;
 
 class CreateCategoryTest extends TestCase
 {
-    private User $user;
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create();
-    }
-
     public function testTryCreateCategoryNotLogged()
     {
         $response = $this->json('POST', 'api/categories/');

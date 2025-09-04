@@ -4,27 +4,12 @@ namespace Tests\Feature\Category;
 
 use Tests\TestCase;
 
-use App\Models\User;
 use App\Models\Category;
 
 use App\Http\Resources\Category\CategoryResource;
 
 class ListCategoryTest extends TestCase
 {
-    private User $user;
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create();
-    }
-
     public function testTryListCategoriesNotLogged(): void
     {
         $response = $this->json('GET', 'api/categories/');

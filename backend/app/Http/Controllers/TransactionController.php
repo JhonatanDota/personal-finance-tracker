@@ -14,6 +14,8 @@ use App\Repositories\TransactionRepository;
 
 use App\Http\Resources\Transaction\TransactionResource;
 
+use App\Http\Requests\Transaction\TransactionFilterRequest;
+
 class TransactionController extends Controller
 {
     use CustomPaginate;
@@ -27,12 +29,13 @@ class TransactionController extends Controller
 
     /**
      * Get transactions from current logged user.
-     * @param TransactionFilter $filter
+     * @param TransactionFilterRequest $request
      * 
      * @return JsonResponse
      */
-    public function list(TransactionFilter $filter): JsonResponse
+    public function list(TransactionFilterRequest $request): JsonResponse
     {
+        $filter = new TransactionFilter($request); //TODO Checar a possibilidade de injeção de dependência ao invés de instanciar no controller
         $transactions = $this->repository->getFromUser(Auth::user(), $filter);
 
         return response()->json(

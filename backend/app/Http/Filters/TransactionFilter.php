@@ -14,6 +14,6 @@ class TransactionFilter extends Filter
      */
     public function name(string $value = ''): Builder
     {
-        return $this->builder->where('name', 'like', "%{$value}%");
+        return $this->builder->where($this->column('name'), 'like', "%{$value}%");
     }
 }

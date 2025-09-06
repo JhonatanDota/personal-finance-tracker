@@ -68,4 +68,13 @@ class Transaction extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    // =========================================================================
+    // Relationships
+    // =========================================================================
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

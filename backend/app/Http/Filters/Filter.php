@@ -33,6 +33,27 @@ abstract class Filter
     }
 
     /**
+     * Returns the table name from builder property.
+     * 
+     * @return string
+     */
+    protected function table(): string
+    {
+        return $this->builder->getModel()->getTable();
+    }
+
+    /**
+     * Returns the column with table name prefix.
+     * 
+     * @param string $column
+     * @return string
+     */
+    protected function column(string $column): string
+    {
+        return $this->table() . '.' . $column;
+    }
+
+    /**
      * Apply the filters on the builder.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder

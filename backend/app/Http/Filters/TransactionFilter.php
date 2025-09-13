@@ -16,4 +16,15 @@ class TransactionFilter extends Filter
     {
         return $this->builder->where($this->column('name'), 'like', "%{$value}%");
     }
+
+    /**
+     * Filter transactions by category.
+     *
+     * @param  int $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function categoryId(int $value): Builder
+    {
+        return $this->builder->where($this->column('category_id'), $value);
+    }
 }

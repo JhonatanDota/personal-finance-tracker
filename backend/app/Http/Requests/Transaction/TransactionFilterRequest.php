@@ -26,6 +26,7 @@ class TransactionFilterRequest extends FormRequest
     public function rules()
     {
         return [
+            'category_id' => ['sometimes', 'nullable', 'integer'],
             'name' => ['sometimes', 'nullable', 'string', 'max:' . Transaction::NAME_MAX_LENGTH],
         ];
     }
@@ -39,6 +40,8 @@ class TransactionFilterRequest extends FormRequest
     public function messages()
     {
         return [
+            'category_id.integer' => 'O campo category_id deve ser um inteiro.',
+
             'name.string' => 'O campo name deve ser uma string.',
             'name.max' => 'O campo name deve ter no máximo ' . Transaction::NAME_MAX_LENGTH .  ' caracteres.',
         ];

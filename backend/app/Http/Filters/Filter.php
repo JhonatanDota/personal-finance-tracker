@@ -5,6 +5,8 @@ namespace App\Http\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Support\Str;
+
 abstract class Filter
 {
     /**
@@ -64,7 +66,9 @@ abstract class Filter
         $this->builder = $builder;
 
         foreach ($this->request->validated() as $name => $value) {
-            if (method_exists($this, $name)) {
+            $name = Str::camel($name);
+
+            if (!is_null($value) && method_exists($this, $name)) {
                 call_user_func_array([$this, $name], array_filter([$value]));
             }
         }

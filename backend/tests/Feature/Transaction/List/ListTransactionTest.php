@@ -4,6 +4,8 @@ namespace Tests\Feature\Category;
 
 use Tests\TestCase;
 
+use Tests\Traits\AssertsQueries;
+
 use App\Models\Category;
 use App\Models\Transaction;
 
@@ -11,6 +13,8 @@ use App\Http\Resources\Transaction\TransactionResource;
 
 class ListTransactionTest extends TestCase
 {
+    use AssertsQueries;
+
     public function testTryListTransactionsNotLogged()
     {
         $response = $this->json('GET', 'api/transactions/');
@@ -127,6 +131,22 @@ class ListTransactionTest extends TestCase
                 'total' => $expectedTotalTransactions,
             ]
         ]);
+        $response->assertJsonCount(15, 'data');
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'category_id',
+                    'type',
+                    'name',
+                    'value',
+                    'description',
+                    'date',
+                    'created_at',
+                    'updated_at',
+                ]
+            ]
+        ]);
 
         $response = $this->json('GET', 'api/transactions', [
             'page' => 3
@@ -142,5 +162,28 @@ class ListTransactionTest extends TestCase
                 'total' => $expectedTotalTransactions,
             ]
         ]);
+    }
+
+    /**
+     * Test that listing transactions executes the expected number of database queries.
+     *
+     * This test ensures that eager loading is being used correctly. By creating multiple
+     * categories with transactions and then fetching the transactions via the API,
+     * we assert that only the expected number of queries are executed. This helps
+     * prevent the N+1 query problem and guarantees that related categories are loaded
+     * efficiently alongside transactions.
+     */
+    public function testListTransactionsDatabaseQueries()
+    {
+        $this->actingAs($this->user);
+
+        Category::factory(3)
+            ->for($this->user)
+            ->has(Transaction::factory(5))
+            ->create();
+
+        $this->assertDatabaseQueryCount(4, function () {
+            $this->json('GET', 'api/transactions');
+        });
     }
 }

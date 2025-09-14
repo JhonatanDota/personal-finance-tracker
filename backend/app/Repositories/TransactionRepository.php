@@ -4,9 +4,10 @@ namespace App\Repositories;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
-use App\Models\User;
-
 use App\Http\Filters\TransactionFilter;
+
+use App\Models\User;
+use App\Models\Transaction;
 
 class TransactionRepository
 {
@@ -21,5 +22,17 @@ class TransactionRepository
     public function getFromUser(User $user, TransactionFilter $filter): LengthAwarePaginator
     {
         return $user->transactions()->with('category')->filter($filter)->paginate();
+    }
+
+    /**
+     * Create a new transaction.
+     *
+     * @param array $data
+     *
+     * @return Transaction
+     */
+    public function create(array $data): Transaction
+    {
+        return Transaction::create($data);
     }
 }

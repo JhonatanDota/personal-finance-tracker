@@ -11,6 +11,8 @@ use App\Models\Category;
 
 use App\Enums\CategoriesEnum;
 
+use App\Http\Resources\Category\CategoryResource;
+
 class CreateCategoryTest extends TestCase
 {
     public function testTryCreateCategoryNotLogged()
@@ -173,6 +175,7 @@ class CreateCategoryTest extends TestCase
 
         $response->assertCreated();
 
+        $response->assertExactJson(CategoryResource::make(Category::find($responseData['id']))->resolve());
         $response->assertJsonStructure([
             'id',
             'user_id',
@@ -180,18 +183,12 @@ class CreateCategoryTest extends TestCase
             'type',
         ]);
 
-        $response->assertExactJson([
-            'id' => $responseData['id'],
-            'user_id' => $this->user->id,
-            'name' => $data['name'],
-            'type' => $data['type'],
-        ]);
-
-        $this->assertDatabaseHas(Category::class, [
-            'id' => $responseData['id'],
-            'user_id' => $this->user->id,
-            'name' => $data['name'],
-            'type' => $data['type'],
-        ]);
+        $this->assertDatabaseHas(
+            Category::class,
+            array_merge(
+                ['id' => $responseData['id']],
+                $data
+            )
+        );
     }
 }

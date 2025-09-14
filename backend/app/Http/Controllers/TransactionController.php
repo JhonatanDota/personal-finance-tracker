@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use App\Repositories\TransactionRepository;
 use App\Http\Resources\Transaction\TransactionResource;
 
 use App\Http\Requests\Transaction\TransactionFilterRequest;
+use App\Http\Requests\Transaction\CreateTransactionRequest;
 
 class TransactionController extends Controller
 {
@@ -41,5 +43,18 @@ class TransactionController extends Controller
         return response()->json(
             $this->toSimplePaginateWithResource($transactions, TransactionResource::class)
         );
+    }
+
+    /**
+     * Create a new transaction.
+     * @param CreateTransactionRequest $request
+     * 
+     * @return JsonResponse
+     */
+    public function store(CreateTransactionRequest $request): JsonResponse
+    {
+        $transaction = $this->repository->create($request->validated());
+
+        return response()->json(new TransactionResource($transaction), Response::HTTP_CREATED);
     }
 }

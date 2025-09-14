@@ -11,6 +11,13 @@ class Transaction extends Model
 {
     use HasFactory;
     use Filterable;
+    
+    /**
+     * The minimum length of the name field.
+     * 
+     * @var int
+     */
+    const NAME_MIN_LENGTH = 3;
 
     /**
      * The maximum length of the name field.

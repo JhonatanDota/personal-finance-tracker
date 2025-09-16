@@ -5,7 +5,9 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
 import PanelLayout from "../pages/panel/layout/PanelLayout";
-import Dashboard from "../pages/panel/dashboard/Dashboard";
+
+import Dashboard from "../pages/panel/sections/Dashboard";
+import CategoriesManager from "../pages/panel/sections/category/CategoriesManager";
 
 import RouteGuard from "./RouteGuard";
 import RoutePublic from "./RoutePublic";
@@ -32,14 +34,14 @@ export default function Routes() {
       />
 
       <Route
-        path="/panel"
         element={
           <RouteGuard>
             <PanelLayout />
           </RouteGuard>
         }
       >
-        <Route index element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/categories" element={<CategoriesManager />} />
       </Route>
     </RouterDomRoutes>
   );

@@ -10,12 +10,12 @@ export default function Menu() {
 
   return (
     <>
-      <div className="flex md:hidden items-center justify-between h-14 px-4 text-white">
+      <div className="flex md:hidden items-center justify-between h-14 px-2">
         <button
           onClick={() => setMobileOpen(true)}
           className="p-2 rounded hover:bg-gray-700"
         >
-          <FiMenu className="h-6 w-6" />
+          <FiMenu className="h-7 w-7 text-white" />
         </button>
       </div>
 
@@ -28,7 +28,7 @@ export default function Menu() {
       </aside>
 
       <div
-        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-150 ${
           mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >

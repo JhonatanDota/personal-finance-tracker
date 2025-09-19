@@ -4,7 +4,7 @@ type TableHeadProps = {
   children: React.ReactNode;
 };
 
-export function TableHead(props: TableHeadProps) {
+export default function TableHead(props: TableHeadProps) {
   const { children } = props;
 
   return (

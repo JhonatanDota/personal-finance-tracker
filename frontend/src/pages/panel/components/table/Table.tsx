@@ -4,7 +4,7 @@ type TableProps = {
   children: React.ReactNode;
 };
 
-export function Table(props: TableProps) {
+export default function Table(props: TableProps) {
   const { children } = props;
 
   return (

@@ -4,7 +4,7 @@ type TableBodyProps = {
   children: React.ReactNode;
 };
 
-export function TableBody(props: TableBodyProps) {
+export default function TableBody(props: TableBodyProps) {
   const { children } = props;
 
   return <tbody>{children}</tbody>;

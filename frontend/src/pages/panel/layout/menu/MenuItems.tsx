@@ -16,7 +16,7 @@ export default function MenuItems(props: MenuItemsProps) {
   const { onNavigate } = props;
 
   return (
-    <nav className="flex flex-col w-full py-2">
+    <nav className="flex flex-col gap-2 px-3">
       {items.map((item) => (
         <MenuItem
           key={item.path}

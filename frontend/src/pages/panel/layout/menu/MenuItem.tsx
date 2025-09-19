@@ -14,14 +14,14 @@ export default function MenuItem(props: MenuItemProps) {
     <NavLink to={path} onClick={onNavigate} className="w-full">
       {({ isActive }) => (
         <div
-          className={`flex items-center gap-3 w-full h-12 px-4 rounded-md transition-colors
+          className={`flex items-center gap-1.5 w-full p-2.5 px-4 rounded-md transition-colors
             ${
               isActive
-                ? "bg-green-600 text-white"
-                : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                ? "bg-green-700 text-white"
+                : "text-gray-200 hover:bg-gray-600/30 hover:text-white"
             }`}
         >
-          <span className="w-5 h-5">{icon}</span>
+          <span className="flex items-center w-5 h-5">{icon}</span>
           <span className="text-sm font-medium">{name}</span>
         </div>
       )}

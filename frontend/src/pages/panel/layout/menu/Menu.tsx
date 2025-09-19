@@ -19,8 +19,8 @@ export default function Menu() {
         </button>
       </div>
 
-      <aside className="hidden md:flex h-screen w-56 bg-gray-900 text-gray-100 flex-col sticky top-0">
-        <div className="flex items-center gap-2 h-16 px-4 border-b border-gray-800">
+      <aside className="hidden md:flex h-screen w-56 bg-[#050746] text-gray-100 flex-col gap-3 sticky top-0">
+        <div className="flex items-center gap-2 h-16 px-4 border-b border-[#0D1073]">
           <FaWallet className="h-4 w-4" />
           <span className="text-base font-bold">Controle Financeiro</span>
         </div>
@@ -37,10 +37,10 @@ export default function Menu() {
           onClick={() => setMobileOpen(false)}
         />
         <div
-          className={`absolute left-0 top-0 h-full w-64 bg-gray-900 text-gray-100 flex flex-col transform transition-transform duration-300
+          className={`absolute left-0 top-0 h-full w-64 bg-[#050746] text-gray-100 flex flex-col gap-3 transform transition-transform duration-300
             ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
-          <div className="flex items-center justify-between h-16 px-4 border-b border-gray-800">
+          <div className="flex items-center justify-between h-16 px-4 border-b border-[#0D1073]">
             <FaWallet className="h-4 w-4" />
 
             <span className="text-base font-bold">Controle Financeiro</span>

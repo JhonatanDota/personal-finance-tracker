@@ -7,7 +7,7 @@ import Register from "../pages/auth/Register";
 import PanelLayout from "../pages/panel/layout/PanelLayout";
 
 import Dashboard from "../pages/panel/sections/Dashboard";
-import CategoriesManager from "../pages/panel/sections/category/CategoriesManager";
+import CategoriesManager from "../pages/panel/sections/category/manager/CategoriesManager";
 
 import RouteGuard from "./RouteGuard";
 import RoutePublic from "./RoutePublic";

@@ -17,8 +17,8 @@ export default function MenuItem(props: MenuItemProps) {
           className={`flex items-center gap-1.5 w-full p-2.5 px-4 rounded-md transition-colors
             ${
               isActive
-                ? "bg-green-700 text-white"
-                : "text-gray-200 hover:bg-gray-600/30 hover:text-white"
+                ? "bg-success text-primary-text"
+                : "text-gray-200 hover:bg-gray-600/30 hover:text-primary-text"
             }`}
         >
           <span className="flex items-center w-5 h-5">{icon}</span>

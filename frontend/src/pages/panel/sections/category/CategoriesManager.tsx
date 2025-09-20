@@ -37,13 +37,13 @@ export default function CategoriesManager() {
 
   function categoryTypeTag(type: CategoryTypeEnum) {
     const tagClassesMap: Record<CategoryTypeEnum, string> = {
-      [CategoryTypeEnum.INCOME]: "bg-green-600/80",
-      [CategoryTypeEnum.EXPENSE]: "bg-red-600/80",
+      [CategoryTypeEnum.INCOME]: "bg-success",
+      [CategoryTypeEnum.EXPENSE]: "bg-error",
     };
 
     return (
       <span
-        className={`px-2 py-1 rounded-full text-xs font-medium text-white/80 ${tagClassesMap[type]}`}
+        className={`px-2 py-1 rounded-full text-xs font-medium text-primary-text ${tagClassesMap[type]}`}
       >
         {CategoryTypeLabels[type]}
       </span>
@@ -62,7 +62,7 @@ export default function CategoriesManager() {
       <SectionCard>
         <div className="flex justify-between">
           <SectionCardTitle
-            icon={<GoGear className="w-5 h-5 text-green-600/80" />}
+            icon={<GoGear className="w-5 h-5 text-success" />}
             title="Gerencie suas categorias"
           />
         </div>
@@ -85,7 +85,7 @@ export default function CategoriesManager() {
           </TableBody>
         </Table>
 
-        <span className="flex items-center gap-2 text-white">
+        <span className="flex items-center gap-2 text-primary-text">
           <FiTag />
           <span>
             Total de

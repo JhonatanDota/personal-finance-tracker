@@ -6,5 +6,5 @@ type TableRowProps = {
 
 export default function TableRow(props: TableRowProps) {
   const { children } = props;
-  return <tr className="border-b border-[#0D1073]">{children}</tr>;
+  return <tr className="border-b border-secondary">{children}</tr>;
 }

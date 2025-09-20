@@ -7,5 +7,5 @@ type TableCellProps = {
 export default function TableCell(props: TableCellProps) {
   const { children } = props;
 
-  return <td className="p-4 align-middle text-white">{children}</td>;
+  return <td className="p-4 align-middle text-primary-text">{children}</td>;
 }

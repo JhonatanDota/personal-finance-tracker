@@ -1,6 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {},
+  theme: {
+    extend: {
+      colors: {
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+
+        muted: "var(--color-muted)",
+
+        "primary-text": "var(--color-primary-text)",
+        "secondary-text": "var(--color-secondary-text)",
+
+        success: "var(--color-success)",
+        error: "var(--color-error)",
+        info: "var(--color-info)",
+      },
+    },
+  },
   plugins: [],
 };

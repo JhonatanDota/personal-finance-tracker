@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-background: #020436;
+
+    --color-primary: #050746;
+    --color-secondary: #0D1073;
+
+    --color-muted: #02032369;
+
+    --color-primary-text: #FFFFFF;
+    --color-secondary-text: #C4C4C4;
+
+    --color-success: #17833f;
+    --color-error: #f52525;
+}
+
 body {
-    background-color: rgb(2, 4, 54);
+    background-color: var(--color-background);
 }

@@ -16,7 +16,7 @@ export default function MenuMobile(props: MenuMobileProps) {
           onClick={() => setMobileOpen(true)}
           className="p-2 rounded hover:bg-gray-700"
         >
-          <FiMenu className="h-7 w-7 text-white" />
+          <FiMenu className="h-7 w-7 text-primary-text" />
         </button>
       </div>
 
@@ -26,14 +26,14 @@ export default function MenuMobile(props: MenuMobileProps) {
         }`}
       >
         <div
-          className="absolute inset-0 bg-black/50"
+          className="absolute inset-0 bg-muted"
           onClick={() => setMobileOpen(false)}
         />
         <div
-          className={`absolute left-0 top-0 h-full w-64 bg-[#050746] text-gray-100 flex flex-col gap-3 transform transition-transform duration-300
+          className={`absolute left-0 top-0 h-full w-64 bg-primary text-gray-100 flex flex-col gap-3 transform transition-transform duration-300
             ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
-          <div className="flex items-center justify-between h-16 px-4 border-b border-[#0D1073]">
+          <div className="flex items-center justify-between h-16 px-4 border-b-2 border-secondary">
             <FaWallet className="h-4 w-4" />
             <span className="text-base font-bold">Controle Financeiro</span>
             <button

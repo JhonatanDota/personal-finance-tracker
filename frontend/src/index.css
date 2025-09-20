@@ -7,6 +7,7 @@
 
     --color-primary: #050746;
     --color-secondary: #0D1073;
+    --color-tertiary: #2d56d1;
 
     --color-muted: #02032369;
 
@@ -19,4 +20,8 @@
 
 body {
     background-color: var(--color-background);
+}
+
+.button-action {
+    @apply text-sm px-3 md:px-3.5 py-1.5 md:py-2 font-medium rounded-md bg-tertiary text-primary-text;
 }

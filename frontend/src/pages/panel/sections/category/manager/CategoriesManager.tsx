@@ -15,11 +15,12 @@ import SectionSubtitle from "../../../components/section/SectionSubtitle";
 import SectionCard from "../../../components/section/SectionCard";
 import SectionCardTitle from "../../../components/section/SectionCardTitle";
 import CategoriesTable from "./CategoriesTable";
+import AddCategoryDialog from "./actions/AddCategoryDialog";
 
 export default function CategoriesManager() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryModel[]>([]);
-
+  const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
   async function fetchCategories() {
     try {
       setLoading(true);
@@ -47,6 +48,13 @@ export default function CategoriesManager() {
             icon={<GoGear className="w-5 h-5 text-success" />}
             title="Gerencie suas categorias"
           />
+
+          <button
+            onClick={() => setOpenAddCategoryDialog(true)}
+            className="button-action"
+          >
+            + Categoria
+          </button>
         </div>
 
         {loading ? <Loader /> : <CategoriesTable categories={categories} />}
@@ -60,6 +68,10 @@ export default function CategoriesManager() {
           </span>
         </span>
       </SectionCard>
+
+      {openAddCategoryDialog && (
+        <AddCategoryDialog close={() => setOpenAddCategoryDialog(false)} />
+      )}
     </SectionContainer>
   );
 }

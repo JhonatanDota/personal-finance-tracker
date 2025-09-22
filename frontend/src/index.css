@@ -6,10 +6,10 @@
     --color-background: #020436;
 
     --color-primary: #050746;
-    --color-secondary: #0D1073;
+    --color-secondary: #0f1385;
     --color-tertiary: #2d56d1;
 
-    --color-muted: #02032369;
+    --color-muted: #0203238e;
 
     --color-primary-text: #FFFFFF;
     --color-secondary-text: #C4C4C4;
@@ -22,6 +22,38 @@ body {
     background-color: var(--color-background);
 }
 
+.panel-form {
+    @apply flex flex-col gap-3;
+}
+
+.panel-input-container {
+    @apply flex flex-col gap-2;
+}
+
+.panel-input-label {
+    @apply text-sm font-medium leading-none text-primary-text;
+}
+
+.panel-input {
+    @apply flex  w-full text-primary-text bg-primary rounded-md border-[1.5px] border-secondary p-3 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.panel-error-message {
+    @apply text-xs text-error font-medium;
+}
+
+.panel-actions-buttons-container {
+    @apply grid grid-cols-3 gap-2;
+}
+
+.panel-action-button {
+    @apply text-sm px-3 md:px-3.5 py-1.5 md:py-2 font-medium rounded-md text-primary-text;
+}
+
 .button-action {
-    @apply text-sm px-3 md:px-3.5 py-1.5 md:py-2 font-medium rounded-md bg-tertiary text-primary-text;
+  @apply panel-action-button bg-tertiary hover:opacity-80 transition-opacity;
+}
+
+.button-cancel-action {
+    @apply panel-action-button border-secondary border-[1px] hover:bg-secondary transition-colors;
 }

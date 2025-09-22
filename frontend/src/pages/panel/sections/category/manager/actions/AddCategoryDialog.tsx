@@ -36,7 +36,7 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
     <Dialog close={close}>
       <DialogTitle title="Adicionar Categoria" />
 
-      <form className="panel-form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register("name")}
           error={errors.name?.message}
@@ -52,7 +52,7 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
           error={errors.type?.message}
         />
 
-        <div className="panel-actions-buttons-container">
+        <div className="actions-buttons-container">
           <button type="submit" className="button-action col-span-2">
             Adicionar
           </button>

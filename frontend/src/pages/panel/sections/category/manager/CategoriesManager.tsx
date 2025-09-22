@@ -7,6 +7,7 @@ import { CategoryModel } from "../../../../../models/categoryModels";
 
 import { FiTag } from "react-icons/fi";
 import { GoGear } from "react-icons/go";
+import { FaPlus } from "react-icons/fa";
 
 import Loader from "../../../components/misc/Loader";
 import SectionContainer from "../../../components/section/SectionContainer";
@@ -53,7 +54,7 @@ export default function CategoriesManager() {
             onClick={() => setOpenAddCategoryDialog(true)}
             className="button-action"
           >
-            + Categoria
+            <FaPlus />
           </button>
         </div>
 

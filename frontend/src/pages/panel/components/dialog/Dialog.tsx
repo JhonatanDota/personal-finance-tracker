@@ -1,3 +1,5 @@
+import { RiCloseLargeFill } from "react-icons/ri";
+
 type DialogProps = {
   children: React.ReactNode;
   close: () => void;
@@ -15,7 +17,7 @@ export function Dialog(props: DialogProps) {
           onClick={close}
           className="absolute right-4 top-4 opacity-80 hover:opacity-100 text-primary-text font-bold"
         >
-          <span>x</span>
+          <RiCloseLargeFill />
         </button>
 
         {children}

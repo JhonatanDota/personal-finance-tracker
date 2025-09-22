@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { MIN_PASSWORD_LENGTH } from "../../rules/api/authApiRules";
+import { MIN_PASSWORD_LENGTH } from "../../rules/api/authRules";
 
 export const loginSchemaData = z.object({
   email: z.string().nonempty("O email é obrigatório").email("Email inválido"),

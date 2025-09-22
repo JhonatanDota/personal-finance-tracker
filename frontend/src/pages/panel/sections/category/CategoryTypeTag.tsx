@@ -1,5 +1,5 @@
 import { CategoryTypeEnum } from "../../../../enums/categoryEnum";
-import { CategoryTypeLabels } from "../../../../utils/categoryLabels";
+import { categoryTypeLabels } from "../../../../utils/categoryLabels";
 
 type CategoryTypeTagProps = {
   type: CategoryTypeEnum;
@@ -17,7 +17,7 @@ export function CategoryTypeTag(props: CategoryTypeTagProps) {
     <span
       className={`px-2 py-1 rounded-full text-xs font-medium text-primary-text ${tagClassesMap[type]}`}
     >
-      {CategoryTypeLabels[type]}
+      {categoryTypeLabels[type]}
     </span>
   );
 }

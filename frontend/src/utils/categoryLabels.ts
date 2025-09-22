@@ -1,6 +1,14 @@
-import { CategoryTypeEnum } from "../enums/categoryEnum";
+import {
+  CategoryTypeEnum,
+  CategoryTypeEnumValues,
+} from "../enums/categoryEnum";
 
-export const CategoryTypeLabels: Record<CategoryTypeEnum, string> = {
+export const categoryTypeLabels: Record<CategoryTypeEnum, string> = {
   [CategoryTypeEnum.INCOME]: "Receita",
   [CategoryTypeEnum.EXPENSE]: "Despesa",
 };
+
+export const categoryOptions = CategoryTypeEnumValues.map((value) => ({
+  value,
+  label: categoryTypeLabels[value],
+}));

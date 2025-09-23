@@ -71,7 +71,12 @@ export default function CategoriesManager() {
       </SectionCard>
 
       {openAddCategoryDialog && (
-        <AddCategoryDialog close={() => setOpenAddCategoryDialog(false)} />
+        <AddCategoryDialog
+          onAdd={(category: CategoryModel) => {
+            setCategories([...categories, category]);
+          }}
+          close={() => setOpenAddCategoryDialog(false)}
+        />
       )}
     </SectionContainer>
   );

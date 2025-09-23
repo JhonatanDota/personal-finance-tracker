@@ -1,6 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import toast from "react-hot-toast";
+
+import { handleErrors } from "../../../../../../requests/handleErrors";
+
+import { addCategory } from "../../../../../../requests/categoryRequests";
+
+import { CategoryModel } from "../../../../../../models/categoryModels";
+
 import {
   CategorySchemaType,
   categorySchemaData,
@@ -16,10 +24,11 @@ import SelectInput from "../../../../components/inputs/SelectInput";
 
 type AddCategoryDialogProps = {
   close: () => void;
+  onAdd: (category: CategoryModel) => void;
 };
 
 export default function AddCategoryDialog(props: AddCategoryDialogProps) {
-  const { close } = props;
+  const { close, onAdd } = props;
 
   const {
     register,
@@ -30,7 +39,17 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
     resolver: zodResolver(categorySchemaData),
   });
 
-  async function onSubmit(data: CategorySchemaType): Promise<void> {}
+  async function onSubmit(data: CategorySchemaType): Promise<void> {
+    try {
+      const response = await addCategory(data);
+
+      close();
+      onAdd(response.data);
+      toast.success("Categoria adicionada com sucesso!");
+    } catch (error) {
+      handleErrors(error);
+    }
+  }
 
   return (
     <Dialog close={close}>

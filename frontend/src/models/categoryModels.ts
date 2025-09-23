@@ -5,3 +5,5 @@ export type CategoryModel = {
   name: string;
   type: CategoryTypeEnum;
 };
+
+export type CreateCategoryModel = Omit<CategoryModel, "id">;

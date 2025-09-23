@@ -35,7 +35,7 @@ body {
 }
 
 .input {
-    @apply flex  w-full text-primary-text bg-primary rounded-md border-[1.5px] border-secondary p-3 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50;
+    @apply flex w-full cursor-pointer text-primary-text bg-primary rounded-md border-[1.5px] border-secondary p-3 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .error-message {

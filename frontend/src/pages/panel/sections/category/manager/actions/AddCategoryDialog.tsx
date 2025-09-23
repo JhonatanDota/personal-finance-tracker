@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -30,6 +31,8 @@ type AddCategoryDialogProps = {
 export default function AddCategoryDialog(props: AddCategoryDialogProps) {
   const { close, onAdd } = props;
 
+  const [adding, setAdding] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -40,14 +43,18 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
   });
 
   async function onSubmit(data: CategorySchemaType): Promise<void> {
+    setAdding(true);
+
     try {
       const response = await addCategory(data);
 
-      close();
+      reset();
       onAdd(response.data);
       toast.success("Categoria adicionada com sucesso!");
     } catch (error) {
       handleErrors(error);
+    } finally {
+      setAdding(false);
     }
   }
 
@@ -72,9 +79,14 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
         />
 
         <div className="actions-buttons-container">
-          <button type="submit" className="button-action col-span-2">
+          <button
+            disabled={adding}
+            type="submit"
+            className="button-action col-span-2"
+          >
             Adicionar
           </button>
+
           <button
             onClick={close}
             type="button"

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import toast from "react-hot-toast";
 
 import { deleteCategory } from "../../../../../../requests/categoryRequests";
@@ -18,7 +20,11 @@ type DeleteCategoryDialogProps = {
 export default function DeleteCategoryDialog(props: DeleteCategoryDialogProps) {
   const { category, onDelete, close } = props;
 
+  const [deleting, setDeleting] = useState(false);
+
   async function handleDeleteCategory() {
+    setDeleting(true);
+
     try {
       await deleteCategory(category);
 
@@ -27,6 +33,8 @@ export default function DeleteCategoryDialog(props: DeleteCategoryDialogProps) {
       toast.success("Categoria excluida com sucesso!");
     } catch (error) {
       handleErrors(error);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -43,6 +51,7 @@ export default function DeleteCategoryDialog(props: DeleteCategoryDialogProps) {
 
       <div className="actions-buttons-container">
         <button
+          disabled={deleting}
           onClick={handleDeleteCategory}
           className="button-action col-span-2"
         >

@@ -47,7 +47,7 @@ body {
 }
 
 .base-action-button {
-    @apply text-sm px-3 md:px-3.5 py-1.5 md:py-2 font-medium rounded-md text-primary-text;
+    @apply text-sm px-3 md:px-3.5 py-1.5 md:py-2 font-medium rounded-md text-primary-text disabled:cursor-not-allowed disabled:animate-pulse;
 }
 
 .button-action {

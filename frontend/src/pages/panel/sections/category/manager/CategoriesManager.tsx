@@ -58,7 +58,14 @@ export default function CategoriesManager() {
           </button>
         </div>
 
-        {loading ? <Loader /> : <CategoriesTable categories={categories} />}
+        {loading ? (
+          <Loader />
+        ) : (
+          <CategoriesTable
+            categories={categories}
+            setCategories={setCategories}
+          />
+        )}
 
         <span className="flex items-center gap-2 text-primary-text">
           <FiTag />

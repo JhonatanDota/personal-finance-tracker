@@ -1,6 +1,12 @@
+import { useState } from "react";
+
 import { CategoryModel } from "../../../../../models/categoryModels";
 
 import { CategoryTypeTag } from "../CategoryTypeTag";
+
+import { MdEdit, MdDeleteOutline } from "react-icons/md";
+
+import DeleteCategoryDialog from "./actions/DeleteCategoryDialog";
 
 import Table from "../../../components/table/Table";
 import TableHeader from "../../../components/table/TableHeader";
@@ -11,31 +17,72 @@ import TableBody from "../../../components/table/TableBody";
 
 type CategoriesTableProps = {
   categories: CategoryModel[];
+  setCategories: (categories: CategoryModel[]) => void;
 };
 
 export default function CategoriesTable(props: CategoriesTableProps) {
-  const { categories } = props;
+  const { categories, setCategories } = props;
+
+  const [openDeleteCategoryDialog, setOpenDeleteCategoryDialog] =
+    useState(false);
+  const [categoryToDelete, setCategoryToDelete] =
+    useState<CategoryModel | null>(null);
+
+  function handleDeleteCategoryDialog(category: CategoryModel) {
+    setOpenDeleteCategoryDialog(true);
+    setCategoryToDelete(category);
+  }
+
+  function handleDeletedCategory(deletedCategory: CategoryModel) {
+    setCategories(
+      categories.filter((category) => category.id !== deletedCategory.id)
+    );
+  }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Nome</TableHead>
-          <TableHead>Tipo</TableHead>
-          <TableHead>Ações</TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {categories.map((category) => (
-          <TableRow key={category.id}>
-            <TableCell>{category.name}</TableCell>
-            <TableCell>
-              <CategoryTypeTag type={category.type} />
-            </TableCell>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Nome</TableHead>
+            <TableHead>Tipo</TableHead>
+            <TableHead className="w-24">Ações</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+
+        <TableBody>
+          {categories.map((category) => (
+            <TableRow key={category.id}>
+              <TableCell>{category.name}</TableCell>
+              <TableCell>
+                <CategoryTypeTag type={category.type} />
+              </TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <button type="button" className="button-action-table">
+                    <MdEdit className="w-5 h-5" />
+                  </button>
+
+                  <button type="button" className="button-action-table">
+                    <MdDeleteOutline
+                      onClick={() => handleDeleteCategoryDialog(category)}
+                      className="w-5 h-5 fill-error"
+                    />
+                  </button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {openDeleteCategoryDialog && categoryToDelete && (
+        <DeleteCategoryDialog
+          category={categoryToDelete}
+          close={() => setOpenDeleteCategoryDialog(false)}
+          onDelete={handleDeletedCategory}
+        />
+      )}
+    </>
   );
 }

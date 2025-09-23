@@ -15,3 +15,9 @@ export async function addCategory(
 ): Promise<AxiosResponse<CategoryModel>> {
   return await requester().post(CATEGORIES_ROUTE, data);
 }
+
+export async function deleteCategory(
+  category: CategoryModel
+): Promise<AxiosResponse> {
+  return await requester().delete(`${CATEGORIES_ROUTE}/${category.id}`);
+}

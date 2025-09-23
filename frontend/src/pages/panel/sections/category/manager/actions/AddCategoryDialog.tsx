@@ -16,7 +16,7 @@ import {
 
 import { categoryOptions } from "../../../../../../utils/categoryLabels";
 
-import { Dialog } from "../../../../components/dialog/Dialog";
+import Dialog from "../../../../components/dialog/Dialog";
 import DialogTitle from "../../../../components/dialog/DialogTitle";
 
 import TextInput from "../../../../components/inputs/InputText";

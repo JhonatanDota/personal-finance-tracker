@@ -69,4 +69,19 @@ class CategoryController extends Controller
 
         return response()->json(new CategoryResource($category));
     }
+
+    /**
+     * Delete Category.
+     *
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function destroy(Category $category): JsonResponse
+    {
+        $this->authorize('delete', $category);
+
+        $category->delete();
+
+        return response()->json(status: Response::HTTP_NO_CONTENT);
+    }
 }

@@ -38,6 +38,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         Route::get('/', [CategoryController::class, 'list']);
         Route::post('/', [CategoryController::class, 'store']);
         Route::patch('/{category}', [CategoryController::class, 'update']);
+        Route::delete('/{category}', [CategoryController::class, 'destroy']);
     });
 });
 

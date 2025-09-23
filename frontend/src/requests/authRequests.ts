@@ -10,6 +10,8 @@ import {
 
 const AUTH: string = "auth";
 const REGISTER: string = "register";
+const LOGOUT: string = "logout";
+
 
 export async function auth(
   data: AuthModel
@@ -19,4 +21,8 @@ export async function auth(
 
 export async function register(data: RegisterModel): Promise<AxiosResponse> {
   return await requester().post(REGISTER, data);
+}
+
+export async function logout(): Promise<AxiosResponse> {
+  return await requester().post(LOGOUT);
 }

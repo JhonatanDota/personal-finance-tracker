@@ -55,9 +55,13 @@ body {
 }
 
 .button-cancel-action {
-    @apply base-action-button  border-secondary border-[1px] hover:bg-secondary transition-colors;
+    @apply base-action-button border-secondary border-[1px] hover:bg-secondary transition-colors;
 }
 
 .button-action-table {
     @apply base-action-button px-2 md:px-2.5 py-1 md:py-1.5  hover:bg-secondary transition-colors;
+}
+
+.button-logout{
+    @apply base-action-button bg-secondary mt-auto mb-2;
 }

@@ -6,6 +6,7 @@ import { CategoryTypeTag } from "../CategoryTypeTag";
 
 import { MdEdit, MdDeleteOutline } from "react-icons/md";
 
+import UpdateCategoryDialog from "./actions/UpdateCategoryDialog";
 import DeleteCategoryDialog from "./actions/DeleteCategoryDialog";
 
 import Table from "../../../components/table/Table";
@@ -28,6 +29,11 @@ export default function CategoriesTable(props: CategoriesTableProps) {
   const [categoryToDelete, setCategoryToDelete] =
     useState<CategoryModel | null>(null);
 
+  const [openUpdateCategoryDialog, setOpenUpdateCategoryDialog] =
+    useState(false);
+  const [categoryToUpdate, setCategoryToUpdate] =
+    useState<CategoryModel | null>(null);
+
   function handleDeleteCategoryDialog(category: CategoryModel) {
     setOpenDeleteCategoryDialog(true);
     setCategoryToDelete(category);
@@ -37,6 +43,19 @@ export default function CategoriesTable(props: CategoriesTableProps) {
     setCategories(
       categories.filter((category) => category.id !== deletedCategory.id)
     );
+  }
+
+  function handleUpdateCategoryDialog(category: CategoryModel) {
+    setOpenUpdateCategoryDialog(true);
+    setCategoryToUpdate(category);
+  }
+
+  function handleUpdatedCategory(updatedCategory: CategoryModel) {
+    const updatedCategories = categories.map((category) =>
+      category.id === updatedCategory.id ? updatedCategory : category
+    );
+
+    setCategories(updatedCategories);
   }
 
   return (
@@ -59,15 +78,20 @@ export default function CategoriesTable(props: CategoriesTableProps) {
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <button type="button" className="button-action-table">
+                  <button
+                    type="button"
+                    onClick={() => handleUpdateCategoryDialog(category)}
+                    className="button-action-table"
+                  >
                     <MdEdit className="w-5 h-5" />
                   </button>
 
-                  <button type="button" className="button-action-table">
-                    <MdDeleteOutline
-                      onClick={() => handleDeleteCategoryDialog(category)}
-                      className="w-5 h-5 fill-error"
-                    />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteCategoryDialog(category)}
+                    className="button-action-table"
+                  >
+                    <MdDeleteOutline className="w-5 h-5 fill-error" />
                   </button>
                 </div>
               </TableCell>
@@ -81,6 +105,14 @@ export default function CategoriesTable(props: CategoriesTableProps) {
           category={categoryToDelete}
           close={() => setOpenDeleteCategoryDialog(false)}
           onDelete={handleDeletedCategory}
+        />
+      )}
+
+      {openUpdateCategoryDialog && categoryToUpdate && (
+        <UpdateCategoryDialog
+          category={categoryToUpdate}
+          close={() => setOpenUpdateCategoryDialog(false)}
+          onUpdate={handleUpdatedCategory}
         />
       )}
     </>

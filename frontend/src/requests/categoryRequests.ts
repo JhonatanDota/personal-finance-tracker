@@ -2,7 +2,11 @@ import { AxiosResponse } from "axios";
 
 import { requester } from "./config";
 
-import { CategoryModel, CreateCategoryModel } from "../models/categoryModels";
+import {
+  CategoryModel,
+  CreateCategoryModel,
+  UpdateCategoryModel,
+} from "../models/categoryModels";
 
 const CATEGORIES_ROUTE = "categories";
 
@@ -14,6 +18,13 @@ export async function addCategory(
   data: CreateCategoryModel
 ): Promise<AxiosResponse<CategoryModel>> {
   return await requester().post(CATEGORIES_ROUTE, data);
+}
+
+export function updateCategory(
+  id: number,
+  data: UpdateCategoryModel
+): Promise<AxiosResponse<CategoryModel>> {
+  return requester().patch(`${CATEGORIES_ROUTE}/${id}`, data);
 }
 
 export async function deleteCategory(

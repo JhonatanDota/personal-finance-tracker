@@ -7,3 +7,5 @@ export type CategoryModel = {
 };
 
 export type CreateCategoryModel = Omit<CategoryModel, "id">;
+
+export type UpdateCategoryModel = Omit<CategoryModel, "id">;

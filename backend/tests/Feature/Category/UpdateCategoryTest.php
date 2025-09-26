@@ -6,6 +6,9 @@ use Tests\TestCase;
 
 use Illuminate\Support\Str;
 
+use App\Enums\CategoriesEnum;
+
+use App\Models\User;
 use App\Models\Category;
 
 class UpdateCategoryTest extends TestCase
@@ -111,6 +114,31 @@ class UpdateCategoryTest extends TestCase
         ]);
     }
 
+    public function testUserIdCannotBeUpdated()
+    {
+        $this->actingAs($this->user);
+
+        $category = Category::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        $response = $this->json('PATCH', 'api/categories/' . $category->id, [
+            'user_id' => User::factory()->create()->id,
+        ]);
+
+        $response->assertOk();
+
+        $response->assertJsonFragment([
+            'id' => $category->id,
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->assertDatabaseHas(Category::class, [
+            'id' => $category->id,
+            'user_id' => $this->user->id,
+        ]);
+    }
+
     public function testUpdateNameSuccessfully()
     {
         $this->actingAs($this->user);
@@ -146,6 +174,84 @@ class UpdateCategoryTest extends TestCase
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
             'name' => $data['name'],
+        ]);
+    }
+
+    public function testTryUpdateTypeWithInvalidType()
+    {
+        $this->actingAs($this->user);
+
+        $category = Category::factory()->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->json('PATCH', 'api/categories/' . $category->id, [
+            'type' => 'invalid_type',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonFragment([
+            'type' => ['O campo type deve conter um valor válido.'],
+        ]);
+    }
+
+    public function testUpdateTypeSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $category = Category::factory()->create([
+            'user_id' => $this->user->id,
+            'type' => CategoriesEnum::INCOME
+        ]);
+
+        $response = $this->json('PATCH', 'api/categories/' . $category->id, [
+            'type' => CategoriesEnum::EXPENSE,
+        ]);
+
+        $response->assertOk();
+
+        $response->assertJsonFragment([
+            'id' => $category->id,
+            'type' => CategoriesEnum::EXPENSE,
+        ]);
+
+        $this->assertDatabaseHas(Category::class, [
+            'id' => $category->id,
+            'type' => CategoriesEnum::EXPENSE,
+        ]);
+    }
+
+    public function testUpdateAllFieldsSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $category = Category::factory()->create([
+            'user_id' => $this->user->id,
+            'type' => CategoriesEnum::INCOME,
+            'name' => 'Old Name',
+        ]);
+
+        $data = [
+            'name' => 'Updated Category Name',
+            'type' => CategoriesEnum::EXPENSE,
+        ];
+
+        $response = $this->json('PATCH', 'api/categories/' . $category->id, $data);
+
+        $response->assertOk();
+
+        $response->assertExactJson([
+            'id' => $category->id,
+            'user_id' => $category->user_id,
+            'name' => $data['name'],
+            'type' => $data['type'],
+        ]);
+
+        $this->assertDatabaseHas(Category::class, [
+            'id' => $category->id,
+            'name' => $data['name'],
+            'type' => $data['type'],
         ]);
     }
 }

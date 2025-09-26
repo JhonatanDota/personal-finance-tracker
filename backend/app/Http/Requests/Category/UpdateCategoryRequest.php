@@ -4,6 +4,10 @@ namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Validation\Rule;
+
+use App\Enums\CategoriesEnum;
+
 use App\Models\Category;
 
 class UpdateCategoryRequest extends FormRequest
@@ -27,6 +31,7 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:' . Category::NAME_MAX_LENGTH],
+            'type' => ['sometimes', 'string', Rule::in(CategoriesEnum::values())],
         ];
     }
 
@@ -41,6 +46,9 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name.string' => 'O campo name deve ser uma string.',
             'name.max' => 'O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.',
+
+            'type.string' => 'O campo type deve ser uma string.',
+            'type.in' => 'O campo type deve conter um valor válido.',
         ];
     }
 }

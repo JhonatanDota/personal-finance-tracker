@@ -61,6 +61,7 @@ function handleUnauthorizedRequestError(response: AxiosResponse): void {
   }
 
   removeToken();
+  window.location.href = "/login";
 }
 
 function handleInternalServerRequestError(): void {

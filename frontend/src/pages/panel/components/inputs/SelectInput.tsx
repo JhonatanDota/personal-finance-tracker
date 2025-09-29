@@ -1,9 +1,6 @@
 import { UseFormRegisterReturn } from "react-hook-form";
 
-interface Option<T = string> {
-  value: T;
-  label: string;
-}
+import Option from "../../../../types/option";
 
 interface SelectInputProps {
   label: string;

@@ -8,7 +8,7 @@ export const categoryTypeLabels: Record<CategoryTypeEnum, string> = {
   [CategoryTypeEnum.EXPENSE]: "Despesa",
 };
 
-export const categoryOptions = CategoryTypeEnumValues.map((value) => ({
+export const categoryTypeOptions = CategoryTypeEnumValues.map((value) => ({
   value,
   label: categoryTypeLabels[value],
 }));

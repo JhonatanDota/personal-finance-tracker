@@ -15,12 +15,12 @@ import {
   categorySchemaData,
 } from "../../../../forms/schemas/categorySchema";
 
-import { categoryOptions } from "../../../../../../utils/categoryLabels";
+import { categoryTypeOptions } from "../../../../../../utils/categoryLabels";
 
 import Dialog from "../../../../components/dialog/Dialog";
 import DialogTitle from "../../../../components/dialog/DialogTitle";
 
-import TextInput from "../../../../components/inputs/InputText";
+import TextInput from "../../../../components/inputs/TextInput";
 import SelectInput from "../../../../components/inputs/SelectInput";
 
 type AddCategoryDialogProps = {
@@ -74,7 +74,7 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
         <SelectInput
           register={register("type")}
           label="Tipo"
-          options={categoryOptions}
+          options={categoryTypeOptions}
           error={errors.type?.message}
         />
 

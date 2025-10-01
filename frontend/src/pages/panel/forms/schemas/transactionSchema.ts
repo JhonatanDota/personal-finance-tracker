@@ -12,7 +12,12 @@ import {
 
 export const transactionSchemaData = z.object({
   type: z.nativeEnum(CategoryTypeEnum),
-  category: z.number().int(),
+  categoryId: z
+    .number("A Categoria é obrigatória")
+    .int("A Categoria deve ser um número inteiro")
+    .refine((val) => !Number.isNaN(val), {
+      message: "A Categoria é obrigatória",
+    }),
   name: z
     .string()
     .nonempty("O Nome é obrigatório")
@@ -24,9 +29,9 @@ export const transactionSchemaData = z.object({
       MAX_NAME_LENGTH,
       `O Nome deve ter no máximo ${MAX_NAME_LENGTH} caracteres`
     ),
-  value: z.number().min(MIN_VALUE).max(MAX_VALUE),
-  date: z.date(),
-  description: z.string().max(MAX_DESCRIPTION_LENGTH),
+  value: z.number("O Valor é obrigatório").min(MIN_VALUE).max(MAX_VALUE),
+  date: z.iso.date("A Data é obrigatória"),
+  description: z.string().max(MAX_DESCRIPTION_LENGTH).nullable(),
 });
 
 export type TransactionSchemaType = z.infer<typeof transactionSchemaData>;

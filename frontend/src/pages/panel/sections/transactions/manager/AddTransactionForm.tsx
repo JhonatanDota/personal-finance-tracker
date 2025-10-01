@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getCategories } from "../../../../../requests/categoryRequests";
+import { addTransaction } from "../../../../../requests/transactionRequests";
 import { handleErrors } from "../../../../../requests/handleErrors";
 
 import { categoryTypeOptions } from "../../../../../utils/categoryLabels";
@@ -28,8 +30,11 @@ export default function AddTransactionForm() {
 
   const {
     register,
+    control,
     handleSubmit,
     watch,
+    reset,
+    resetField,
     formState: { errors },
   } = useForm<TransactionSchemaType>({
     resolver: zodResolver(transactionSchemaData),
@@ -61,9 +66,20 @@ export default function AddTransactionForm() {
         label: category.name,
       }))
     );
+
+    resetField("categoryId");
   }, [categoryType, categories]);
 
-  async function onSubmit(data: TransactionSchemaType): Promise<void> {}
+  async function onSubmit(data: TransactionSchemaType): Promise<void> {
+    try {
+      await addTransaction(data);
+
+      reset();
+      toast.success("Transação adicionada com sucesso!");
+    } catch (error) {
+      handleErrors(error);
+    }
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -72,14 +88,15 @@ export default function AddTransactionForm() {
           register={register("type")}
           label="Tipo"
           options={categoryTypeOptions}
-          error={errors.category?.message}
+          error={errors.type?.message}
+          showEmptyOption={false}
         />
 
         <SelectInput
-          register={register("category")}
+          register={register("categoryId", { valueAsNumber: true })}
           label="Categoria"
           options={categoriesOptions}
-          error={errors.category?.message}
+          error={errors.categoryId?.message}
         />
       </div>
 
@@ -93,7 +110,8 @@ export default function AddTransactionForm() {
         />
 
         <MoneyInput
-          register={register("value")}
+          control={control}
+          name={register("value").name}
           error={errors.value?.message}
           label="Valor"
           placeholder="Informe o valor da Transação"
@@ -101,21 +119,26 @@ export default function AddTransactionForm() {
         />
 
         <DateInput
-          register={register("date")}
-          error={errors.date?.message}
           label="Data"
-          required={register("date").required}
+          placeholder="Selecione uma data"
+          name="date"
+          control={control}
+          error={errors.date?.message}
         />
 
         <TextAreaInput
           register={register("description")}
           error={errors.description?.message}
-          label="Descrição"
+          label="Descrição (opcional)"
           placeholder="Descreva a transação"
           required={register("description").required}
           rows={3}
         />
       </div>
+
+      <button className="button-action" type="submit">
+        Adicionar
+      </button>
     </form>
   );
 }

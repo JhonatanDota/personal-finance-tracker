@@ -19,7 +19,7 @@ export const categorySchemaData = z.object({
       MAX_NAME_LENGTH,
       `O Nome deve ter no máximo ${MAX_NAME_LENGTH} caracteres`
     ),
-  type: z.nativeEnum(CategoryTypeEnum),
+  type: z.nativeEnum(CategoryTypeEnum, "A Categoria é obrigatória"),
 });
 
 export type CategorySchemaType = z.infer<typeof categorySchemaData>;

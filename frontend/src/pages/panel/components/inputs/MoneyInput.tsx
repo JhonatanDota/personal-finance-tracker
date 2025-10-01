@@ -1,16 +1,17 @@
-import { UseFormRegisterReturn } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
 interface MoneyInputProps {
   label: string;
   placeholder?: string;
   required?: boolean;
-  register: UseFormRegisterReturn;
+  control: Control<any>;
+  name: string;
   error?: string;
 }
 
 export default function MoneyInput(props: MoneyInputProps) {
-  const { label, placeholder, required = false, register, error } = props;
+  const { label, placeholder, required = false, control, name, error } = props;
 
   return (
     <div className="input-container">
@@ -18,17 +19,26 @@ export default function MoneyInput(props: MoneyInputProps) {
         {label} {required && "*"}
       </label>
 
-      <NumericFormat
-        className="input"
-        placeholder={placeholder}
-        thousandSeparator="."
-        decimalSeparator=","
-        prefix="R$ "
-        allowNegative={false}
-        decimalScale={2}
-        fixedDecimalScale
-        autoComplete="off"
-        {...register}
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <NumericFormat
+            className="input"
+            placeholder={placeholder}
+            thousandSeparator="."
+            decimalSeparator=","
+            prefix="R$ "
+            allowNegative={false}
+            decimalScale={2}
+            fixedDecimalScale
+            autoComplete="off"
+            value={field.value}
+            onValueChange={(values) => {
+              field.onChange(values.floatValue ?? 0);
+            }}
+          />
+        )}
       />
 
       {error && <span className="error-message">{error}</span>}

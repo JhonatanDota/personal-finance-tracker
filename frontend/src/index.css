@@ -65,3 +65,7 @@ body {
 .button-logout{
     @apply base-action-button bg-secondary mt-auto mb-2;
 }
+
+.tag-container {
+    @apply px-2 py-1 rounded-full text-xs font-medium text-primary-text;
+}

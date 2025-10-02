@@ -25,13 +25,13 @@ import SelectInput from "../../../components/inputs/SelectInput";
 import TextAreaInput from "../../../components/inputs/TextAreaInput";
 
 type AddTransactionFormProps = {
+  categories: CategoryModel[];
   onAdd: () => void;
 };
 
 export default function AddTransactionForm(props: AddTransactionFormProps) {
-  const { onAdd } = props;
+  const { categories, onAdd } = props;
 
-  const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
 
   const {
@@ -50,19 +50,6 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
   });
 
   const categoryType = watch("type");
-
-  async function fetchCategories() {
-    try {
-      const response = await getCategories();
-      setCategories(response.data);
-    } catch (error) {
-      handleErrors(error);
-    }
-  }
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     const filteredCategories = categories.filter(

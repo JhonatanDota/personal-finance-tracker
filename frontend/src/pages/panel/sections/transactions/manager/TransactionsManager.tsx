@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 
 import { handleErrors } from "../../../../../requests/handleErrors";
+import { getCategories } from "../../../../../requests/categoryRequests";
 import { getTransactions } from "../../../../../requests/transactionRequests";
 
 import { TransactionModel } from "../../../../../models/transactionModels";
+import { CategoryModel } from "../../../../../models/categoryModels";
 import { PaginationMeta } from "../../../../../types/pagination";
 import { PaginationParams } from "../../../../../types/pagination";
 
@@ -21,9 +23,19 @@ import AddTransactionForm from "./AddTransactionForm";
 import TransactionsTable from "./TransactionsTable";
 
 export default function TransactionsManager() {
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [transactions, setTransactions] = useState<TransactionModel[]>([]);
   const [filters, setFilters] = useState<PaginationParams>({});
   const [meta, setMeta] = useState<PaginationMeta>();
+
+  async function fetchCategories() {
+    try {
+      const response = await getCategories();
+      setCategories(response.data);
+    } catch (error) {
+      handleErrors(error);
+    }
+  }
 
   async function fetchTransactions(params: PaginationParams) {
     try {
@@ -40,6 +52,10 @@ export default function TransactionsManager() {
     fetchTransactions(filters);
   }, [filters]);
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <SectionContainer>
       <SectionTitle title="Transações" />
@@ -50,7 +66,10 @@ export default function TransactionsManager() {
           icon={<TiPlusOutline className="w-6 h-6 text-success" />}
           title="Nova Transação"
         />
-        <AddTransactionForm onAdd={() => fetchTransactions({})} />
+        <AddTransactionForm
+          categories={categories}
+          onAdd={() => fetchTransactions({})}
+        />
       </SectionCard>
 
       <SectionCard>
@@ -59,6 +78,7 @@ export default function TransactionsManager() {
           title="Todas as Transações"
         />
         <TransactionsTable
+          categories={categories}
           transactions={transactions}
           meta={meta}
           setFilters={setFilters}

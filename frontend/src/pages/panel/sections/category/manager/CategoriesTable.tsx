@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
 
-import { CategoryTypeTag } from "../CategoryTypeTag";
+import CategoryTypeTag from "../CategoryTypeTag";
 
 import { MdEdit, MdDeleteOutline } from "react-icons/md";
 

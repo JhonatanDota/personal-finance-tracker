@@ -2,10 +2,12 @@ import { toISOStringBr } from "../../../../../utils/date";
 import { formatCurrencyBRL } from "../../../../../utils/monetary";
 import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
 
+import { CategoryModel } from "../../../../../models/categoryModels";
 import { TransactionModel } from "../../../../../models/transactionModels";
 import { PaginationMeta } from "../../../../../types/pagination";
 
-import { CategoryTypeTag } from "../../category/CategoryTypeTag";
+import CategoryTag from "../../category/CategoryTag";
+import CategoryTypeTag from "../../category/CategoryTypeTag";
 
 import Table from "../../../components/table/Table";
 import TableHeader from "../../../components/table/TableHeader";
@@ -16,13 +18,14 @@ import TableBody from "../../../components/table/TableBody";
 import TablePagination from "../../../components/table/TablePagination";
 
 type TransactionsTableProps = {
+  categories: CategoryModel[];
   transactions: TransactionModel[];
   meta?: PaginationMeta;
   setFilters: (filters: {}) => void;
 };
 
 export default function TransactionsTable(props: TransactionsTableProps) {
-  const { transactions, meta, setFilters } = props;
+  const { categories, transactions, meta, setFilters } = props;
 
   return (
     <>
@@ -39,28 +42,38 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         </TableHeader>
 
         <TableBody>
-          {transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <TableCell>
-                <CategoryTypeTag type={transaction.type} />
-              </TableCell>
-              <TableCell>{transaction.name}</TableCell>
-              <TableCell>{transaction.categoryId}</TableCell>
-              <TableCell>{toISOStringBr(new Date(transaction.date))}</TableCell>
-              <TableCell>
-                <span
-                  className={`font-medium ${
-                    transaction.type === CategoryTypeEnum.INCOME
-                      ? "text-success"
-                      : "text-error"
-                  }`}
-                >
-                  {formatCurrencyBRL(transaction.value)}
-                </span>
-              </TableCell>
-              <TableCell>...</TableCell>
-            </TableRow>
-          ))}
+          {transactions.map((transaction) => {
+            const category = categories.find(
+              (category) => category.id === transaction.categoryId
+            );
+
+            return (
+              <TableRow key={transaction.id}>
+                <TableCell>
+                  <CategoryTypeTag type={transaction.type} />
+                </TableCell>
+                <TableCell>{transaction.name}</TableCell>
+                <TableCell>
+                  <CategoryTag name={category ? category.name : "Categoria"} />
+                </TableCell>
+                <TableCell>
+                  {toISOStringBr(new Date(transaction.date))}
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`font-medium ${
+                      transaction.type === CategoryTypeEnum.INCOME
+                        ? "text-success"
+                        : "text-error"
+                    }`}
+                  >
+                    {formatCurrencyBRL(transaction.value)}
+                  </span>
+                </TableCell>
+                <TableCell>...</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
 

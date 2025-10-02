@@ -95,15 +95,16 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <SelectInput
-          register={register("type")}
+          control={control}
+          name="type"
           label="Tipo"
           options={categoryTypeOptions}
           error={errors.type?.message}
-          showEmptyOption={false}
         />
 
         <SelectInput
-          register={register("categoryId", { valueAsNumber: true })}
+          control={control}
+          name="categoryId"
           label="Categoria"
           options={categoriesOptions}
           error={errors.categoryId?.message}

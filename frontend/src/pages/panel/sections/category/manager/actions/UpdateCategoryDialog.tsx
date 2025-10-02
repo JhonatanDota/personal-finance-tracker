@@ -34,6 +34,7 @@ export default function UpdateCategoryDialog(props: UpdateCategoryDialogProps) {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<CategorySchemaType>({
@@ -67,7 +68,8 @@ export default function UpdateCategoryDialog(props: UpdateCategoryDialogProps) {
         />
 
         <SelectInput
-          register={register("type")}
+          control={control}
+          name="type"
           label="Tipo"
           options={categoryTypeOptions}
           error={errors.type?.message}

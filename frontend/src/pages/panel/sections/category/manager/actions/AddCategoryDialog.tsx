@@ -35,6 +35,7 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -72,7 +73,8 @@ export default function AddCategoryDialog(props: AddCategoryDialogProps) {
         />
 
         <SelectInput
-          register={register("type")}
+          control={control}
+          name="type"
           label="Tipo"
           options={categoryTypeOptions}
           error={errors.type?.message}

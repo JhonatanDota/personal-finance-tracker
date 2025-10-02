@@ -5,7 +5,6 @@ import { handleErrors } from "../../../../../requests/handleErrors";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
 
-import { FiTag } from "react-icons/fi";
 import { GoGear } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
 
@@ -67,8 +66,7 @@ export default function CategoriesManager() {
           />
         )}
 
-        <span className="flex items-center gap-2 text-primary-text">
-          <FiTag />
+        <span className="flex items-center gap-2 text-primary-text text-sm">
           <span className={`${loading && "animate-pulse"}`}>
             Total de
             <span className="font-bold"> {categories.length} </span>

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import Loader from "../../../components/misc/Loader";
+
 import { handleErrors } from "../../../../../requests/handleErrors";
 import { getCategories } from "../../../../../requests/categoryRequests";
 import { getTransactions } from "../../../../../requests/transactionRequests";
@@ -23,6 +25,8 @@ import AddTransactionForm from "./AddTransactionForm";
 import TransactionsTable from "./TransactionsTable";
 
 export default function TransactionsManager() {
+  const [isLoadingTransactions, setIsLoadingTransactions] = useState(false);
+
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [transactions, setTransactions] = useState<TransactionModel[]>([]);
   const [filters, setFilters] = useState<PaginationParams>({});
@@ -38,6 +42,8 @@ export default function TransactionsManager() {
   }
 
   async function fetchTransactions(params: PaginationParams) {
+    setIsLoadingTransactions(true);
+
     try {
       const response = await getTransactions(params);
 
@@ -45,6 +51,8 @@ export default function TransactionsManager() {
       setMeta(response.data.meta);
     } catch (error) {
       handleErrors(error);
+    } finally {
+      setIsLoadingTransactions(false);
     }
   }
 
@@ -77,12 +85,17 @@ export default function TransactionsManager() {
           icon={<TiThListOutline className="w-6 h-6 text-success" />}
           title="Todas as Transações"
         />
-        <TransactionsTable
-          categories={categories}
-          transactions={transactions}
-          meta={meta}
-          setFilters={setFilters}
-        />
+
+        {isLoadingTransactions ? (
+          <Loader />
+        ) : (
+          <TransactionsTable
+            categories={categories}
+            transactions={transactions}
+            meta={meta}
+            setFilters={setFilters}
+          />
+        )}
       </SectionCard>
     </SectionContainer>
   );

@@ -38,7 +38,7 @@ class CreateTransactionRequest extends FormRequest
             ],
             'name' => ['required', 'string', 'min:' . Transaction::NAME_MIN_LENGTH, 'max:' . Transaction::NAME_MAX_LENGTH],
             'value' => ['required', 'numeric', 'min:' . Transaction::VALUE_MIN, 'max:' . Transaction::VALUE_MAX],
-            'description' => ['required', 'string', 'max:' . Transaction::DESCRIPTION_MAX_LENGTH],
+            'description' => ['nullable', 'string', 'max:' . Transaction::DESCRIPTION_MAX_LENGTH],
             'date' => ['required', 'date'],
         ];
     }

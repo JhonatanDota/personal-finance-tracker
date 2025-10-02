@@ -283,7 +283,7 @@ class CreateTransactionTest extends TestCase
     // =========================================================================
     // DESCRIPTION
     // =========================================================================
-    public function testTryCreateTransactionWithoutDescription()
+    public function testCreateTransactionWithoutDescription()
     {
         $this->actingAs($this->user);
 
@@ -296,10 +296,7 @@ class CreateTransactionTest extends TestCase
             'date' => now()->toDateString(),
         ]);
 
-        $response->assertUnprocessable();
-        $response->assertJsonFragment([
-            'description' => ['O campo description é obrigatório.'],
-        ]);
+        $response->assertCreated();
     }
 
     public function testTryCreateTransactionWithDescriptionNotString()

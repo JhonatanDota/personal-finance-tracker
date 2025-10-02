@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name', 70);
             $table->decimal('value');
-            $table->tinyText('description');
+            $table->tinyText('description')->nullable();
             $table->date('date');
             $table->timestamps();
         });

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { toISOStringBr } from "../../../../../utils/date";
+import { formatCurrencyBRL } from "../../../../../utils/monetary";
+import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
 
 import { TransactionModel } from "../../../../../models/transactionModels";
 import { PaginationMeta } from "../../../../../types/pagination";
+
+import { CategoryTypeTag } from "../../category/CategoryTypeTag";
 
 import Table from "../../../components/table/Table";
 import TableHeader from "../../../components/table/TableHeader";
@@ -25,8 +29,11 @@ export default function TransactionsTable(props: TransactionsTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Nome</TableHead>
             <TableHead>Tipo</TableHead>
+            <TableHead>Nome</TableHead>
+            <TableHead>Categoria</TableHead>
+            <TableHead>Data</TableHead>
+            <TableHead>Valor</TableHead>
             <TableHead className="w-24">Ações</TableHead>
           </TableRow>
         </TableHeader>
@@ -34,7 +41,23 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         <TableBody>
           {transactions.map((transaction) => (
             <TableRow key={transaction.id}>
+              <TableCell>
+                <CategoryTypeTag type={transaction.type} />
+              </TableCell>
               <TableCell>{transaction.name}</TableCell>
+              <TableCell>{transaction.categoryId}</TableCell>
+              <TableCell>{toISOStringBr(new Date(transaction.date))}</TableCell>
+              <TableCell>
+                <span
+                  className={`font-medium ${
+                    transaction.type === CategoryTypeEnum.INCOME
+                      ? "text-success"
+                      : "text-error"
+                  }`}
+                >
+                  {formatCurrencyBRL(transaction.value)}
+                </span>
+              </TableCell>
               <TableCell>...</TableCell>
             </TableRow>
           ))}

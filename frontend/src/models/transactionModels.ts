@@ -1,8 +1,10 @@
 import { PaginatedResponse } from "../types/pagination";
+import { CategoryTypeEnum } from "../enums/categoryEnum";
 
 export type TransactionModel = {
   id: number;
   categoryId: number;
+  type: CategoryTypeEnum;
   name: string;
   value: number;
   description: string | null;

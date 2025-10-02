@@ -68,6 +68,9 @@ export default function SelectInput({
                     state.isSelected || state.isFocused ? "#0F1385" : "#050746",
                   color: "#FFFFFF",
                   cursor: "pointer",
+                  ":active": {
+                    backgroundColor: "inherit",
+                  },
                 }),
                 singleValue: (provided) => ({
                   ...provided,

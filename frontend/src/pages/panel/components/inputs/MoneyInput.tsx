@@ -33,9 +33,9 @@ export default function MoneyInput(props: MoneyInputProps) {
             decimalScale={2}
             fixedDecimalScale
             autoComplete="off"
-            value={field.value}
+            value={field.value ?? 0}
             onValueChange={(values) => {
-              field.onChange(values.floatValue ?? 0);
+              field.onChange(values.floatValue);
             }}
           />
         )}

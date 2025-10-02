@@ -39,10 +39,14 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
     control,
     handleSubmit,
     watch,
+    reset,
     resetField,
     formState: { errors },
   } = useForm<TransactionSchemaType>({
     resolver: zodResolver(transactionSchemaData),
+    defaultValues: {
+      value: 0,
+    },
   });
 
   const categoryType = watch("type");
@@ -80,6 +84,7 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
       await addTransaction(data);
 
       onAdd();
+      reset();
       toast.success("Transação adicionada com sucesso!");
     } catch (error) {
       handleErrors(error);
@@ -141,7 +146,7 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
         />
       </div>
 
-      <button className="button-action" type="submit">
+      <button className="button-action md:self-end" type="submit">
         Adicionar
       </button>
     </form>

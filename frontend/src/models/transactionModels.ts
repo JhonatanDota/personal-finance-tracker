@@ -1,3 +1,5 @@
+import { PaginatedResponse } from "../types/pagination";
+
 export type TransactionModel = {
   id: number;
   categoryId: number;
@@ -13,3 +15,5 @@ export type CreateTransactionModel = Omit<
   TransactionModel,
   "id" | "createdAt" | "updatedAt"
 >;
+
+export type TransactionPagination = PaginatedResponse<TransactionModel>;

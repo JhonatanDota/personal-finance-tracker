@@ -1,23 +1,21 @@
+import { PaginationMeta } from "../../../../types/pagination";
+
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 
 type TablePaginationProps = {
-  currentPage: number;
-  lastPage: number;
+  meta: PaginationMeta;
   onPageChange: (page: number) => void;
 };
 
 export default function TablePagination(props: TablePaginationProps) {
-  const { currentPage, lastPage, onPageChange } = props;
+  const { meta, onPageChange } = props;
+  const { currentPage, lastPage } = meta;
 
   function generatePages(): (number | string)[] {
     const pages = [];
-
-    if (currentPage <= 1) {
-      return [];
-    }
 
     if (lastPage <= 5) {
       for (let i = 1; i <= lastPage; i++) {

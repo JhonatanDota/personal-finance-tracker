@@ -24,7 +24,13 @@ import MoneyInput from "../../../components/inputs/MoneyInput";
 import SelectInput from "../../../components/inputs/SelectInput";
 import TextAreaInput from "../../../components/inputs/TextAreaInput";
 
-export default function AddTransactionForm() {
+type AddTransactionFormProps = {
+  onAdd: () => void;
+};
+
+export default function AddTransactionForm(props: AddTransactionFormProps) {
+  const { onAdd } = props;
+
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
 
@@ -33,7 +39,6 @@ export default function AddTransactionForm() {
     control,
     handleSubmit,
     watch,
-    reset,
     resetField,
     formState: { errors },
   } = useForm<TransactionSchemaType>({
@@ -74,7 +79,7 @@ export default function AddTransactionForm() {
     try {
       await addTransaction(data);
 
-      reset();
+      onAdd();
       toast.success("Transação adicionada com sucesso!");
     } catch (error) {
       handleErrors(error);

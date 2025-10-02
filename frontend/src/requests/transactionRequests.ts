@@ -5,10 +5,18 @@ import { requester } from "./config";
 import {
   TransactionModel,
   CreateTransactionModel,
+  TransactionPagination,
 } from "../models/transactionModels";
+
+import { PaginationParams } from "../types/pagination";
 
 const TRANSACTIONS_ROUTE = "transactions";
 
+export function getTransactions(
+  params: PaginationParams
+): Promise<AxiosResponse<TransactionPagination>> {
+  return requester().get(TRANSACTIONS_ROUTE, { params });
+}
 export async function addTransaction(
   data: CreateTransactionModel
 ): Promise<AxiosResponse<TransactionModel>> {

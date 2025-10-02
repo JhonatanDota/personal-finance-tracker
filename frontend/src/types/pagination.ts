@@ -1,13 +1,13 @@
-export type Pagination = {
+export type PaginationMeta = {
   currentPage: number;
   lastPage: number;
   perPage: number;
   total: number;
 };
 
-export type PaginatedResponse<T> = Pagination & {
+export type PaginatedResponse<T> = {
   data: T[];
-  meta: Pagination;
+  meta: PaginationMeta;
 };
 
 export type PaginationParams = {

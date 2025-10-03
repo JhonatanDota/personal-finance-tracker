@@ -67,5 +67,5 @@ body {
 }
 
 .tag-container {
-    @apply px-2 py-1 rounded-full text-xs font-medium text-primary-text;
+    @apply px-2 py-1 rounded-full text-xs font-medium text-primary-text text-nowrap;
 }

@@ -6,5 +6,7 @@ type TableRowProps = {
 
 export default function TableRow(props: TableRowProps) {
   const { children } = props;
-  return <tr className="border-b border-secondary">{children}</tr>;
+  return (
+    <tr className="border-b border-secondary hover:bg-muted">{children}</tr>
+  );
 }

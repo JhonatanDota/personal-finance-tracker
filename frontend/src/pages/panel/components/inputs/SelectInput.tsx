@@ -50,6 +50,9 @@ export default function SelectInput({
                   backgroundColor: "#050746",
                   color: "#FFFFFF",
                   cursor: "pointer",
+                  ":hover": {
+                    border: "1px solid #0F1385",
+                  },
                 }),
                 menu: (provided) => ({
                   ...provided,
@@ -79,6 +82,9 @@ export default function SelectInput({
                 dropdownIndicator: (provided) => ({
                   ...provided,
                   color: "#FFFFFF",
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
                 }),
               }}
             />

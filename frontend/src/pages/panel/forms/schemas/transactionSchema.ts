@@ -11,7 +11,7 @@ import {
 } from "../../../../rules/api/transactionRules";
 
 export const transactionSchemaData = z.object({
-  type: z.nativeEnum(CategoryTypeEnum),
+  type: z.nativeEnum(CategoryTypeEnum, "O Tipo é obrigatório"),
   categoryId: z
     .number("A Categoria é obrigatória")
     .int("A Categoria deve ser um número inteiro")

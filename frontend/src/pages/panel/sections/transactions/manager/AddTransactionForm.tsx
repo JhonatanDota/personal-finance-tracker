@@ -24,6 +24,10 @@ import MoneyInput from "../../../components/inputs/MoneyInput";
 import SelectInput from "../../../components/inputs/SelectInput";
 import TextAreaInput from "../../../components/inputs/TextAreaInput";
 
+import Label from "../../../components/inputs/Label";
+import ErrorMessage from "../../../components/inputs/ErrorMessage";
+import InputContainer from "../../../components/inputs/InputContainer";
+
 type AddTransactionFormProps = {
   categories: CategoryModel[];
   onAdd: () => void;
@@ -81,57 +85,78 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <SelectInput
-          control={control}
-          name="type"
-          label="Tipo"
-          options={categoryTypeOptions}
-          error={errors.type?.message}
-        />
+        <InputContainer>
+          <Label text="Tipo" />
+          <SelectInput
+            control={control}
+            name="type"
+            options={categoryTypeOptions}
+          />
+          {errors.type?.message && (
+            <ErrorMessage message={errors.type.message} />
+          )}
+        </InputContainer>
 
-        <SelectInput
-          control={control}
-          name="categoryId"
-          label="Categoria"
-          options={categoriesOptions}
-          error={errors.categoryId?.message}
-        />
+        <InputContainer>
+          <Label text="Categoria" />
+          <SelectInput
+            control={control}
+            name="categoryId"
+            options={categoriesOptions}
+          />
+          {errors.categoryId?.message && (
+            <ErrorMessage message={errors.categoryId.message} />
+          )}
+        </InputContainer>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <TextInput
-          register={register("name")}
-          error={errors.name?.message}
-          label="Nome"
-          placeholder="Digite o nome da Transação"
-          required={register("name").required}
-        />
+        <InputContainer>
+          <Label text="Nome" />
+          <TextInput
+            register={register("name")}
+            placeholder="Digite o nome da Transação"
+          />
+          {errors.name?.message && (
+            <ErrorMessage message={errors.name.message} />
+          )}
+        </InputContainer>
 
-        <MoneyInput
-          control={control}
-          name={register("value").name}
-          error={errors.value?.message}
-          label="Valor"
-          placeholder="Informe o valor da Transação"
-          required={register("value").required}
-        />
+        <InputContainer>
+          <Label text="Valor" />
+          <MoneyInput
+            control={control}
+            name={register("value").name}
+            placeholder="Informe o valor da Transação"
+          />
+          {errors.value?.message && (
+            <ErrorMessage message={errors.value.message} />
+          )}
+        </InputContainer>
 
-        <DateInput
-          label="Data"
-          placeholder="Selecione uma data"
-          name="date"
-          control={control}
-          error={errors.date?.message}
-        />
+        <InputContainer>
+          <Label text="Data" />
+          <DateInput
+            placeholder="Selecione uma data"
+            name="date"
+            control={control}
+          />
+          {errors.date?.message && (
+            <ErrorMessage message={errors.date.message} />
+          )}
+        </InputContainer>
 
-        <TextAreaInput
-          register={register("description")}
-          error={errors.description?.message}
-          label="Descrição (opcional)"
-          placeholder="Descreva a transação"
-          required={register("description").required}
-          rows={3}
-        />
+        <InputContainer>
+          <Label text="Descrição" />
+          <TextAreaInput
+            register={register("description")}
+            placeholder="Descreva a transação"
+            rows={3}
+          />
+          {errors.description?.message && (
+            <ErrorMessage message={errors.description.message} />
+          )}
+        </InputContainer>
       </div>
 
       <button className="button-action md:self-end" type="submit">

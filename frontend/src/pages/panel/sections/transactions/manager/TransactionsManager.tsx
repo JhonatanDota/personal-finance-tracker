@@ -44,7 +44,10 @@ export default function TransactionsManager() {
     setIsLoadingTransactions(true);
 
     try {
-      const response = await getTransactions(params);
+      const [response] = await Promise.all([
+        getTransactions(params),
+        new Promise((resolve) => setTimeout(resolve, 400)),
+      ]);
 
       setTransactions(response.data.data);
       setMeta(response.data.meta);

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -6,6 +6,7 @@ import { useDebounce } from "../../../../../hooks/useDebounce";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
 import { PaginationParams } from "../../../../../types/pagination";
+import FilterOption from "../../../../../types/filterOption";
 
 import {
   TransactionFilterSchemaType,
@@ -18,13 +19,18 @@ import InputContainer from "../../../components/inputs/InputContainer";
 import TextInput from "../../../components/inputs/TextInput";
 import SelectInput from "../../../components/inputs/SelectInput";
 
+import { FilterBadges } from "../../../components/filter/FilterBadge";
+
 type TransactionsFiltersProps = {
   categories: CategoryModel[];
   setFilters: (filters: PaginationParams) => void;
 };
 
 export default function TransactionsFilters(props: TransactionsFiltersProps) {
-  const { setFilters } = props;
+  const { categories, setFilters: setFiltersBase } = props;
+
+  const [filtersOptions, setFiltersOptions] = useState<FilterOption[]>([]);
+
   const { register, control, watch } = useForm<TransactionFilterSchemaType>({
     resolver: zodResolver(transactionFilterSchemaData),
   });
@@ -32,22 +38,40 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
   const { name, categoryId } = watch();
   const debouncedName = useDebounce(name);
 
-  useEffect(() => {
-    setFilters({
+  function setFilters() {
+    setFiltersBase({
       name: debouncedName,
       categoryId,
     });
-  }, [debouncedName]);
+
+    setFiltersOptions(filterOptionsBuilder);
+  }
+
+  function filterOptionsBuilder() {
+    const category = categories.find((category) => category.id === categoryId);
+
+    const options = [
+      debouncedName && {
+        label: "Nome",
+        value: debouncedName,
+      },
+      category && {
+        label: "Categoria",
+        value: category.name,
+      },
+    ].filter(Boolean);
+
+    return options as FilterOption[];
+  }
 
   useEffect(() => {
-    setFilters({
-      name: debouncedName,
-      categoryId,
-    });
-  }, [categoryId]);
+    setFilters();
+  }, [debouncedName, categoryId]);
 
   return (
     <>
+      <FilterBadges filters={filtersOptions} />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <InputContainer>
           <Label text="Nome" />
@@ -63,7 +87,7 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
           <SelectInput
             control={control}
             name="categoryId"
-            options={props.categories.map((category) => ({
+            options={categories.map((category) => ({
               value: category.id,
               label: category.name,
             }))}

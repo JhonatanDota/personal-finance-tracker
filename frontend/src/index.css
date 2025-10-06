@@ -69,3 +69,7 @@ body {
 .tag-container {
     @apply px-2 py-1 rounded-full text-xs font-medium text-primary-text text-nowrap;
 }
+
+.button-pagination{
+    @apply flex items-center gap-1 px-3 py-1 text-primary-text font-bold rounded disabled:opacity-50;
+}

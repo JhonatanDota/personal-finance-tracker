@@ -35,6 +35,7 @@ export default function SelectInput(props: SelectInputProps) {
               }),
               control: (provided) => ({
                 ...provided,
+                padding: "0.3rem",
                 fontSize: "0.875rem",
                 border: "1px solid #0F1385",
                 borderRadius: "0.375rem",

@@ -52,9 +52,9 @@ export default function TablePagination(props: TablePaginationProps) {
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="flex items-center gap-1 px-3 py-1 text-primary-text font-bold rounded disabled:opacity-50"
+        className="button-pagination"
       >
-        <MdOutlineKeyboardArrowLeft /> Anterior
+        <MdOutlineKeyboardArrowLeft />
       </button>
 
       {generatePages().map((page, index) =>
@@ -80,9 +80,9 @@ export default function TablePagination(props: TablePaginationProps) {
       <button
         disabled={currentPage === lastPage}
         onClick={() => onPageChange(currentPage + 1)}
-        className="flex items-center gap-1 px-3 py-1 text-primary-text font-bold rounded disabled:opacity-50"
+        className="button-pagination"
       >
-        Próxima <MdOutlineKeyboardArrowRight />
+        <MdOutlineKeyboardArrowRight />
       </button>
     </div>
   );

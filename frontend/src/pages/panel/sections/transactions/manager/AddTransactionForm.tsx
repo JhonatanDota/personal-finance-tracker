@@ -33,13 +33,14 @@ import AddCategoryDialog from "../../category/manager/actions/AddCategoryDialog"
 
 type AddTransactionFormProps = {
   categories: CategoryModel[];
+  setCategories: (categories: CategoryModel[]) => void;
   onAdd: () => void;
 };
 
 export default function AddTransactionForm(props: AddTransactionFormProps) {
-  const { categories, onAdd } = props;
+  const { categories, setCategories, onAdd } = props;
 
-  const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]); //TODO: Arrumar ao add categorias
+  const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   const {
@@ -60,10 +61,7 @@ export default function AddTransactionForm(props: AddTransactionFormProps) {
   const categoryType = watch("type");
 
   function onAddCategory(category: CategoryModel) {
-    setCategoriesOptions([
-      ...categoriesOptions,
-      { value: category.id, label: category.name },
-    ]);
+    setCategories([...categories, category]);
   }
 
   useEffect(() => {

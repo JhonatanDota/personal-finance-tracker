@@ -39,7 +39,7 @@ type AddTransactionFormProps = {
 export default function AddTransactionForm(props: AddTransactionFormProps) {
   const { categories, onAdd } = props;
 
-  const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
+  const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]); //TODO: Arrumar ao add categorias
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   const {

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import Loader from "../../../components/misc/Loader";
-
 import { handleErrors } from "../../../../../requests/handleErrors";
 import { getCategories } from "../../../../../requests/categoryRequests";
 import { getTransactions } from "../../../../../requests/transactionRequests";
@@ -19,9 +17,10 @@ import SectionCard from "../../../components/section/SectionCard";
 import SectionCardTitle from "../../../components/section/SectionCardTitle";
 
 import { TiPlusOutline, TiThListOutline } from "react-icons/ti";
+import { MdOutlineFilterList } from "react-icons/md";
 
 import AddTransactionForm from "./AddTransactionForm";
-
+import TransactionsFilters from "./TransactionsFilters";
 import TransactionsTable from "./TransactionsTable";
 
 export default function TransactionsManager() {
@@ -82,20 +81,25 @@ export default function TransactionsManager() {
 
       <SectionCard>
         <SectionCardTitle
+          icon={<MdOutlineFilterList className="w-6 h-6 text-success" />}
+          title="Filtros"
+        />
+        <TransactionsFilters categories={categories} setFilters={setFilters} />
+      </SectionCard>
+
+      <SectionCard>
+        <SectionCardTitle
           icon={<TiThListOutline className="w-6 h-6 text-success" />}
           title="Todas as Transações"
         />
 
-        {isLoadingTransactions ? (
-          <Loader />
-        ) : (
-          <TransactionsTable
-            categories={categories}
-            transactions={transactions}
-            meta={meta}
-            setFilters={setFilters}
-          />
-        )}
+        <TransactionsTable
+          categories={categories}
+          transactions={transactions}
+          meta={meta}
+          setFilters={setFilters}
+          isLoading={isLoadingTransactions}
+        />
       </SectionCard>
     </SectionContainer>
   );

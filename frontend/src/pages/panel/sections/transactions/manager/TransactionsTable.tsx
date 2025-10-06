@@ -3,6 +3,7 @@ import { formatCurrencyBRL } from "../../../../../utils/monetary";
 import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
+import { PaginationParams } from "../../../../../types/pagination";
 import { TransactionModel } from "../../../../../models/transactionModels";
 import { PaginationMeta } from "../../../../../types/pagination";
 
@@ -15,6 +16,7 @@ import TableRow from "../../../components/table/TableRow";
 import TableHead from "../../../components/table/TableHead";
 import TableCell from "../../../components/table/TableCell";
 import TableBody from "../../../components/table/TableBody";
+import TransactionsTableSkeleton from "./TransactionsTableSkeleton";
 import TablePagination from "../../../components/table/TablePagination";
 
 type TransactionsTableProps = {
@@ -22,10 +24,11 @@ type TransactionsTableProps = {
   transactions: TransactionModel[];
   meta?: PaginationMeta;
   setFilters: (filters: {}) => void;
+  isLoading: boolean;
 };
 
 export default function TransactionsTable(props: TransactionsTableProps) {
-  const { categories, transactions, meta, setFilters } = props;
+  const { categories, transactions, meta, setFilters, isLoading } = props;
 
   return (
     <>
@@ -41,46 +44,56 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           </TableRow>
         </TableHeader>
 
-        <TableBody>
-          {transactions.map((transaction) => {
-            const category = categories.find(
-              (category) => category.id === transaction.categoryId
-            );
+        {isLoading ? (
+          <TransactionsTableSkeleton />
+        ) : (
+          <TableBody>
+            {transactions.map((transaction) => {
+              const category = categories.find(
+                (category) => category.id === transaction.categoryId
+              );
 
-            return (
-              <TableRow key={transaction.id}>
-                <TableCell>
-                  <CategoryTypeTag type={transaction.type} />
-                </TableCell>
-                <TableCell>{transaction.name}</TableCell>
-                <TableCell>
-                  <CategoryTag name={category ? category.name : "Categoria"} />
-                </TableCell>
-                <TableCell>
-                  {toISOStringBr(new Date(transaction.date))}
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`font-medium ${
-                      transaction.type === CategoryTypeEnum.INCOME
-                        ? "text-success"
-                        : "text-error"
-                    }`}
-                  >
-                    {formatCurrencyBRL(transaction.value)}
-                  </span>
-                </TableCell>
-                <TableCell>...</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
+              return (
+                <TableRow key={transaction.id}>
+                  <TableCell>
+                    <CategoryTypeTag type={transaction.type} />
+                  </TableCell>
+                  <TableCell>{transaction.name}</TableCell>
+                  <TableCell>
+                    <CategoryTag
+                      name={category ? category.name : "Categoria"}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {toISOStringBr(new Date(transaction.date))}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`font-medium ${
+                        transaction.type === CategoryTypeEnum.INCOME
+                          ? "text-success"
+                          : "text-error"
+                      }`}
+                    >
+                      {formatCurrencyBRL(transaction.value)}
+                    </span>
+                  </TableCell>
+                  <TableCell>...</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        )}
       </Table>
 
       {meta && meta.lastPage > 1 && (
         <TablePagination
           meta={meta}
-          onPageChange={(page: number) => setFilters({ page: page })}
+          onPageChange={(page: number) =>
+            setFilters((prev: PaginationParams) => {
+              return { ...prev, page };
+            })
+          }
         />
       )}
     </>

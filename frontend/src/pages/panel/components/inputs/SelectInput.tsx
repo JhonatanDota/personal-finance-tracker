@@ -22,6 +22,7 @@ export default function SelectInput(props: SelectInputProps) {
             placeholder="Selecione uma opção"
             options={options}
             noOptionsMessage={() => "Nenhuma opção disponível"}
+            isClearable={true}
             onChange={(selectedOption: Option | null) =>
               field.onChange(selectedOption?.value ?? "")
             }
@@ -78,6 +79,13 @@ export default function SelectInput(props: SelectInputProps) {
               indicatorSeparator: () => ({
                 display: "none",
               }),
+              clearIndicator: () => ({
+                color: "#FFFFFF",
+              }),
+              input: (provided) => ({
+                ...provided,
+                color: "#FFFFFF",
+              })
             }}
           />
         );

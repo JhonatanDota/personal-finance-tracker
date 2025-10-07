@@ -21,7 +21,7 @@ class TransactionRepository
      */
     public function getFromUser(User $user, TransactionFilter $filter): LengthAwarePaginator
     {
-        return $user->transactions()->with('category')->filter($filter)->paginate();
+        return $user->transactions()->with('category')->filter($filter)->paginate(10);
     }
 
     /**

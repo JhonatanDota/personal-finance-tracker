@@ -60,7 +60,7 @@ class TransactionFilterNameTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 1,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => 6,
             ]
         ]);
@@ -85,7 +85,7 @@ class TransactionFilterNameTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 1,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => 0,
             ]
         ]);
@@ -120,7 +120,7 @@ class TransactionFilterNameTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 1,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => 1,
             ]
         ]);

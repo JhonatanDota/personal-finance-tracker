@@ -35,7 +35,7 @@ class ListTransactionTest extends TestCase
                 'meta' => [
                     'current_page' => 1,
                     'last_page' => 1,
-                    'per_page' => 15,
+                    'per_page' => 10,
                     'total' => 0,
                 ]
             ]
@@ -60,7 +60,7 @@ class ListTransactionTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 1,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => 0,
             ]
         ]);
@@ -85,7 +85,7 @@ class ListTransactionTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 1,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => 4,
             ]
         ]);
@@ -97,11 +97,11 @@ class ListTransactionTest extends TestCase
 
         Category::factory(2)
             ->for($this->user)
-            ->has(Transaction::factory(15))
+            ->has(Transaction::factory(10))
             ->create();
 
         $expectedTotalTransactions = $this->user->transactions()->count();
-        $expectedTransactionsFirstPage = $this->user->transactions()->take(15)->get();
+        $expectedTransactionsFirstPage = $this->user->transactions()->take(10)->get();
 
         $response = $this->json('GET', 'api/transactions');
         $response->assertOk();
@@ -110,12 +110,12 @@ class ListTransactionTest extends TestCase
             'meta' => [
                 'current_page' => 1,
                 'last_page' => 2,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => $expectedTotalTransactions,
             ]
         ]);
 
-        $expectedTransactionsSecondPage = $this->user->transactions()->skip(15)->take(15)->get();
+        $expectedTransactionsSecondPage = $this->user->transactions()->skip(10)->take(10)->get();
 
         $response = $this->json('GET', 'api/transactions', [
             'page' => 2
@@ -127,11 +127,11 @@ class ListTransactionTest extends TestCase
             'meta' => [
                 'current_page' => 2,
                 'last_page' => 2,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => $expectedTotalTransactions,
             ]
         ]);
-        $response->assertJsonCount(15, 'data');
+        $response->assertJsonCount(10, 'data');
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
@@ -158,7 +158,7 @@ class ListTransactionTest extends TestCase
             'meta' => [
                 'current_page' => 3,
                 'last_page' => 2,
-                'per_page' => 15,
+                'per_page' => 10,
                 'total' => $expectedTotalTransactions,
             ]
         ]);

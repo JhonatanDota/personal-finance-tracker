@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-export function useDebounce<T>(value: T, delay: number = 500): T {
+import { TABLE_SEARCH_DELAY_MS } from "../constants/delay";
+
+export function useDebounce<T>(
+  value: T,
+  delay: number = TABLE_SEARCH_DELAY_MS
+): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {

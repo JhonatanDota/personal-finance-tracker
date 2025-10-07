@@ -33,6 +33,10 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
 
   const { register, control, watch } = useForm<TransactionFilterSchemaType>({
     resolver: zodResolver(transactionFilterSchemaData),
+    defaultValues: {
+      name: "",
+      categoryId: undefined,
+    },
   });
 
   const { name, categoryId } = watch();

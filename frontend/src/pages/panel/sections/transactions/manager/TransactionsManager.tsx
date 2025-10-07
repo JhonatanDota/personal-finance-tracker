@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { TABLE_PAGINATION_DELAY_MS } from "../../../../../constants/delay";
+
 import { handleErrors } from "../../../../../requests/handleErrors";
 import { getCategories } from "../../../../../requests/categoryRequests";
 import { getTransactions } from "../../../../../requests/transactionRequests";
@@ -46,7 +48,9 @@ export default function TransactionsManager() {
     try {
       const [response] = await Promise.all([
         getTransactions(params),
-        new Promise((resolve) => setTimeout(resolve, 400)),
+        new Promise((resolve) =>
+          setTimeout(resolve, TABLE_PAGINATION_DELAY_MS)
+        ),
       ]);
 
       setTransactions(response.data.data);

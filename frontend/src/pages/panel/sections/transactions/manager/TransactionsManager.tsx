@@ -83,7 +83,7 @@ export default function TransactionsManager() {
         <AddTransactionForm
           categories={categories}
           setCategories={setCategories}
-          onAdd={() => fetchTransactions({})}
+          onAdd={() => fetchTransactions(filters)}
         />
       </SectionCard>
 

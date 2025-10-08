@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useDebounce } from "../../../../../hooks/useDebounce";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
 import { PaginationParams } from "../../../../../types/pagination";
@@ -27,27 +25,35 @@ type TransactionsFiltersProps = {
 };
 
 export default function TransactionsFilters(props: TransactionsFiltersProps) {
+  const isFirstRender = useRef(true);
+
   const { categories, setFilters: setFiltersBase } = props;
 
   const [filtersOptions, setFiltersOptions] = useState<FilterOption[]>([]);
 
-  const { register, control, watch } = useForm<TransactionFilterSchemaType>({
-    resolver: zodResolver(transactionFilterSchemaData),
-    defaultValues: {
-      name: "",
-      categoryId: undefined,
-    },
-  });
-
-  const { name, categoryId } = watch();
-  const debouncedName = useDebounce(name);
-
-  function setFilters() {
-    setFiltersBase({
-      name: debouncedName,
-      categoryId,
+  const { register, control, watch, reset } =
+    useForm<TransactionFilterSchemaType>({
+      resolver: zodResolver(transactionFilterSchemaData),
+      defaultValues: {
+        name: "",
+        categoryId: undefined,
+      },
     });
 
+  const { name, categoryId } = watch();
+
+  function setFilters() {
+    const filters: PaginationParams = {};
+
+    if (name.trim()) {
+      filters.name = name.trim();
+    }
+
+    if (categoryId) {
+      filters.categoryId = categoryId;
+    }
+
+    setFiltersBase(filters);
     setFiltersOptions(filterOptionsBuilder);
   }
 
@@ -55,9 +61,9 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
     const category = categories.find((category) => category.id === categoryId);
 
     const options = [
-      debouncedName && {
+      name && {
         label: "Nome",
-        value: debouncedName,
+        value: name,
       },
       category && {
         label: "Categoria",
@@ -69,12 +75,25 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
   }
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     setFilters();
-  }, [debouncedName, categoryId]);
+  }, [name, categoryId]);
 
   return (
     <>
-      <FilterBadges filters={filtersOptions} />
+      {filtersOptions.length > 0 && (
+        <div className="flex justify-between">
+          <FilterBadges filters={filtersOptions} />
+
+          <button onClick={() => reset()} className="button-cancel-action">
+            Limpar Filtros
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <InputContainer>

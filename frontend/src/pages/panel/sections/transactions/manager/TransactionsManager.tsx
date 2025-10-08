@@ -63,7 +63,7 @@ export default function TransactionsManager() {
   }
 
   useEffect(() => {
-    fetchTransactions(filters); //TODO: Resolver duplicidade de requisições
+    fetchTransactions(filters);
   }, [filters]);
 
   useEffect(() => {

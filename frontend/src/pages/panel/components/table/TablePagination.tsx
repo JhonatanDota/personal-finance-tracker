@@ -48,7 +48,7 @@ export default function TablePagination(props: TablePaginationProps) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-4 text-sm">
+    <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary-text">
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
@@ -66,7 +66,7 @@ export default function TablePagination(props: TablePaginationProps) {
           <button
             key={index}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-1 border-[1px] rounded hover:border-tertiary text-primary-text transaction-colors ${
+            className={`px-3 py-1 border-[1px] rounded hover:border-tertiary transaction-colors ${
               currentPage === page
                 ? "bg-primary border-tertiary"
                 : "border-transparent"

@@ -37,6 +37,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           <TableRow>
             <TableHead>Tipo</TableHead>
             <TableHead>Nome</TableHead>
+            <TableHead>Descrição</TableHead>
             <TableHead>Categoria</TableHead>
             <TableHead>Data</TableHead>
             <TableHead>Valor</TableHead>
@@ -59,6 +60,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                     <CategoryTypeTag type={transaction.type} />
                   </TableCell>
                   <TableCell>{transaction.name}</TableCell>
+                  <TableCell>{transaction.description}</TableCell>
                   <TableCell>
                     <CategoryTag
                       name={category ? category.name : "Categoria"}

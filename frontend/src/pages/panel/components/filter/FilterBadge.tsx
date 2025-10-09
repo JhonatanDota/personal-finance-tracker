@@ -8,7 +8,7 @@ export function FilterBadge(props: FilterBadgeProps) {
   const { filter } = props;
 
   return (
-    <div className="flex items-center text-xs text-primary-text gap-1.5 py-1.5 px-2.5 bg-secondary rounded-full">
+    <div className="flex items-center text-xs text-primary-text gap-1.5 py-1.5 px-2.5 bg-secondary rounded-full overflow-hidden">
       <span>{filter.label}:</span>
       <span className="font-bold">{filter.value}</span>
     </div>

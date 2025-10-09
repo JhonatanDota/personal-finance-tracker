@@ -6,10 +6,11 @@ interface SelectInputProps {
   name: string;
   control: Control<any>;
   options: Option[];
+  placeholder?: string;
 }
 
 export default function SelectInput(props: SelectInputProps) {
-  const { name, control, options } = props;
+  const { name, control, options, placeholder } = props;
 
   return (
     <Controller
@@ -19,7 +20,7 @@ export default function SelectInput(props: SelectInputProps) {
         return (
           <Select
             {...field}
-            placeholder="Selecione uma opção"
+            placeholder={placeholder ?? "Selecione uma opção"}
             options={options}
             noOptionsMessage={() => "Nenhuma opção disponível"}
             isClearable={true}
@@ -85,7 +86,7 @@ export default function SelectInput(props: SelectInputProps) {
               input: (provided) => ({
                 ...provided,
                 color: "#FFFFFF",
-              })
+              }),
             }}
           />
         );

@@ -74,7 +74,7 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
     return options as FilterOption[];
   }
 
-  useEffect(() => {
+  useEffect(() => { //TODO: Adicionar debounce ao pesquisar por nome
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -86,7 +86,7 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
   return (
     <>
       {filtersOptions.length > 0 && (
-        <div className="flex justify-between">
+        <div className="flex flex-col-reverse gap-3 md:flex-row md:gap-0 md:justify-between">
           <FilterBadges filters={filtersOptions} />
 
           <button onClick={() => reset()} className="button-cancel-action">

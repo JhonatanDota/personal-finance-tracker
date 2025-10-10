@@ -18,6 +18,8 @@ use App\Http\Resources\Transaction\TransactionResource;
 use App\Http\Requests\Transaction\TransactionFilterRequest;
 use App\Http\Requests\Transaction\CreateTransactionRequest;
 
+use App\Models\Transaction;
+
 class TransactionController extends Controller
 {
     use CustomPaginate;
@@ -56,5 +58,20 @@ class TransactionController extends Controller
         $transaction = $this->repository->create($request->validated());
 
         return response()->json(new TransactionResource($transaction), Response::HTTP_CREATED);
+    }
+
+    /**
+     * Delete Transaction.
+     *
+     * @param Transaction $transaction
+     * @return JsonResponse
+     */
+    public function destroy(Transaction $transaction): JsonResponse
+    {
+        $this->authorize('delete', $transaction);
+
+        $transaction->delete();
+
+        return response()->json(status: Response::HTTP_NO_CONTENT);
     }
 }

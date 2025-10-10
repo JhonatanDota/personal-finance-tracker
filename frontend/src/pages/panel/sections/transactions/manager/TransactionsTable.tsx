@@ -20,6 +20,7 @@ import TableRow from "../../../components/table/TableRow";
 import TableHead from "../../../components/table/TableHead";
 import TableCell from "../../../components/table/TableCell";
 import TableBody from "../../../components/table/TableBody";
+import TableEmptyMessage from "../../../components/table/TableEmptyMessage";
 import TransactionsTableSkeleton from "./TransactionsTableSkeleton";
 import TablePagination from "../../../components/table/TablePagination";
 
@@ -35,6 +36,16 @@ type TransactionsTableProps = {
 
 export default function TransactionsTable(props: TransactionsTableProps) {
   const { categories, transactions, meta, setFilters, isLoading } = props;
+
+  const columns = [
+    { name: "Tipo" },
+    { name: "Nome" },
+    { name: "Descrição" },
+    { name: "Categoria" },
+    { name: "Data" },
+    { name: "Valor" },
+    { name: "Ações", className: "w-24" },
+  ];
 
   const [openDeleteTransactionDialog, setOpenDeleteTransactionDialog] =
     useState(false);
@@ -57,13 +68,11 @@ export default function TransactionsTable(props: TransactionsTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Tipo</TableHead>
-            <TableHead>Nome</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead>Categoria</TableHead>
-            <TableHead>Data</TableHead>
-            <TableHead>Valor</TableHead>
-            <TableHead className="w-24">Ações</TableHead>
+            {columns.map((column) => (
+              <TableHead className={column.className} key={column.name}>
+                {column.name}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
 
@@ -71,47 +80,56 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           <TransactionsTableSkeleton />
         ) : (
           <TableBody>
-            {transactions.map((transaction) => {
-              const category = categories.find(
-                (category) => category.id === transaction.categoryId
-              );
+            {transactions.length > 0 ? (
+              transactions.map((transaction) => {
+                const category = categories.find(
+                  (category) => category.id === transaction.categoryId
+                );
 
-              return (
-                <TableRow key={transaction.id}>
-                  <TableCell>
-                    <CategoryTypeTag type={transaction.type} />
-                  </TableCell>
-                  <TableCell>{transaction.name}</TableCell>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell>
-                    <CategoryTag name={category ? category.name : "..."} />
-                  </TableCell>
-                  <TableCell>
-                    {toISOStringBr(new Date(transaction.date))}
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`font-medium ${
-                        transaction.type === CategoryTypeEnum.INCOME
-                          ? "text-success"
-                          : "text-error"
-                      }`}
-                    >
-                      {formatCurrencyBRL(transaction.value)}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteTransactionDialog(transaction)}
-                      className="button-action-table"
-                    >
-                      <MdDeleteOutline className="w-5 h-5 fill-error" />
-                    </button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                return (
+                  <TableRow key={transaction.id}>
+                    <TableCell>
+                      <CategoryTypeTag type={transaction.type} />
+                    </TableCell>
+                    <TableCell>{transaction.name}</TableCell>
+                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell>
+                      <CategoryTag name={category ? category.name : "..."} />
+                    </TableCell>
+                    <TableCell>
+                      {toISOStringBr(new Date(transaction.date))}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`font-medium ${
+                          transaction.type === CategoryTypeEnum.INCOME
+                            ? "text-success"
+                            : "text-error"
+                        }`}
+                      >
+                        {formatCurrencyBRL(transaction.value)}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDeleteTransactionDialog(transaction)
+                        }
+                        className="button-action-table"
+                      >
+                        <MdDeleteOutline className="w-5 h-5 fill-error" />
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableEmptyMessage
+                colSpan={columns.length}
+                message="Sem registro de transações"
+              />
+            )}
           </TableBody>
         )}
       </Table>

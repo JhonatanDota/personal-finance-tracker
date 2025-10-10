@@ -15,6 +15,7 @@ import TableRow from "../../../components/table/TableRow";
 import TableHead from "../../../components/table/TableHead";
 import TableCell from "../../../components/table/TableCell";
 import TableBody from "../../../components/table/TableBody";
+import TableEmptyMessage from "../../../components/table/TableEmptyMessage";
 
 type CategoriesTableProps = {
   categories: CategoryModel[];
@@ -23,6 +24,12 @@ type CategoriesTableProps = {
 
 export default function CategoriesTable(props: CategoriesTableProps) {
   const { categories, setCategories } = props;
+
+  const columns = [
+    { name: "Nome" },
+    { name: "Tipo" },
+    { name: "Ações", className: "w-24" },
+  ];
 
   const [openDeleteCategoryDialog, setOpenDeleteCategoryDialog] =
     useState(false);
@@ -63,40 +70,51 @@ export default function CategoriesTable(props: CategoriesTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>Tipo</TableHead>
-            <TableHead className="w-24">Ações</TableHead>
+            {columns.map((column) => (
+              <TableHead className={column.className ?? ""} key={column.name}>
+                {column.name}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {categories.map((category) => (
-            <TableRow key={category.id}>
-              <TableCell>{category.name}</TableCell>
-              <TableCell>
-                <CategoryTypeTag type={category.type} />
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleUpdateCategoryDialog(category)}
-                    className="button-action-table"
-                  >
-                    <MdEdit className="w-5 h-5" />
-                  </button>
+          {categories.length > 0 ? (
+            <>
+              {categories.map((category) => (
+                <TableRow key={category.id}>
+                  <TableCell>{category.name}</TableCell>
+                  <TableCell>
+                    <CategoryTypeTag type={category.type} />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateCategoryDialog(category)}
+                        className="button-action-table"
+                      >
+                        <MdEdit className="w-5 h-5" />
+                      </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteCategoryDialog(category)}
-                    className="button-action-table"
-                  >
-                    <MdDeleteOutline className="w-5 h-5 fill-error" />
-                  </button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteCategoryDialog(category)}
+                        className="button-action-table"
+                      >
+                        <MdDeleteOutline className="w-5 h-5 fill-error" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <TableEmptyMessage
+              colSpan={columns.length}
+              message="Sem registro de categorias"
+            />
+          )}
         </TableBody>
       </Table>
 

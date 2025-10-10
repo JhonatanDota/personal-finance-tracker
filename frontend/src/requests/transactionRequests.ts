@@ -22,3 +22,9 @@ export async function addTransaction(
 ): Promise<AxiosResponse<TransactionModel>> {
   return await requester().post(TRANSACTIONS_ROUTE, data);
 }
+
+export async function deleteTransaction(
+  transaction: TransactionModel
+): Promise<AxiosResponse> {
+  return await requester().delete(`${TRANSACTIONS_ROUTE}/${transaction.id}`);
+}

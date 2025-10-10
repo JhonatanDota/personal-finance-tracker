@@ -31,7 +31,12 @@ export default function TransactionsManager() {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [transactions, setTransactions] = useState<TransactionModel[]>([]);
   const [filters, setFilters] = useState<PaginationParams>({});
-  const [meta, setMeta] = useState<PaginationMeta>();
+  const [meta, setMeta] = useState<PaginationMeta>({
+    currentPage: 1,
+    lastPage: 1,
+    perPage: 10,
+    total: 0,
+  });
 
   async function fetchCategories() {
     try {
@@ -108,6 +113,14 @@ export default function TransactionsManager() {
           setFilters={setFilters}
           isLoading={isLoadingTransactions}
         />
+
+        <span className="flex items-center gap-2 text-primary-text text-sm">
+          <span className={`${isLoadingTransactions && "animate-pulse"}`}>
+            Total de
+            <span className="font-bold"> {meta.total} </span>
+            Transação(ões)
+          </span>
+        </span>
       </SectionCard>
     </SectionContainer>
   );

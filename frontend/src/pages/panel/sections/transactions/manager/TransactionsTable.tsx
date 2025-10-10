@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { MdDeleteOutline } from "react-icons/md";
+
 import { toISOStringBr } from "../../../../../utils/date";
 import { formatCurrencyBRL } from "../../../../../utils/monetary";
 import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
@@ -19,16 +23,34 @@ import TableBody from "../../../components/table/TableBody";
 import TransactionsTableSkeleton from "./TransactionsTableSkeleton";
 import TablePagination from "../../../components/table/TablePagination";
 
+import DeleteTransactionDialog from "./actions/DeleteTransactionDialog";
+
 type TransactionsTableProps = {
   categories: CategoryModel[];
   transactions: TransactionModel[];
-  meta?: PaginationMeta;
+  meta: PaginationMeta;
   setFilters: (filters: {}) => void;
   isLoading: boolean;
 };
 
 export default function TransactionsTable(props: TransactionsTableProps) {
   const { categories, transactions, meta, setFilters, isLoading } = props;
+
+  const [openDeleteTransactionDialog, setOpenDeleteTransactionDialog] =
+    useState(false);
+  const [transactionToDelete, setTransactionToDelete] =
+    useState<TransactionModel | null>(null);
+
+  function handleDeleteTransactionDialog(transaction: TransactionModel) {
+    setOpenDeleteTransactionDialog(true);
+    setTransactionToDelete(transaction);
+  }
+
+  function handleDeletedTransaction() {
+    setFilters((prev: PaginationParams) => {
+      return { ...prev };
+    });
+  }
 
   return (
     <>
@@ -62,9 +84,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                   <TableCell>{transaction.name}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell>
-                    <CategoryTag
-                      name={category ? category.name : "Categoria"}
-                    />
+                    <CategoryTag name={category ? category.name : "..."} />
                   </TableCell>
                   <TableCell>
                     {toISOStringBr(new Date(transaction.date))}
@@ -80,7 +100,15 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       {formatCurrencyBRL(transaction.value)}
                     </span>
                   </TableCell>
-                  <TableCell>...</TableCell>
+                  <TableCell>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTransactionDialog(transaction)}
+                      className="button-action-table"
+                    >
+                      <MdDeleteOutline className="w-5 h-5 fill-error" />
+                    </button>
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -88,7 +116,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         )}
       </Table>
 
-      {meta && meta.lastPage > 1 && (
+      {meta.lastPage > 1 && (
         <TablePagination
           meta={meta}
           onPageChange={(page: number) =>
@@ -96,6 +124,14 @@ export default function TransactionsTable(props: TransactionsTableProps) {
               return { ...prev, page };
             })
           }
+        />
+      )}
+
+      {openDeleteTransactionDialog && transactionToDelete && (
+        <DeleteTransactionDialog
+          transaction={transactionToDelete}
+          onDelete={handleDeletedTransaction}
+          close={() => setOpenDeleteTransactionDialog(false)}
         />
       )}
     </>

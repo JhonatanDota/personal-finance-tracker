@@ -44,7 +44,6 @@ export default function CategoriesManager() {
       ]);
 
       setCategories(response.data);
-      setFilteredCategories(response.data);
     } catch (error) {
       handleErrors(error);
     } finally {
@@ -72,7 +71,7 @@ export default function CategoriesManager() {
 
   useEffect(() => {
     applyFilters();
-  }, [filters]);
+  }, [filters, categories]);
 
   useEffect(() => {
     fetchCategories();

@@ -15,9 +15,7 @@ class UpdateCategoryTest extends TestCase
 {
     public function testTryUpdateCategoryNotLogged()
     {
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id);
 
@@ -28,7 +26,9 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->json('PATCH', 'api/categories/0');
+        $unknownCategoryId = Category::max('id') + 1;
+
+        $response = $this->json('PATCH', 'api/categories/' . $unknownCategoryId);
 
         $response->assertNotFound();
     }
@@ -48,9 +48,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id);
 
@@ -61,9 +59,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
             'name' => '',
@@ -80,9 +76,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
             'name' => Str::random(Category::NAME_MAX_LENGTH + 1),
@@ -99,9 +93,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
             'name' => 100,
@@ -118,9 +110,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
             'user_id' => User::factory()->create()->id,
@@ -143,9 +133,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $data = [
             'name' => 'New Category Name',
@@ -181,9 +169,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $category = Category::factory()->for($this->user)->create();
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
             'type' => 'invalid_type',
@@ -200,8 +186,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id,
+        $category = Category::factory()->for($this->user)->create([
             'type' => CategoriesEnum::INCOME
         ]);
 
@@ -226,8 +211,7 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $category = Category::factory()->create([
-            'user_id' => $this->user->id,
+        $category = Category::factory()->for($this->user)->create([
             'type' => CategoriesEnum::INCOME,
             'name' => 'Old Name',
         ]);

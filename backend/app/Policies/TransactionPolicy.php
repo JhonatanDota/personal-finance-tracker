@@ -12,9 +12,21 @@ class TransactionPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User $user
+     * @param  \App\Models\Transaction $transaction
+     * @return bool
+     */
+    public function update(User $user, Transaction $transaction): bool
+    {
+        return $user->id == $transaction->category->user_id;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User $user
      * @param  \App\Models\Transaction $transaction
      * @return bool
      */

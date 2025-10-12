@@ -50,6 +50,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::prefix('transactions')->group(function () {
         Route::get('/', [TransactionController::class, 'list']);
         Route::post('/', [TransactionController::class, 'store']);
+        Route::patch('/{transaction}', [TransactionController::class, 'update']);
         Route::delete('/{transaction}', [TransactionController::class, 'destroy']);
     });
 });

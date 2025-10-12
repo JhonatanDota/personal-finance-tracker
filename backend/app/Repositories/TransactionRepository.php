@@ -12,8 +12,6 @@ use App\Models\Transaction;
 class TransactionRepository
 {
     /**
-     * Get transactions by user with pagination.
-     *
      * @param User $user
      * @param TransactionFilter $filter
      *
@@ -25,8 +23,6 @@ class TransactionRepository
     }
 
     /**
-     * Create a new transaction.
-     *
      * @param array $data
      *
      * @return Transaction
@@ -34,5 +30,17 @@ class TransactionRepository
     public function create(array $data): Transaction
     {
         return Transaction::create($data);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return Transaction
+     */
+    public function update(Transaction $transaction, array $data): Transaction
+    {
+        $transaction->update($data);
+
+        return $transaction->refresh();
     }
 }

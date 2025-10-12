@@ -17,6 +17,7 @@ use App\Http\Resources\Transaction\TransactionResource;
 
 use App\Http\Requests\Transaction\TransactionFilterRequest;
 use App\Http\Requests\Transaction\CreateTransactionRequest;
+use App\Http\Requests\Transaction\UpdateTransactionRequest;
 
 use App\Models\Transaction;
 
@@ -48,7 +49,6 @@ class TransactionController extends Controller
     }
 
     /**
-     * Create a new transaction.
      * @param CreateTransactionRequest $request
      * 
      * @return JsonResponse
@@ -61,8 +61,20 @@ class TransactionController extends Controller
     }
 
     /**
-     * Delete Transaction.
-     *
+     * @param Transaction $transaction
+     * @param UpdateTransactionRequest $request
+     * @return JsonResponse
+     */
+    public function update(Transaction $transaction, UpdateTransactionRequest $request): JsonResponse
+    {
+        $inputs = $request->validated();
+
+        $transaction = $this->repository->update($transaction, $inputs);
+
+        return response()->json(new TransactionResource($transaction));
+    }
+
+    /**
      * @param Transaction $transaction
      * @return JsonResponse
      */

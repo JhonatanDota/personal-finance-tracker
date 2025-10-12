@@ -6,6 +6,8 @@ use Tests\TestCase;
 
 use App\Models\User;
 
+use App\Http\Resources\User\UserResource;
+
 class MeTest extends TestCase
 {
     public function testTryAccessMeRouteNotLoggedTest()
@@ -24,12 +26,9 @@ class MeTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertExactJson([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'created_at' => $user->created_at,
-            'updated_at' => $user->updated_at,
-        ]);
+        $response->assertExactJson(UserResource::make($user)->resolve());
+
+        $this->assertArrayNotHasKey('password', $response->json());
+        $this->assertArrayNotHasKey('password_confirmation', $response->json());
     }
 }

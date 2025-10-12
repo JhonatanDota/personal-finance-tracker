@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 
+use App\Http\Resources\User\UserResource;
+
 use App\Rules\Fields\User\NameRules;
 use App\Rules\Fields\User\PasswordRules;
 use App\Rules\Fields\Commom\EmailRules;
@@ -25,10 +27,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'name',
-        ]);
 
         $response->assertJsonValidationErrors([
             'name' => ['The name field is required.'],
@@ -49,10 +47,6 @@ class RegisterTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'name',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'name' => ['The name field must be at least ' . NameRules::MIN_LENGTH . ' characters.'],
         ]);
     }
@@ -71,10 +65,6 @@ class RegisterTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'name',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'name' => ['The name field must not be greater than ' . NameRules::MAX_LENGTH . ' characters.'],
         ]);
     }
@@ -90,10 +80,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'email',
-        ]);
 
         $response->assertJsonValidationErrors([
             'email' => ['The email field is required.'],
@@ -114,10 +100,6 @@ class RegisterTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'email',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'email' => ['The email field format is invalid.'],
         ]);
     }
@@ -134,10 +116,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'email',
-        ]);
 
         $response->assertJsonValidationErrors([
             'email' => ['The email field must not be greater than ' . EmailRules::MAX_LENGTH . ' characters.'],
@@ -164,10 +142,6 @@ class RegisterTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'email',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'email' => ['The email has already been taken.'],
         ]);
     }
@@ -180,10 +154,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'password',
-        ]);
 
         $response->assertJsonValidationErrors([
             'password' => ['The password field is required.'],
@@ -199,10 +169,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'password',
-        ]);
 
         $response->assertJsonValidationErrors([
             'password' => ['The password field confirmation does not match.'],
@@ -223,10 +189,6 @@ class RegisterTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'password',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'password' => ['The password field must be at least ' . PasswordRules::MIN_LENGTH . ' characters.'],
         ]);
     }
@@ -243,10 +205,6 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'password',
-        ]);
 
         $response->assertJsonValidationErrors([
             'password' => ['The password field must not be greater than ' . PasswordRules::MAX_LENGTH . ' characters.'],
@@ -269,18 +227,7 @@ class RegisterTest extends TestCase
 
         $response->assertCreated();
 
-        $response->assertJsonStructure([
-            'id',
-            'name',
-            'email',
-            'created_at',
-            'updated_at'
-        ]);
-
-        $response->assertJson([
-            'name' => $userData['name'],
-            'email' => $userData['email']
-        ]);
+        $response->assertExactJson(UserResource::make(User::find($responseData['id']))->resolve());
 
         $this->assertArrayNotHasKey('password', $responseData);
         $this->assertArrayNotHasKey('password_confirmation', $responseData);

@@ -33,10 +33,6 @@ class CreateCategoryTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'name',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'name' => ['O campo name é obrigatório.'],
         ]);
     }
@@ -69,10 +65,6 @@ class CreateCategoryTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'name',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ser uma string.'],
         ]);
     }
@@ -87,10 +79,6 @@ class CreateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'name',
-        ]);
 
         $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.'],
@@ -108,10 +96,6 @@ class CreateCategoryTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'type',
-        ]);
-
-        $response->assertJsonValidationErrors([
             'type' => ['O campo type é obrigatório.'],
         ]);
     }
@@ -126,10 +110,6 @@ class CreateCategoryTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-        $response->assertJsonValidationErrors([
-            'type',
-        ]);
 
         $response->assertJsonValidationErrors([
             'type' => ['O campo type deve conter um valor válido'],

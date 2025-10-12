@@ -14,7 +14,6 @@ class LoginTest extends TestCase
         $response = $this->json('POST', 'api/auth/');
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['email', 'password']);
         $response->assertJsonValidationErrors([
             'email' => ['The email field is required.'],
             'password' => ['The password field is required.'],
@@ -26,7 +25,6 @@ class LoginTest extends TestCase
         $response = $this->json('POST', 'api/auth/', ['password' => '12345']);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['email']);
         $response->assertJsonValidationErrors(['email' => ['The email field is required.']]);
     }
 
@@ -35,11 +33,13 @@ class LoginTest extends TestCase
         $response = $this->json(
             'POST',
             'api/auth/',
-            ['email' => 'invalid_email', 'password' => '12345']
+            [
+                'email' => 'invalid_email',
+                'password' => '12345'
+            ]
         );
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['email']);
         $response->assertJsonValidationErrors(['email' => ['The email field must be a valid email address.']]);
     }
 
@@ -48,7 +48,6 @@ class LoginTest extends TestCase
         $response = $this->json('POST', 'api/auth/', ['email' => 'test@email.com']);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['password']);
         $response->assertJsonValidationErrors(['password' => ['The password field is required.']]);
     }
 

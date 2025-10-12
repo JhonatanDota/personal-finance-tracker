@@ -11,6 +11,8 @@ use App\Enums\CategoriesEnum;
 use App\Models\User;
 use App\Models\Category;
 
+use App\Http\Resources\Category\CategoryResource;
+
 class UpdateCategoryTest extends TestCase
 {
     public function testTryUpdateCategoryNotLogged()
@@ -118,12 +120,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertExactJson([
-            'id' => $category->id,
-            'user_id' => $this->user->id,
-            'name' => $category->name,
-            'type' => $category->type,
-        ]);
+        $response->assertExactJson(CategoryResource::make($category)->resolve());
 
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
@@ -147,19 +144,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertJsonStructure([
-            'id',
-            'user_id',
-            'name',
-            'type',
-        ]);
-
-        $response->assertExactJson([
-            'id' => $category->id,
-            'user_id' => $category->user_id,
-            'name' => $data['name'],
-            'type' => $category->type,
-        ]);
+        $response->assertExactJson(CategoryResource::make(Category::find($category->id))->resolve());
 
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
@@ -198,12 +183,8 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertExactJson([
-            'id' => $category->id,
-            'user_id' => $this->user->id,
-            'name' => $category->name,
-            'type' => CategoriesEnum::EXPENSE,
-        ]);
+        $response->assertExactJson(CategoryResource::make(Category::find($category->id))->resolve());
+
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
             'type' => CategoriesEnum::EXPENSE,
@@ -228,12 +209,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertExactJson([
-            'id' => $category->id,
-            'user_id' => $category->user_id,
-            'name' => $data['name'],
-            'type' => $data['type'],
-        ]);
+        $response->assertExactJson(CategoryResource::make(Category::find($category->id))->resolve());
 
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,

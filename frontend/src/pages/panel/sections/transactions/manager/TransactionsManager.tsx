@@ -24,6 +24,7 @@ import { MdOutlineFilterList } from "react-icons/md";
 import AddTransactionForm from "./AddTransactionForm";
 import TransactionsFilters from "./TransactionsFilters";
 import TransactionsTable from "./TransactionsTable";
+import TableRegisters from "../../../components/table/TableRegisters";
 
 export default function TransactionsManager() {
   const [isLoadingTransactions, setIsLoadingTransactions] = useState(false);
@@ -114,13 +115,12 @@ export default function TransactionsManager() {
           isLoading={isLoadingTransactions}
         />
 
-        <span className="flex items-center gap-2 text-primary-text text-sm">
-          <span className={`${isLoadingTransactions && "animate-pulse"}`}>
-            Total de
-            <span className="font-bold"> {meta.total} </span>
-            Transação(ões)
-          </span>
-        </span>
+        <TableRegisters
+          loading={isLoadingTransactions}
+          registerSingularName="Transação"
+          registerPluralName="Transações"
+          registersQuantity={meta.total}
+        />
       </SectionCard>
     </SectionContainer>
   );

@@ -20,9 +20,10 @@ import SectionCardTitle from "../../../components/section/SectionCardTitle";
 import CategoriesFilters from "./CategoriesFilters";
 import CategoriesTable from "./CategoriesTable";
 import AddCategoryDialog from "./actions/AddCategoryDialog";
+import TableRegisters from "../../../components/table/TableRegisters";
 
 export default function CategoriesManager() {
-  const [loading, setLoading] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [filters, setFilters] = useState<Record<string, string>>({});
@@ -33,7 +34,7 @@ export default function CategoriesManager() {
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   async function fetchCategories() {
-    setLoading(true);
+    setIsLoadingCategories(true);
 
     try {
       const [response] = await Promise.all([
@@ -47,7 +48,7 @@ export default function CategoriesManager() {
     } catch (error) {
       handleErrors(error);
     } finally {
-      setLoading(false);
+      setIsLoadingCategories(false);
     }
   }
 
@@ -105,7 +106,7 @@ export default function CategoriesManager() {
           </button>
         </div>
 
-        {loading ? (
+        {isLoadingCategories ? (
           <Loader />
         ) : (
           <CategoriesTable
@@ -114,13 +115,12 @@ export default function CategoriesManager() {
           />
         )}
 
-        <span className="flex items-center gap-2 text-primary-text text-sm">
-          <span className={`${loading && "animate-pulse"}`}>
-            Total de
-            <span className="font-bold"> {filteredCategories.length} </span>
-            Categoria(s)
-          </span>
-        </span>
+        <TableRegisters
+          loading={isLoadingCategories}
+          registerSingularName="Transação"
+          registerPluralName="Transações"
+          registersQuantity={filteredCategories.length}
+        />
       </SectionCard>
 
       {openAddCategoryDialog && (

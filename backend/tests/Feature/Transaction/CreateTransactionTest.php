@@ -35,7 +35,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O campo category_id é obrigatório.'],
         ]);
     }
@@ -53,7 +53,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O campo category_id deve ser um inteiro.'],
         ]);
     }
@@ -71,7 +71,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O valor informado para o campo category_id não existe.'],
         ]);
     }
@@ -91,7 +91,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O valor informado para o campo category_id não existe.'],
         ]);
     }
@@ -113,7 +113,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name é obrigatório.'],
         ]);
     }
@@ -133,7 +133,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name é obrigatório.'],
         ]);
     }
@@ -153,7 +153,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ser uma string.'],
         ]);
     }
@@ -173,7 +173,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ter no mínimo ' . Transaction::NAME_MIN_LENGTH . ' caracteres.'],
         ]);
     }
@@ -193,7 +193,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ter no máximo ' . Transaction::NAME_MAX_LENGTH . ' caracteres.'],
         ]);
     }
@@ -215,7 +215,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'value' => ['O campo value é obrigatório.'],
         ]);
     }
@@ -235,7 +235,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'value' => ['O campo value deve ser um número.'],
         ]);
     }
@@ -255,7 +255,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'value' => ['O campo value deve ter no mínimo ' . Transaction::VALUE_MIN . '.'],
         ]);
     }
@@ -275,7 +275,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'value' => ['O campo value deve ter no máximo ' . Transaction::VALUE_MAX . '.'],
         ]);
     }
@@ -314,7 +314,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'description' => ['O campo description deve ser uma string.'],
         ]);
     }
@@ -334,7 +334,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'description' => ['O campo description deve ter no máximo ' . Transaction::DESCRIPTION_MAX_LENGTH . ' caracteres.'],
         ]);
     }
@@ -356,7 +356,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'date' => ['O campo date é obrigatório.'],
         ]);
     }
@@ -376,7 +376,7 @@ class CreateTransactionTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'date' => ['O campo date deve ser uma data.'],
         ]);
     }

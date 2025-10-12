@@ -22,7 +22,7 @@ class TransactionFilterNameTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ter no máximo ' . Transaction::NAME_MAX_LENGTH .  ' caracteres.'],
         ]);
     }
@@ -36,7 +36,7 @@ class TransactionFilterNameTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ser uma string.'],
         ]);
     }

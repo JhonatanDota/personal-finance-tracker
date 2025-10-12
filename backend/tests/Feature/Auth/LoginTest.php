@@ -15,7 +15,7 @@ class LoginTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['email', 'password']);
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'email' => ['The email field is required.'],
             'password' => ['The password field is required.'],
         ]);
@@ -27,7 +27,7 @@ class LoginTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['email']);
-        $response->assertJsonFragment(['email' => ['The email field is required.']]);
+        $response->assertJsonValidationErrors(['email' => ['The email field is required.']]);
     }
 
     public function testTryLoginWithInvalidEmail()
@@ -40,7 +40,7 @@ class LoginTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['email']);
-        $response->assertJsonFragment(['email' => ['The email field must be a valid email address.']]);
+        $response->assertJsonValidationErrors(['email' => ['The email field must be a valid email address.']]);
     }
 
     public function testTryLoginWithoutPassword()
@@ -49,7 +49,7 @@ class LoginTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['password']);
-        $response->assertJsonFragment(['password' => ['The password field is required.']]);
+        $response->assertJsonValidationErrors(['password' => ['The password field is required.']]);
     }
 
     public function testTryLoginWithInvalidCredentials()

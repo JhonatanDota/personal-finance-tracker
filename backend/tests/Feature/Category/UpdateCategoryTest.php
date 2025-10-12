@@ -67,7 +67,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ser uma string.'],
         ]);
     }
@@ -84,7 +84,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ter no máximo ' . Category::NAME_MAX_LENGTH .  ' caracteres.'],
         ]);
     }
@@ -101,7 +101,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['O campo name deve ser uma string.'],
         ]);
     }
@@ -118,9 +118,11 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertJsonFragment([
+        $response->assertExactJson([
             'id' => $category->id,
             'user_id' => $this->user->id,
+            'name' => $category->name,
+            'type' => $category->type,
         ]);
 
         $this->assertDatabaseHas(Category::class, [
@@ -177,7 +179,7 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'type' => ['O campo type deve conter um valor válido.'],
         ]);
     }
@@ -196,11 +198,12 @@ class UpdateCategoryTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertJsonFragment([
+        $response->assertExactJson([
             'id' => $category->id,
+            'user_id' => $this->user->id,
+            'name' => $category->name,
             'type' => CategoriesEnum::EXPENSE,
         ]);
-
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
             'type' => CategoriesEnum::EXPENSE,

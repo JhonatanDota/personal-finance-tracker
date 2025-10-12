@@ -69,7 +69,7 @@ class UpdateTransactionTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O campo category_id deve ser um inteiro.'],
         ]);
     }
@@ -86,7 +86,7 @@ class UpdateTransactionTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O valor informado para o campo category_id não existe.'],
         ]);
     }
@@ -103,7 +103,7 @@ class UpdateTransactionTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O campo category_id deve ser um inteiro.'],
         ]);
     }
@@ -120,7 +120,7 @@ class UpdateTransactionTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'category_id' => ['O valor informado para o campo category_id não existe.'],
         ]);
     }

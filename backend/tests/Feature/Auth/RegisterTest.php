@@ -30,7 +30,7 @@ class RegisterTest extends TestCase
             'name',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['The name field is required.'],
         ]);
     }
@@ -52,7 +52,7 @@ class RegisterTest extends TestCase
             'name',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['The name field must be at least ' . NameRules::MIN_LENGTH . ' characters.'],
         ]);
     }
@@ -74,7 +74,7 @@ class RegisterTest extends TestCase
             'name',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'name' => ['The name field must not be greater than ' . NameRules::MAX_LENGTH . ' characters.'],
         ]);
     }
@@ -95,7 +95,7 @@ class RegisterTest extends TestCase
             'email',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'email' => ['The email field is required.'],
         ]);
     }
@@ -117,7 +117,7 @@ class RegisterTest extends TestCase
             'email',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'email' => ['The email field format is invalid.'],
         ]);
     }
@@ -139,7 +139,7 @@ class RegisterTest extends TestCase
             'email',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'email' => ['The email field must not be greater than ' . EmailRules::MAX_LENGTH . ' characters.'],
         ]);
     }
@@ -167,7 +167,7 @@ class RegisterTest extends TestCase
             'email',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'email' => ['The email has already been taken.'],
         ]);
     }
@@ -185,7 +185,7 @@ class RegisterTest extends TestCase
             'password',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'password' => ['The password field is required.'],
         ]);
     }
@@ -204,7 +204,7 @@ class RegisterTest extends TestCase
             'password',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'password' => ['The password field confirmation does not match.'],
         ]);
     }
@@ -226,7 +226,7 @@ class RegisterTest extends TestCase
             'password',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'password' => ['The password field must be at least ' . PasswordRules::MIN_LENGTH . ' characters.'],
         ]);
     }
@@ -248,7 +248,7 @@ class RegisterTest extends TestCase
             'password',
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJsonValidationErrors([
             'password' => ['The password field must not be greater than ' . PasswordRules::MAX_LENGTH . ' characters.'],
         ]);
     }
@@ -277,7 +277,7 @@ class RegisterTest extends TestCase
             'updated_at'
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJson([
             'name' => $userData['name'],
             'email' => $userData['email']
         ]);

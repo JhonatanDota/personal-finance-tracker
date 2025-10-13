@@ -56,6 +56,17 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     { name: "Ações", className: "w-24" },
   ];
 
+  function transactionValueColor(transaction: TransactionModel): string {
+    if (transaction.value === 0) {
+      return "text-warning";
+    }
+
+    return {
+      [CategoryTypeEnum.INCOME]: "text-success",
+      [CategoryTypeEnum.EXPENSE]: "text-error",
+    }[transaction.type];
+  }
+
   const [openUpdateTransactionDialog, setOpenUpdateTransactionDialog] =
     useState(false);
   const [transactionToUpdate, setTransactionToUpdate] =
@@ -121,7 +132,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       <CategoryTypeTag type={transaction.type} />
                     </TableCell>
                     <TableCell>{transaction.name}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell>{transaction.description || "..."}</TableCell>
                     <TableCell>
                       <CategoryTag name={category ? category.name : "..."} />
                     </TableCell>
@@ -130,11 +141,9 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                     </TableCell>
                     <TableCell>
                       <span
-                        className={`font-medium ${
-                          transaction.type === CategoryTypeEnum.INCOME
-                            ? "text-success"
-                            : "text-error"
-                        }`}
+                        className={`font-medium ${transactionValueColor(
+                          transaction
+                        )}`}
                       >
                         {formatCurrencyBRL(transaction.value)}
                       </span>

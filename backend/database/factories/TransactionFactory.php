@@ -19,7 +19,7 @@ class TransactionFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'name' => $this->faker->text(Transaction::NAME_MAX_LENGTH),
-            'value' => $this->faker->randomFloat(min: Transaction::VALUE_MIN, max: Transaction::VALUE_MAX),
+            'value' => $this->faker->randomFloat(nbMaxDecimals: 2, min: Transaction::VALUE_MIN, max: Transaction::VALUE_MAX),
             'description' => $this->faker->text(Transaction::DESCRIPTION_MAX_LENGTH),
             'date' => $this->faker->date(),
         ];

@@ -471,4 +471,85 @@ class UpdateTransactionTest extends TestCase
             'description' => $newDescription,
         ]);
     }
+
+    // =========================================================================
+    // DATE
+    // =========================================================================
+
+    public function testTryUpdateDateWithInvalidDate()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'date' => 'invalid-date'
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'date' => [
+                'O campo date deve ser uma data.'
+            ],
+        ]);
+    }
+
+    public function testUpdateDateSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $oldDate = $this->faker->date();
+        $newDate = $this->faker->date();
+
+        $this->assertNotEquals($oldDate, $newDate);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create([
+            'date' => $oldDate
+        ]);
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'date' => $oldDate,
+        ]);
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'date' => $newDate
+        ]);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'date' => $newDate,
+        ]);
+    }
+
+    // =========================================================================
+    // UPDATE FULL TRANSACTION
+    // =========================================================================
+
+    public function testUpdateFullTransactionSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $data = Transaction::factory()->for(Category::factory()->for($this->user))->make()->toArray();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, $data);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'category_id' => $data['category_id'],
+            'name' => $data['name'],
+            'value' => $data['value'],
+            'description' => $data['description'],
+            'date' => $data['date'],
+        ]);
+    }
 }

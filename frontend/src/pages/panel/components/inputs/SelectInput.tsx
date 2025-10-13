@@ -7,10 +7,11 @@ interface SelectInputProps {
   control: Control<any>;
   options: Option[];
   placeholder?: string;
+  allowClear?: boolean;
 }
 
 export default function SelectInput(props: SelectInputProps) {
-  const { name, control, options, placeholder } = props;
+  const { name, control, options, placeholder, allowClear = true } = props;
 
   return (
     <Controller
@@ -23,7 +24,7 @@ export default function SelectInput(props: SelectInputProps) {
             placeholder={placeholder ?? "Selecione uma opção"}
             options={options}
             noOptionsMessage={() => "Nenhuma opção disponível"}
-            isClearable={true}
+            isClearable={allowClear}
             onChange={(selectedOption: Option | null) =>
               field.onChange(selectedOption?.value ?? "")
             }

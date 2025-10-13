@@ -1,5 +1,9 @@
 import { format, parseISO } from "date-fns";
 
+export function parseDate(date: string): Date {
+  return parseISO(date);
+}
+
 export function toISOString(date: Date): string {
   return format(date, "yyyy-MM-dd");
 }

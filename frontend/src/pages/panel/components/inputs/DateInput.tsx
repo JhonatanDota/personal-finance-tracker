@@ -1,8 +1,7 @@
 import { Controller, Control } from "react-hook-form";
 import { pt } from "date-fns/locale";
 import "react-day-picker/dist/style.css";
-import { parseISO } from "date-fns";
-import { toISOString, toISOStringBr } from "../../../../utils/date";
+import { parseDate, toISOString, toISOStringBr } from "../../../../utils/date";
 
 import { DayPicker } from "react-day-picker";
 import Popover from "../popover/Popover";
@@ -22,7 +21,7 @@ export default function DateInput(props: DateInputProps) {
       control={control}
       render={({ field }) => {
         const value: string | undefined = field.value;
-        const valueIso = value ? parseISO(value) : undefined;
+        const valueIso = value ? parseDate(value) : undefined;
 
         return (
           <Popover

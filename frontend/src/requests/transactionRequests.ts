@@ -6,6 +6,7 @@ import {
   TransactionModel,
   CreateTransactionModel,
   TransactionPagination,
+  UpdateTransactionModel,
 } from "../models/transactionModels";
 
 import { PaginationParams } from "../types/pagination";
@@ -21,6 +22,13 @@ export async function addTransaction(
   data: CreateTransactionModel
 ): Promise<AxiosResponse<TransactionModel>> {
   return await requester().post(TRANSACTIONS_ROUTE, data);
+}
+
+export async function updateTransaction(
+  id: number,
+  data: UpdateTransactionModel
+): Promise<AxiosResponse<TransactionModel>> {
+  return await requester().patch(`${TRANSACTIONS_ROUTE}/${id}`, data);
 }
 
 export async function deleteTransaction(

@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { MdDeleteOutline } from "react-icons/md";
+import { MdEdit, MdDeleteOutline } from "react-icons/md";
 
-import { toISOStringBr } from "../../../../../utils/date";
+import { parseDate, toISOStringBr } from "../../../../../utils/date";
 import { formatCurrencyBRL } from "../../../../../utils/monetary";
 import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
 
@@ -24,18 +24,27 @@ import TableEmptyMessage from "../../../components/table/TableEmptyMessage";
 import TransactionsTableSkeleton from "./TransactionsTableSkeleton";
 import TablePagination from "../../../components/table/TablePagination";
 
+import UpdateTransactionDialog from "./actions/UpdateTransactionDialog";
 import DeleteTransactionDialog from "./actions/DeleteTransactionDialog";
 
 type TransactionsTableProps = {
   categories: CategoryModel[];
   transactions: TransactionModel[];
+  setTransactions: (transactions: TransactionModel[]) => void;
   meta: PaginationMeta;
   setFilters: (filters: {}) => void;
   isLoading: boolean;
 };
 
 export default function TransactionsTable(props: TransactionsTableProps) {
-  const { categories, transactions, meta, setFilters, isLoading } = props;
+  const {
+    categories,
+    transactions,
+    setTransactions,
+    meta,
+    setFilters,
+    isLoading,
+  } = props;
 
   const columns = [
     { name: "Tipo" },
@@ -47,10 +56,30 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     { name: "Ações", className: "w-24" },
   ];
 
+  const [openUpdateTransactionDialog, setOpenUpdateTransactionDialog] =
+    useState(false);
+  const [transactionToUpdate, setTransactionToUpdate] =
+    useState<TransactionModel | null>(null);
+
   const [openDeleteTransactionDialog, setOpenDeleteTransactionDialog] =
     useState(false);
   const [transactionToDelete, setTransactionToDelete] =
     useState<TransactionModel | null>(null);
+
+  function handleUpdateTransactionDialog(transaction: TransactionModel) {
+    setOpenUpdateTransactionDialog(true);
+    setTransactionToUpdate(transaction);
+  }
+
+  function handleUpdatedTransaction(updatedTransaction: TransactionModel) {
+    const updatedTransactions = transactions.map((transaction) =>
+      transaction.id === updatedTransaction.id
+        ? updatedTransaction
+        : transaction
+    );
+
+    setTransactions(updatedTransactions);
+  }
 
   function handleDeleteTransactionDialog(transaction: TransactionModel) {
     setOpenDeleteTransactionDialog(true);
@@ -69,7 +98,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         <TableHeader>
           <TableRow>
             {columns.map((column) => (
-              <TableHead className={column.className} key={column.name}>
+              <TableHead className={column.className ?? ""} key={column.name}>
                 {column.name}
               </TableHead>
             ))}
@@ -97,7 +126,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       <CategoryTag name={category ? category.name : "..."} />
                     </TableCell>
                     <TableCell>
-                      {toISOStringBr(new Date(transaction.date))}
+                      {toISOStringBr(parseDate(transaction.date))}
                     </TableCell>
                     <TableCell>
                       <span
@@ -110,16 +139,29 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                         {formatCurrencyBRL(transaction.value)}
                       </span>
                     </TableCell>
+
                     <TableCell>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleDeleteTransactionDialog(transaction)
-                        }
-                        className="button-action-table"
-                      >
-                        <MdDeleteOutline className="w-5 h-5 fill-error" />
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleUpdateTransactionDialog(transaction)
+                          }
+                          className="button-action-table"
+                        >
+                          <MdEdit className="w-5 h-5" />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleDeleteTransactionDialog(transaction)
+                          }
+                          className="button-action-table"
+                        >
+                          <MdDeleteOutline className="w-5 h-5 fill-error" />
+                        </button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -150,6 +192,15 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           transaction={transactionToDelete}
           onDelete={handleDeletedTransaction}
           close={() => setOpenDeleteTransactionDialog(false)}
+        />
+      )}
+
+      {openUpdateTransactionDialog && transactionToUpdate && (
+        <UpdateTransactionDialog
+          categories={categories}
+          transaction={transactionToUpdate}
+          onUpdate={handleUpdatedTransaction}
+          close={() => setOpenUpdateTransactionDialog(false)}
         />
       )}
     </>

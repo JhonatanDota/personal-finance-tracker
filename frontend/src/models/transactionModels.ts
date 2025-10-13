@@ -18,4 +18,9 @@ export type CreateTransactionModel = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
+export type UpdateTransactionModel = Omit<
+  TransactionModel,
+  "id" | "createdAt" | "updatedAt"
+>;
+
 export type TransactionPagination = PaginatedResponse<TransactionModel>;

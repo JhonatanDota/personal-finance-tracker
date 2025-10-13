@@ -110,6 +110,7 @@ export default function TransactionsManager() {
         <TransactionsTable
           categories={categories}
           transactions={transactions}
+          setTransactions={setTransactions}
           meta={meta}
           setFilters={setFilters}
           isLoading={isLoadingTransactions}

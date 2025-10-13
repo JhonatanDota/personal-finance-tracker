@@ -51,7 +51,6 @@ abstract class DefaultTransactionRequest extends FormRequest
             'value.min' => 'O campo value deve ter no mínimo ' . Transaction::VALUE_MIN . '.',
             'value.max' => 'O campo value deve ter no máximo ' . Transaction::VALUE_MAX . '.',
 
-            'description.required' => 'O campo description é obrigatório.',
             'description.string' => 'O campo description deve ser uma string.',
             'description.max' => 'O campo description deve ter no máximo ' . Transaction::DESCRIPTION_MAX_LENGTH . ' caracteres.',
 

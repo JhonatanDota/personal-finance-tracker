@@ -232,4 +232,84 @@ class UpdateTransactionTest extends TestCase
             ],
         ]);
     }
+
+    // =========================================================================
+    // VALUE
+    // =========================================================================
+
+    public function testTryUpdateTransactionValueWithNull()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'value' => null
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'value' => [
+                'O campo value deve ser um número.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateValueWithString()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'value' => 'number'
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'value' => [
+                'O campo value deve ser um número.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateValueWithTooSmallValue()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'value' => Transaction::VALUE_MIN - 1
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'value' => [
+                'O campo value deve ter no mínimo ' . Transaction::VALUE_MIN . '.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateValueWithTooBigValue()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'value' => Transaction::VALUE_MAX + 1
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'value' => [
+                'O campo value deve ter no máximo ' . Transaction::VALUE_MAX . '.'
+            ],
+        ]);
+    }
 }

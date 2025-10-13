@@ -4,6 +4,8 @@ namespace Tests\Feature\Transaction;
 
 use Tests\TestCase;
 
+use Illuminate\Support\Str;
+
 use App\Http\Resources\Transaction\TransactionResource;
 
 use App\Models\Category;
@@ -147,6 +149,87 @@ class UpdateTransactionTest extends TestCase
         $this->assertDatabaseHas(Transaction::class, [
             'id' => $transaction->id,
             'category_id' => $category->id,
+        ]);
+    }
+
+    // =========================================================================
+    // NAME
+    // =========================================================================
+
+    public function testTryUpdateTransactionNameWithNull()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'name' => null
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'name' => [
+                'O campo name deve ser uma string',
+                'O campo name deve ter no mínimo ' . Transaction::NAME_MIN_LENGTH . ' caracteres.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateTransactionNameWithInteger()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'name' => 10000
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'name' => [
+                'O campo name deve ser uma string',
+            ],
+        ]);
+    }
+
+    public function testTryUpdateTransactionNameWithTooShortString()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'name' => Str::random(Transaction::NAME_MIN_LENGTH - 1)
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'name' => [
+                'O campo name deve ter no mínimo ' . Transaction::NAME_MIN_LENGTH . ' caracteres.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateTransactionNameWithTooLongString()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'name' => Str::random(Transaction::NAME_MAX_LENGTH + 1)
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'name' => [
+                'O campo name deve ter no máximo ' . Transaction::NAME_MAX_LENGTH . ' caracteres.'
+            ],
         ]);
     }
 }

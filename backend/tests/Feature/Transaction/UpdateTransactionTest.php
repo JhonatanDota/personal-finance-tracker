@@ -233,6 +233,37 @@ class UpdateTransactionTest extends TestCase
         ]);
     }
 
+    public function testUpdateTransactionNameSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $oldName = Str::random(Transaction::NAME_MAX_LENGTH);
+        $newName = Str::random(Transaction::NAME_MAX_LENGTH);
+
+        $this->assertNotEquals($oldName, $newName);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create([
+            'name' => $oldName
+        ]);
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'name' => $oldName,
+        ]);
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'name' => $newName
+        ]);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'name' => $newName,
+        ]);
+    }
+
     // =========================================================================
     // VALUE
     // =========================================================================
@@ -310,6 +341,37 @@ class UpdateTransactionTest extends TestCase
             'value' => [
                 'O campo value deve ter no máximo ' . Transaction::VALUE_MAX . '.'
             ],
+        ]);
+    }
+
+    public function testUpdateValueSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $oldValue = rand(Transaction::VALUE_MIN, Transaction::VALUE_MAX);
+        $newValue = rand(Transaction::VALUE_MIN, Transaction::VALUE_MAX);
+
+        $this->assertNotEquals($oldValue, $newValue);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create([
+            'value' => $oldValue
+        ]);
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'value' => $oldValue,
+        ]);
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'value' => $newValue
+        ]);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'value' => $newValue,
         ]);
     }
 }

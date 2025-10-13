@@ -176,7 +176,7 @@ class UpdateTransactionTest extends TestCase
         ]);
     }
 
-    public function testTryUpdateTransactionNameWithInteger()
+    public function testTryUpdateTransactionNameWithNumericValue()
     {
         $this->actingAs($this->user);
 
@@ -372,6 +372,103 @@ class UpdateTransactionTest extends TestCase
         $this->assertDatabaseHas(Transaction::class, [
             'id' => $transaction->id,
             'value' => $newValue,
+        ]);
+    }
+
+    // =========================================================================
+    // DESCRIPTION
+    // =========================================================================
+
+    public function testTryUpdateDescriptionWithNumericValue()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'description' => 999
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'description' => [
+                'O campo description deve ser uma string.'
+            ],
+        ]);
+    }
+
+    public function testTryUpdateDescriptionWithTooLongString()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'description' => Str::random(Transaction::DESCRIPTION_MAX_LENGTH + 1)
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors([
+            'description' => [
+                'O campo description deve ter no máximo ' . Transaction::DESCRIPTION_MAX_LENGTH . ' caracteres.'
+            ],
+        ]);
+    }
+
+    public function testUpdateDescriptionWithNullSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create();
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'description' => $transaction->description,
+        ]);
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'description' => null
+        ]);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'description' => null,
+        ]);
+    }
+
+    public function testUpdateDescriptionSuccessfully()
+    {
+        $this->actingAs($this->user);
+
+        $oldDescription = Str::random(Transaction::DESCRIPTION_MAX_LENGTH);
+        $newDescription = Str::random(Transaction::DESCRIPTION_MAX_LENGTH);
+
+        $this->assertNotEquals($oldDescription, $newDescription);
+
+        $transaction = Transaction::factory()->for(Category::factory()->for($this->user))->create([
+            'description' => $oldDescription
+        ]);
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'description' => $oldDescription,
+        ]);
+
+        $response = $this->json('PATCH', 'api/transactions/' . $transaction->id, [
+            'description' => $newDescription
+        ]);
+
+        $response->assertOk();
+        $response->assertExactJson(TransactionResource::make(Transaction::find($transaction->id))->resolve());
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'id' => $transaction->id,
+            'description' => $newDescription,
         ]);
     }
 }

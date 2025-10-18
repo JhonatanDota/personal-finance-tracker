@@ -3,6 +3,9 @@
 namespace App\Http\Requests\Transaction;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+use App\Enums\CategoriesEnum;
 
 use App\Models\Transaction;
 
@@ -27,6 +30,7 @@ class TransactionFilterRequest extends FormRequest
     {
         return [
             'category_id' => ['sometimes', 'nullable', 'integer'],
+            'type' => ['sometimes', Rule::in(CategoriesEnum::values())],
             'name' => ['sometimes', 'nullable', 'string', 'max:' . Transaction::NAME_MAX_LENGTH],
         ];
     }

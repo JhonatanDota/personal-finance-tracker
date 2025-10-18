@@ -6,7 +6,7 @@ import Register from "../pages/auth/Register";
 
 import PanelLayout from "../pages/panel/layout/PanelLayout";
 
-import Dashboard from "../pages/panel/sections/Dashboard";
+import Dashboard from "../pages/panel/sections/dashboard/Dashboard";
 import CategoriesManager from "../pages/panel/sections/category/manager/CategoriesManager";
 import TransactionsManager from "../pages/panel/sections/transactions/manager/TransactionsManager";
 

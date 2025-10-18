@@ -5,7 +5,7 @@ namespace App\Http\Requests\Transaction;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 use App\Models\Transaction;
 
@@ -29,8 +29,8 @@ class TransactionFilterRequest extends FormRequest
     public function rules()
     {
         return [
+            'type' => ['sometimes', Rule::in(CategoryTypesEnum::values())],
             'category_id' => ['sometimes', 'nullable', 'integer'],
-            'type' => ['sometimes', Rule::in(CategoriesEnum::values())],
             'name' => ['sometimes', 'nullable', 'string', 'max:' . Transaction::NAME_MAX_LENGTH],
         ];
     }
@@ -44,6 +44,8 @@ class TransactionFilterRequest extends FormRequest
     public function messages()
     {
         return [
+            'type.in' => 'O campo type deve conter um valor válido.',
+
             'category_id.integer' => 'O campo category_id deve ser um inteiro.',
 
             'name.string' => 'O campo name deve ser uma string.',

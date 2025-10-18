@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Builder;
 class TransactionFilter extends Filter
 {
     /**
-     * Filter transactions by the given string.
+     * Filter transactions by type.
      *
      * @param  string $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function name(string $value = ''): Builder
+    public function type(string $value): Builder
     {
-        return $this->builder->where($this->column('name'), 'like', "%{$value}%");
+        return $this->builder->whereHas('category', function ($query) use ($value) {
+            $query->where('type', $value);
+        });
     }
 
     /**
@@ -26,5 +28,16 @@ class TransactionFilter extends Filter
     public function categoryId(int $value): Builder
     {
         return $this->builder->where($this->column('category_id'), $value);
+    }
+
+    /**
+     * Filter transactions by the given string.
+     *
+     * @param  string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function name(string $value = ''): Builder
+    {
+        return $this->builder->where($this->column('name'), 'like', "%{$value}%");
     }
 }

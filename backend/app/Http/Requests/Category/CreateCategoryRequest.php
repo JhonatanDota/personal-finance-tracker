@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Category;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 class CreateCategoryRequest extends FormRequest
 {
@@ -33,7 +33,7 @@ class CreateCategoryRequest extends FormRequest
         return [
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'name' => ['required', 'string', 'max:' . Category::NAME_MAX_LENGTH],
-            'type' => ['required', 'string', Rule::in(CategoriesEnum::values())],
+            'type' => ['required', 'string', Rule::in(CategoryTypesEnum::values())],
         ];
     }
 

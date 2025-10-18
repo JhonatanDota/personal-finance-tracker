@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use Illuminate\Validation\Rule;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 use App\Models\Category;
 
@@ -31,7 +31,7 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:' . Category::NAME_MAX_LENGTH],
-            'type' => ['sometimes', 'string', Rule::in(CategoriesEnum::values())],
+            'type' => ['sometimes', 'string', Rule::in(CategoryTypesEnum::values())],
         ];
     }
 

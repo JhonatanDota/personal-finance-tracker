@@ -28,7 +28,7 @@ class UpdateTransactionTest extends TestCase
 
         $unknownTransactionId = Transaction::max('id') + 1;
 
-        $response = $this->json('PATCH', 'api/categories/' . $unknownTransactionId);
+        $response = $this->json('PATCH', 'api/transactions/' . $unknownTransactionId);
 
         $response->assertNotFound();
     }

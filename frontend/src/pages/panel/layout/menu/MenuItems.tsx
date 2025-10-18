@@ -21,8 +21,8 @@ export default function MenuItems(props: MenuItemsProps) {
 
   const items = [
     { name: "Dashboard", path: "/dashboard", icon: <FiGrid /> },
-    { name: "Transações", path: "/transactions", icon: <FiRepeat /> },
     { name: "Categorias", path: "/categories", icon: <FiTag /> },
+    { name: "Transações", path: "/transactions", icon: <FiRepeat /> },
   ];
 
   async function handleLogout() {

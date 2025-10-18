@@ -6,6 +6,8 @@ import { CategoryModel } from "../../../../../models/categoryModels";
 import { PaginationParams } from "../../../../../types/pagination";
 import FilterOption from "../../../../../types/filterOption";
 
+import { categoryTypeOptions } from "../../../../../utils/categoryLabels";
+
 import {
   TransactionFilterSchemaType,
   transactionFilterSchemaData,
@@ -40,17 +42,21 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
       },
     });
 
-  const { name, categoryId } = watch();
+  const { type, categoryId, name } = watch();
 
   function setFilters() {
     const filters: PaginationParams = {};
 
-    if (name.trim()) {
-      filters.name = name.trim();
+    if (type) {
+      filters.type = type;
     }
 
     if (categoryId) {
       filters.categoryId = categoryId;
+    }
+
+    if (name.trim()) {
+      filters.name = name.trim();
     }
 
     setFiltersBase(filters);
@@ -61,27 +67,33 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
     const category = categories.find((category) => category.id === categoryId);
 
     const options = [
-      name && {
-        label: "Nome",
-        value: name,
+      type && {
+        label: "Tipo",
+        value: categoryTypeOptions.find((option) => option.value === type)
+          ?.label,
       },
       category && {
         label: "Categoria",
         value: category.name,
+      },
+      name && {
+        label: "Nome",
+        value: name,
       },
     ].filter(Boolean);
 
     return options as FilterOption[];
   }
 
-  useEffect(() => { //TODO: Adicionar debounce ao pesquisar por nome
+  useEffect(() => {
+    //TODO: Adicionar debounce ao pesquisar por nome
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
 
     setFilters();
-  }, [name, categoryId]);
+  }, [type, name, categoryId]);
 
   return (
     <>
@@ -97,16 +109,16 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <InputContainer>
-          <Label text="Nome" />
-          <TextInput
-            register={register("name")}
-            placeholder="Buscar por nome"
+          <Label text="Tipo" />
+          <SelectInput
+            control={control}
+            name="type"
+            options={categoryTypeOptions}
           />
         </InputContainer>
 
         <InputContainer>
           <Label text="Categoria" />
-
           <SelectInput
             control={control}
             name="categoryId"
@@ -114,6 +126,14 @@ export default function TransactionsFilters(props: TransactionsFiltersProps) {
               value: category.id,
               label: category.name,
             }))}
+          />
+        </InputContainer>
+
+        <InputContainer>
+          <Label text="Nome" />
+          <TextInput
+            register={register("name")}
+            placeholder="Buscar por nome"
           />
         </InputContainer>
       </div>

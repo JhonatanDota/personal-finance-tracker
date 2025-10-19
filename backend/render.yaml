@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: laravel-app
-    env: docker
-    dockerfilePath: ./backend/Dockerfile.prod
-    plan: free
-    startCommand: php artisan serve --host=0.0.0.0 --port=8000

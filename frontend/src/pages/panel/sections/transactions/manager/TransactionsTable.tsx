@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { MdEdit, MdDeleteOutline } from "react-icons/md";
+import { MdInfoOutline, MdEdit, MdDeleteOutline } from "react-icons/md";
 
 import { parseDate, toISOStringBr } from "../../../../../utils/date";
 import { formatCurrencyBRL } from "../../../../../utils/monetary";
-import { CategoryTypeEnum } from "../../../../../enums/categoryEnum";
+import { transactionValueColor } from "../../../../../utils/colors";
 
 import { CategoryModel } from "../../../../../models/categoryModels";
 import { PaginationParams } from "../../../../../types/pagination";
@@ -24,6 +24,7 @@ import TableEmptyMessage from "../../../components/table/TableEmptyMessage";
 import TransactionsTableSkeleton from "./TransactionsTableSkeleton";
 import TablePagination from "../../../components/table/TablePagination";
 
+import DetailTransactionDialog from "./actions/DetailTransactionDialog";
 import UpdateTransactionDialog from "./actions/UpdateTransactionDialog";
 import DeleteTransactionDialog from "./actions/DeleteTransactionDialog";
 
@@ -56,16 +57,12 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     { name: "Ações", className: "w-24" },
   ];
 
-  function transactionValueColor(transaction: TransactionModel): string {
-    if (transaction.value === 0) {
-      return "text-warning";
-    }
-
-    return {
-      [CategoryTypeEnum.INCOME]: "text-success",
-      [CategoryTypeEnum.EXPENSE]: "text-error",
-    }[transaction.type];
-  }
+  const [openDetailTransactionDialog, setOpenDetailTransactionDialog] =
+    useState(false);
+  const [transactionToDetail, setTransactionToDetail] = useState<{
+    transaction: TransactionModel;
+    category: CategoryModel;
+  } | null>(null);
 
   const [openUpdateTransactionDialog, setOpenUpdateTransactionDialog] =
     useState(false);
@@ -76,6 +73,14 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     useState(false);
   const [transactionToDelete, setTransactionToDelete] =
     useState<TransactionModel | null>(null);
+
+  function handleDetailTransactionDialog(
+    transaction: TransactionModel,
+    category: CategoryModel
+  ) {
+    setOpenDetailTransactionDialog(true);
+    setTransactionToDetail({ transaction, category });
+  }
 
   function handleUpdateTransactionDialog(transaction: TransactionModel) {
     setOpenUpdateTransactionDialog(true);
@@ -154,11 +159,22 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                         <button
                           type="button"
                           onClick={() =>
+                            category &&
+                            handleDetailTransactionDialog(transaction, category)
+                          }
+                          className="button-action-table"
+                        >
+                          <MdInfoOutline className="w-5 h-5" />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
                             handleUpdateTransactionDialog(transaction)
                           }
                           className="button-action-table"
                         >
-                          <MdEdit className="w-5 h-5" />
+                          <MdEdit className="w-5 h-5 fill-warning" />
                         </button>
 
                         <button
@@ -193,6 +209,14 @@ export default function TransactionsTable(props: TransactionsTableProps) {
               return { ...prev, page };
             })
           }
+        />
+      )}
+
+      {openDetailTransactionDialog && transactionToDetail && (
+        <DetailTransactionDialog
+          transaction={transactionToDetail.transaction}
+          category={transactionToDetail.category}
+          close={() => setOpenDetailTransactionDialog(false)}
         />
       )}
 

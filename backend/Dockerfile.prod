@@ -26,4 +26,3 @@ RUN chown -R user:user /app
 
 USER user
 EXPOSE 8000
-CMD ["php-fpm"]

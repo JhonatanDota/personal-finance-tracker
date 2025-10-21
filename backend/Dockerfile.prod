@@ -1,5 +1,7 @@
-FROM php:8.3
+FROM php:8.3-fpm
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
 WORKDIR /app
 
 RUN apt-get update -y && apt-get install -y \
@@ -20,9 +22,14 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -g $GID user && useradd -u $UID -g $GID -ms /bin/bash user
 
-COPY . /app
+COPY . .
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
-RUN chown -R user:user /app
+
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 USER user
+
 EXPOSE 8000
+CMD ["/usr/local/bin/start.sh"]

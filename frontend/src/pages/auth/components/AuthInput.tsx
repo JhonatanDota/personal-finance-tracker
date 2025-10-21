@@ -28,7 +28,7 @@ export default function AuthInput(props: AuthInput) {
         <input
           type={type}
           placeholder={placeholder}
-          className="text-base focus:outline-none"
+          className="w-full text-base focus:outline-none"
           autoComplete="off"
           {...register}
         />

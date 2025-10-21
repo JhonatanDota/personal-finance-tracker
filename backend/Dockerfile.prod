@@ -29,6 +29,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progre
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
+RUN chown -R user:user /app/storage /app/bootstrap/cache
 USER user
 
 EXPOSE 8000

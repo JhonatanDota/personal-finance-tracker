@@ -20,5 +20,8 @@ RUN chmod +x /usr/local/bin/start.sh
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
+
 EXPOSE 8080
 CMD ["/usr/local/bin/start.sh"]

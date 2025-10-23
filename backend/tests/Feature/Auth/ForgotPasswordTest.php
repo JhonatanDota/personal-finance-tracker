@@ -91,4 +91,26 @@ class ForgotPasswordTest extends TestCase
             }
         );
     }
+
+    public function testSendResetLinkThrottleError()
+    {
+        $user = User::factory()->create();
+
+        // The first request must return ok and sent notification normally
+
+        $response = $this->json('POST', 'api/password/forgot', [
+            'email' => $user->email,
+        ]);
+
+        $response->assertOk();
+
+        // Anothers requests send to quick should return throttle error
+
+        $response = $this->json('POST', 'api/password/forgot', [
+            'email' => $user->email,
+        ]);
+
+        $response->assertTooManyRequests();
+        $response->assertJsonValidationErrors(['throttle' => 'Limite de tentativas excedido, tente novamente em alguns minutos.']);
+    }
 }

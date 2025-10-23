@@ -80,9 +80,12 @@ class ForgotPasswordTest extends TestCase
             function ($notification) use ($user) {
                 $mail = $notification->toMail($user);
 
-                $this->assertStringContainsString('Reset Your Password', $mail->subject);
-                $this->assertStringContainsString('reset-password', $mail->actionUrl);
-                $this->assertStringContainsString(urlencode($user->email), $mail->actionUrl);
+                $this->assertStringContainsString('Redefinição de Senha', $mail->subject);
+                $this->assertEquals('emails.reset-password', $mail->view);
+                $this->assertArrayHasKey('user', $mail->viewData);
+                $this->assertArrayHasKey('url', $mail->viewData);
+                $this->assertEquals($user->email, $mail->viewData['user']->email);
+                $this->assertStringContainsString('reset-password', $mail->viewData['url']);
 
                 return true;
             }

@@ -21,3 +21,12 @@ sh-front:
 
 test-back:
 	docker-compose exec backend bash -c "php artisan test"
+
+start-worker:
+	docker-compose exec backend bash -c "php artisan queue:work"
+
+restart-worker:
+	docker-compose exec backend bash -c "php artisan queue:restart"
+
+tinker:
+	docker-compose exec backend bash -c "php artisan tinker"

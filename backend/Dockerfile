@@ -13,6 +13,8 @@ RUN apt-get update -y && apt-get install -y \
     libzip-dev \
     default-mysql-client \
     && docker-php-ext-install pdo pdo_mysql mbstring zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && apt-get clean
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

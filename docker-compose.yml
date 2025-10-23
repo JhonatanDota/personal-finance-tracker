@@ -54,6 +54,17 @@ services:
     networks:
       - app
 
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes:
+      - redis-data:/data
+    networks:
+      - app
+
   mailhog:
     image: mailhog/mailhog
     ports:
@@ -65,3 +76,4 @@ services:
 
 volumes:
   database_data:
+  redis-data:

@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 use App\Repositories\UserRepository;
 
 use App\Http\Requests\Auth\AuthRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ForgetPasswordRequest;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -79,6 +81,21 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         Auth::logout();
+
+        return response()->json();
+    }
+
+    /**
+     * Send reset link email.
+     * 
+     * @param ForgetPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendResetLinkEmail(ForgetPasswordRequest $request)
+    {
+        Password::sendResetLink(
+            $request->only('email')
+        );
 
         return response()->json();
     }

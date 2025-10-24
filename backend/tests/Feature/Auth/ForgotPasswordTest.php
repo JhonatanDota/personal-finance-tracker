@@ -84,8 +84,10 @@ class ForgotPasswordTest extends TestCase
                 $this->assertEquals('emails.reset-password', $mail->view);
                 $this->assertArrayHasKey('user', $mail->viewData);
                 $this->assertArrayHasKey('url', $mail->viewData);
-                $this->assertEquals($user->email, $mail->viewData['user']->email);
+                $this->assertEquals($user, $mail->viewData['user']);
                 $this->assertStringContainsString('reset-password', $mail->viewData['url']);
+                $this->assertStringContainsString('?token', $mail->viewData['url']);
+                $this->assertStringContainsString('&email', $mail->viewData['url']);
 
                 return true;
             }

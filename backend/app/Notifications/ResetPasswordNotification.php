@@ -56,7 +56,12 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable): MailMessage
     {
-        $url = env('FRONTEND_URL') . 'reset-password?token=' . $this->token;
+        $queryParams = http_build_query([
+            'token' => $this->token,
+            'email' => $notifiable->email
+        ]);
+
+        $url = env('FRONTEND_URL') . 'reset-password?' . $queryParams;
 
         return (new MailMessage)
             ->subject('Redefinição de Senha')

@@ -98,7 +98,11 @@ class AuthController extends Controller
         );
 
         if ($status === Password::RESET_THROTTLED) {
-            return response()->json(['errors' => ['throttle' => 'Limite de tentativas excedido, tente novamente em alguns minutos.']], Response::HTTP_TOO_MANY_REQUESTS);
+            return response()->json([
+                'errors' => [
+                    'throttle' => ['Limite de tentativas excedido, tente novamente em alguns minutos.']
+                ]
+            ], Response::HTTP_TOO_MANY_REQUESTS);
         }
 
         return response()->json();

@@ -6,12 +6,13 @@ import {
   AuthModel,
   RegisterModel,
   SuccessAuthModel,
+  ForgotPasswordModel,
 } from "../models/authModels";
 
 const AUTH: string = "auth";
 const REGISTER: string = "register";
 const LOGOUT: string = "logout";
-
+const FORGOT_PASSWORD: string = "password/forgot";
 
 export async function auth(
   data: AuthModel
@@ -25,4 +26,10 @@ export async function register(data: RegisterModel): Promise<AxiosResponse> {
 
 export async function logout(): Promise<AxiosResponse> {
   return await requester().post(LOGOUT);
+}
+
+export async function forgotPassword(
+  data: ForgotPasswordModel
+): Promise<AxiosResponse> {
+  return await requester().post(FORGOT_PASSWORD, data);
 }

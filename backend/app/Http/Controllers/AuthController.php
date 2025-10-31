@@ -117,8 +117,29 @@ class AuthController extends Controller
      */
     public function resetPassword(ResetPasswordRequest $request)
     {
-        $inputs = $request->validated();
+        $status = Password::reset(
+            $request->validated(),
+            function ($user, $password) {
+                $user->update([
+                    'password' => bcrypt($password),
+                ]);
+            }
+        );
 
-        dd($inputs);
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json();
+        }
+
+        $errorMessages = [
+            Password::INVALID_USER => 'Usuário não encontrado.',
+            Password::INVALID_TOKEN => 'Token de redefinição inválido ou expirado.',
+            Password::RESET_THROTTLED => 'Muitas tentativas, tente novamente mais tarde.',
+        ];
+
+        return response()->json([
+            'errors' => [
+                'reset' => [$errorMessages[$status] ?? $status],
+            ],
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

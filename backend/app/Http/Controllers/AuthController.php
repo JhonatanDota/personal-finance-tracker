@@ -11,7 +11,8 @@ use App\Repositories\UserRepository;
 
 use App\Http\Requests\Auth\AuthRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\ForgetPasswordRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -91,7 +92,7 @@ class AuthController extends Controller
      * @param ForgetPasswordRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendResetLinkEmail(ForgetPasswordRequest $request)
+    public function sendPasswordResetLink(ForgotPasswordRequest $request)
     {
         $status = Password::sendResetLink(
             $request->only('email')
@@ -106,5 +107,18 @@ class AuthController extends Controller
         }
 
         return response()->json();
+    }
+
+    /**
+     * Reset user password.
+     * 
+     * @param ResetPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $inputs = $request->validated();
+
+        dd($inputs);
     }
 }

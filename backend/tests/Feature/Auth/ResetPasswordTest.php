@@ -3,8 +3,13 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
+
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Hash;
+
 use App\Rules\Fields\User\PasswordRules;
-use App\Rules\Fields\Commom\EmailRules;
+
+use App\Models\User;
 
 class ResetPasswordTest extends TestCase
 {
@@ -130,5 +135,105 @@ class ResetPasswordTest extends TestCase
         $response->assertJsonValidationErrors([
             'password' => ['Os campos password e password_confirmation devem ser iguais.'],
         ]);
+    }
+
+    // =========================================================================
+    // RESET PASSWORD
+    // =========================================================================
+
+    public function testTryResetPasswordWithInvalidUser()
+    {
+        $password = $this->faker->password();
+        $token = Password::createToken(User::factory()->create());
+
+        $response = $this->json('POST', 'api/password/reset', [
+            'token' => $token,
+            'email' => $this->faker->email(),
+            'password' => $password,
+            'password_confirmation' => $password,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJson([
+            'errors' => [
+                'reset' => ['Usuário não encontrado.'],
+            ],
+        ]);
+    }
+
+    public function testTryResetPasswordWithInvalidToken()
+    {
+        $user = User::factory()->create();
+        $password = $this->faker->password();
+
+        $response = $this->json('POST', 'api/password/reset', [
+            'token' => $this->faker->uuid(),
+            'email' => $user->email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJson([
+            'errors' => [
+                'reset' => ['Token de redefinição inválido ou expirado.'],
+            ],
+        ]);
+    }
+
+    public function testTryReuseToken()
+    {
+        $user = User::factory()->create();
+        $token = Password::createToken($user);
+        $password = $this->faker->password();
+
+        $this->json('POST', 'api/password/reset', [
+            'token' => $token,
+            'email' => $user->email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ])->assertOk();
+
+        $response = $this->json('POST', 'api/password/reset', [
+            'token' => $token,
+            'email' => $user->email,
+            'password' => 'another-password',
+            'password_confirmation' => 'another-password',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJson([
+            'errors' => [
+                'reset' => ['Token de redefinição inválido ou expirado.'],
+            ],
+        ]);
+    }
+
+    public function testResetPasswordSuccessfully()
+    {
+        $user = User::factory()->create();
+        $token = Password::createToken($user);
+
+        $password = $this->faker->password();
+
+        $response = $this->json('POST', 'api/password/reset', [
+            'token' => $token,
+            'email' => $user->email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ]);
+
+        $response->assertOk();
+
+        $user->refresh();
+
+        $this->assertTrue(Hash::check($password, $user->password));
+
+        // Assert user can login with new password
+
+        $this->json('POST', 'api/auth/', [
+            'email' => $user->email,
+            'password' => $password,
+        ])->assertOk();
     }
 }

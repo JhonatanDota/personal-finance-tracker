@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 use App\Repositories\UserRepository;
@@ -121,7 +122,7 @@ class AuthController extends Controller
             $request->validated(),
             function ($user, $password) {
                 $user->update([
-                    'password' => bcrypt($password),
+                    'password' => Hash::make($password),
                 ]);
             }
         );

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\Fields\Commom\EmailRules;
 use App\Rules\Validations\PatternsValidation;
 
-class ForgetPasswordRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

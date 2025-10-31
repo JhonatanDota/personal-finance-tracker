@@ -68,11 +68,19 @@ class ForgotPasswordTest extends TestCase
 
         $user = User::factory()->create();
 
+        $this->assertDatabaseMissing('password_reset_tokens', [
+            'email' => $user->email,
+        ]);
+
         $response = $this->json('POST', 'api/password/forgot', [
             'email' => $user->email,
         ]);
 
         $response->assertOk();
+
+        $this->assertDatabaseHas('password_reset_tokens', [
+            'email' => $user->email,
+        ]);
 
         Notification::assertSentTo(
             $user,

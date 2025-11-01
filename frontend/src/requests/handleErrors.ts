@@ -23,6 +23,7 @@ export function handleAxiosError(error: AxiosError) {
   if (response) {
     switch (statusCode) {
       case HttpStatusCode.UnprocessableEntity:
+      case HttpStatusCode.TooManyRequests:
         handleUnprocessableError(response.data as ErrorResponse);
         break;
 

@@ -17,6 +17,8 @@ import {
 
 import { MdEmail, MdLock } from "react-icons/md";
 
+import AuthSectionContainer from "./AuthSectionContainer";
+import AuthForm from "./AuthForm";
 import AuthInput from "./components/AuthInput";
 import AuthPageTitle from "./components/AuthPageTitle";
 import AuthSubmitButton from "./components/AuthSubmitButton";
@@ -50,11 +52,8 @@ export default function Login() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4 min-h-screen -translate-y-10 md:-translate-y-16">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col p-4 md:p-6 gap-6 w-full max-w-md rounded-md bg-white"
-      >
+    <AuthSectionContainer>
+      <AuthForm onSubmit={handleSubmit(onSubmit)}>
         <AuthPageTitle title="Login" barColor="#7D2AE8" />
 
         <div className="flex flex-col gap-3">
@@ -79,13 +78,25 @@ export default function Login() {
 
         <AuthSubmitButton text="Entrar" bgColor="#7D2AE8" disabled={logging} />
 
-        <span className="text-center text-sm">
-          Ainda não tem uma conta?{" "}
-          <Link className="font-extrabold text-[#7D2AE8]" to="/register">
-            Registre-se!
-          </Link>
-        </span>
-      </form>
-    </div>
+        <div className="flex flex-col items-center gap-1 text-sm">
+          <span>
+            Esqueceu sua senha?{" "}
+            <Link
+              className="font-extrabold text-[#F97316]"
+              to="/forgot-password"
+            >
+              Altere aqui!
+            </Link>
+          </span>
+
+          <span>
+            Ainda não tem uma conta?{" "}
+            <Link className="font-extrabold text-[#F97316]" to="/register">
+              Registre-se!
+            </Link>
+          </span>
+        </div>
+      </AuthForm>
+    </AuthSectionContainer>
   );
 }

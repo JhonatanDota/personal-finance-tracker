@@ -24,6 +24,11 @@ use App\Http\Controllers\TransactionController;
 Route::post('/auth', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
+Route::prefix('password')->group(function () {
+    Route::post('/forgot', [AuthController::class, 'sendPasswordResetLink']);
+    Route::post('/reset', [AuthController::class, 'resetPassword']); 
+});
+
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);

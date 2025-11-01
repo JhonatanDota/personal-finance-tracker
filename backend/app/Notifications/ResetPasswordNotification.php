@@ -61,7 +61,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
             'email' => $notifiable->email
         ]);
 
-        $url = env('FRONTEND_URL') . 'reset-password?' . $queryParams;
+        $url = env('RESET_PASSWORD_URL') . '?' . $queryParams;
 
         return (new MailMessage)
             ->subject('Redefinição de Senha')

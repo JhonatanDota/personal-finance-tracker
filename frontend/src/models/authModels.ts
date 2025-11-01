@@ -17,3 +17,10 @@ export type RegisterModel = {
 export type ForgotPasswordModel = {
   email: string;
 };
+
+export type ResetPasswordModel = {
+  token: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+};

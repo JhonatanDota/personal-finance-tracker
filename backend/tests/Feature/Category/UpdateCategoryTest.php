@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 use Illuminate\Support\Str;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 use App\Models\User;
 use App\Models\Category;
@@ -174,11 +174,11 @@ class UpdateCategoryTest extends TestCase
         $this->actingAs($this->user);
 
         $category = Category::factory()->for($this->user)->create([
-            'type' => CategoriesEnum::INCOME
+            'type' => CategoryTypesEnum::INCOME
         ]);
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, [
-            'type' => CategoriesEnum::EXPENSE,
+            'type' => CategoryTypesEnum::EXPENSE,
         ]);
 
         $response->assertOk();
@@ -187,7 +187,7 @@ class UpdateCategoryTest extends TestCase
 
         $this->assertDatabaseHas(Category::class, [
             'id' => $category->id,
-            'type' => CategoriesEnum::EXPENSE,
+            'type' => CategoryTypesEnum::EXPENSE,
         ]);
     }
 
@@ -196,13 +196,13 @@ class UpdateCategoryTest extends TestCase
         $this->actingAs($this->user);
 
         $category = Category::factory()->for($this->user)->create([
-            'type' => CategoriesEnum::INCOME,
+            'type' => CategoryTypesEnum::INCOME,
             'name' => 'Old Name',
         ]);
 
         $data = [
             'name' => 'Updated Category Name',
-            'type' => CategoriesEnum::EXPENSE,
+            'type' => CategoryTypesEnum::EXPENSE,
         ];
 
         $response = $this->json('PATCH', 'api/categories/' . $category->id, $data);

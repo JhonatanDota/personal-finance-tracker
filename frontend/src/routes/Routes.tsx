@@ -3,6 +3,8 @@ import { Route, Routes as RouterDomRoutes } from "react-router-dom";
 import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 import PanelLayout from "../pages/panel/layout/PanelLayout";
 
@@ -30,6 +32,24 @@ export default function Routes() {
         element={
           <RoutePublic>
             <Register />
+          </RoutePublic>
+        }
+      />
+
+      <Route
+        path="/forgot-password"
+        element={
+          <RoutePublic>
+            <ForgotPassword />
+          </RoutePublic>
+        }
+      />
+
+      <Route
+        path="/reset-password"
+        element={
+          <RoutePublic>
+            <ResetPassword />
           </RoutePublic>
         }
       />

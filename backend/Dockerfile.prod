@@ -1,0 +1,29 @@
+FROM php:8.3-fpm
+
+WORKDIR /app
+
+RUN apt-get update -y && apt-get install -y \
+    nginx \
+    zip \
+    unzip \
+    git \
+    curl \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis
+
+COPY . /app
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./start.sh /usr/local/bin/start.sh
+
+RUN chmod +x /usr/local/bin/start.sh
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
+
+EXPOSE 8080
+CMD ["/usr/local/bin/start.sh"]

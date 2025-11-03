@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Transaction\Filters;
+namespace Tests\Feature\Transaction\List\Filters;
 
 use Tests\TestCase;
 

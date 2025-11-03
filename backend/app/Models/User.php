@@ -12,6 +12,8 @@ use Illuminate\Notifications\Notifiable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use App\Notifications\ResetPasswordNotification;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -71,6 +73,20 @@ class User extends Authenticatable implements JWTSubject
                 'name' => $this->name,
             ]
         ];
+    }
+
+    /**
+     * Send the password reset notification to the user.
+     *
+     * This method is automatically called by Laravel's Password Broker
+     * when a password reset token is created via Password::sendResetLink().
+     *
+     * @param  string  $token 
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     // =========================================================================

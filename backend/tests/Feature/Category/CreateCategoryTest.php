@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Category;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 use App\Http\Resources\Category\CategoryResource;
 
@@ -27,7 +27,7 @@ class CreateCategoryTest extends TestCase
         $this->actingAs($this->user);
 
         $response = $this->json('POST', 'api/categories/', [
-            'type' => CategoriesEnum::INCOME->value,
+            'type' => CategoryTypesEnum::INCOME->value,
         ]);
 
         $response->assertUnprocessable();
@@ -43,7 +43,7 @@ class CreateCategoryTest extends TestCase
 
         $response = $this->json('POST', 'api/categories/', [
             'name' => '',
-            'type' => CategoriesEnum::INCOME->value,
+            'type' => CategoryTypesEnum::INCOME->value,
         ]);
 
         $response->assertUnprocessable();
@@ -59,7 +59,7 @@ class CreateCategoryTest extends TestCase
 
         $response = $this->json('POST', 'api/categories/', [
             'name' => 10,
-            'type' => CategoriesEnum::INCOME->value,
+            'type' => CategoryTypesEnum::INCOME->value,
         ]);
 
         $response->assertUnprocessable();
@@ -75,7 +75,7 @@ class CreateCategoryTest extends TestCase
 
         $response = $this->json('POST', 'api/categories/', [
             'name' => Str::random(Category::NAME_MAX_LENGTH + 1),
-            'type' => CategoriesEnum::EXPENSE->value,
+            'type' => CategoryTypesEnum::EXPENSE->value,
         ]);
 
         $response->assertUnprocessable();
@@ -129,7 +129,7 @@ class CreateCategoryTest extends TestCase
         $response = $this->json('POST', 'api/categories/', [
             'user_id' => $user->id,
             'name' => 'Name',
-            'type' => CategoriesEnum::INCOME->value,
+            'type' => CategoryTypesEnum::INCOME->value,
         ]);
 
         $response->assertCreated();
@@ -137,7 +137,7 @@ class CreateCategoryTest extends TestCase
         $this->assertDatabaseHas(Category::class, [
             'user_id' => $this->user->id,
             'name' => 'Name',
-            'type' => CategoriesEnum::INCOME->value,
+            'type' => CategoryTypesEnum::INCOME->value,
         ]);
     }
 
@@ -147,7 +147,7 @@ class CreateCategoryTest extends TestCase
 
         $data = [
             'name' => $this->faker->name(),
-            'type' => CategoriesEnum::EXPENSE->value,
+            'type' => CategoryTypesEnum::EXPENSE->value,
         ];
 
         $response = $this->json('POST', 'api/categories/', $data);

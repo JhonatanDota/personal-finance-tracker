@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 use App\Models\User;
 
-use App\Enums\CategoriesEnum;
+use App\Enums\CategoryTypesEnum;
 
 class CategoryFactory extends Factory
 {
@@ -20,7 +20,7 @@ class CategoryFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => $this->faker->word(),
-            'type' => $this->faker->randomElement(CategoriesEnum::values()),
+            'type' => $this->faker->randomElement(CategoryTypesEnum::values()),
         ];
     }
 }

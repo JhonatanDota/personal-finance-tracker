@@ -19,6 +19,8 @@ import {
 
 import { MdPerson2, MdEmail, MdLock, MdLockReset } from "react-icons/md";
 
+import AuthSectionContainer from "./AuthSectionContainer";
+import AuthForm from "./AuthForm";
 import AuthInput from "./components/AuthInput";
 import AuthPageTitle from "./components/AuthPageTitle";
 import AuthSubmitButton from "./components/AuthSubmitButton";
@@ -51,11 +53,8 @@ export default function Register() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4 min-h-screen -translate-y-10 md:-translate-y-16">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col p-4 md:p-6 gap-6 w-full max-w-md rounded-md bg-white"
-      >
+    <AuthSectionContainer>
+      <AuthForm onSubmit={handleSubmit(onSubmit)}>
         <AuthPageTitle title="Registrar-se" barColor="#F97316" />
 
         <div className="flex flex-col gap-3">
@@ -108,7 +107,7 @@ export default function Register() {
             Faça o Login!
           </Link>
         </span>
-      </form>
-    </div>
+      </AuthForm>
+    </AuthSectionContainer>
   );
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::prefix('password')->group(function () {
     Route::post('/forgot', [AuthController::class, 'sendPasswordResetLink']);
-    Route::post('/reset', [AuthController::class, 'resetPassword']); 
+    Route::post('/reset', [AuthController::class, 'resetPassword']);
 });
 
 Route::group(['middleware' => ['jwt.auth']], function () {
@@ -57,5 +58,15 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         Route::post('/', [TransactionController::class, 'store']);
         Route::patch('/{transaction}', [TransactionController::class, 'update']);
         Route::delete('/{transaction}', [TransactionController::class, 'destroy']);
+    });
+});
+
+// =========================================================================
+// Statistics
+// =========================================================================
+
+Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::prefix('statistics')->group(function () {
+        Route::get('/summary', [StatisticController::class, 'summary']);
     });
 });

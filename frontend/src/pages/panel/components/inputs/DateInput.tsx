@@ -31,20 +31,33 @@ export default function DateInput(props: DateInputProps) {
               </button>
             }
             content={
-              <DayPicker
-                mode="single"
-                locale={pt}
-                selected={valueIso}
-                className="bg-primary border-[1px] border-secondary text-primary-text p-2 rounded-md"
-                classNames={{
-                  today: "border-success",
-                  selected: "bg-success rounded-lg",
-                  chevron: "fill-tertiary",
-                }}
-                onSelect={(date: Date | undefined) =>
-                  field.onChange(date ? toISOString(date) : undefined)
-                }
-              />
+              <div className="flex flex-col p-1 bg-primary border-[1px] border-secondary rounded-md">
+                <DayPicker
+                  mode="single"
+                  locale={pt}
+                  defaultMonth={value ? parseDate(value) : undefined}
+                  selected={valueIso}
+                  className="text-primary-text p-2"
+                  classNames={{
+                    today: "border-success",
+                    selected: "bg-success rounded-lg",
+                    chevron: "fill-tertiary",
+                  }}
+                  onSelect={(date: Date | undefined) =>
+                    field.onChange(date ? toISOString(date) : undefined)
+                  }
+                />
+
+                <button
+                  type="button"
+                  className="m-1 text-error font-bold text-sm self-end"
+                  onClick={() => {
+                    field.onChange(undefined);
+                  }}
+                >
+                  Limpar data
+                </button>
+              </div>
             }
           />
         );

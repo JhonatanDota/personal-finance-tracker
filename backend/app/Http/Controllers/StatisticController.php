@@ -9,7 +9,7 @@ use App\Repositories\StatisticRepository;
 use App\Http\Filters\StatisticFilter;
 
 use App\Http\Requests\Statistic\SummaryRequest;
-
+use App\Http\Requests\Statistic\ByCategoryRequest;
 
 class StatisticController extends Controller
 {
@@ -21,8 +21,6 @@ class StatisticController extends Controller
     }
 
     /**
-     * Get summary of current logged user.
-     * 
      * @param SummaryRequest $request
      * 
      * @return JsonResponse
@@ -31,8 +29,22 @@ class StatisticController extends Controller
     {
         $statisticFilter = new StatisticFilter($request);
 
-        $sumary = $this->repository->getSummaryFromUser(Auth::user(), $statisticFilter);
+        $summary = $this->repository->getSummaryFromUser(Auth::user(), $statisticFilter);
 
-        return response()->json($sumary);
+        return response()->json($summary);
+    }
+
+    /**
+     * @param ByCategoryRequest $request.
+     * 
+     * @return JsonResponse
+     */
+    public function byCategory(ByCategoryRequest $request)
+    {
+        $statisticFilter = new StatisticFilter($request);
+
+        $category = $this->repository->getByCategoryFromUser(Auth::user(), $statisticFilter);
+
+        return response()->json($category);
     }
 }

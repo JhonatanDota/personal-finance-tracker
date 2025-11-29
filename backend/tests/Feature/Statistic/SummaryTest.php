@@ -39,7 +39,7 @@ class SummaryTest extends TestCase
         ]);
     }
 
-    public function testGetSummaryWithTransacions()
+    public function testGetSummaryWithTransactions()
     {
         // Create some random transactions from another users
         Transaction::factory(10)->create();

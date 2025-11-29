@@ -68,5 +68,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::prefix('statistics')->group(function () {
         Route::get('/summary', [StatisticController::class, 'summary']);
+        Route::get('/by-category', [StatisticController::class, 'byCategory']);
     });
 });

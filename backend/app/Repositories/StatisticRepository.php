@@ -48,6 +48,7 @@ class StatisticRepository
 
             return [
                 'id' => $category->id,
+                'type' => $category->type,
                 'name' => $category->name,
                 'count' => $transactions->count(),
                 'total' => (float) $transactions->sum('value'),

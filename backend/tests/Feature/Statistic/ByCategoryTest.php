@@ -57,6 +57,7 @@ class ByCategoryTest extends TestCase
         $response->assertExactJson([
             [
                 'id' => $category->id,
+                'type' => $category->type,
                 'name' => 'OnlyMine',
                 'count' => 2,
                 'total' => 111,
@@ -88,6 +89,7 @@ class ByCategoryTest extends TestCase
         $response->assertExactJson([
             [
                 'id' => $category->id,
+                'type' => $category->type,
                 'name' => 'Filtered',
                 'count' => 1,
                 'total' => 20.0,
@@ -119,6 +121,7 @@ class ByCategoryTest extends TestCase
         $response->assertExactJson([
             [
                 'id' => $category->id,
+                'type' => $category->type,
                 'name' => 'Filtered',
                 'count' => 1,
                 'total' => 10.0,
@@ -156,6 +159,7 @@ class ByCategoryTest extends TestCase
         $response->assertExactJson([
             [
                 'id' => $category->id,
+                'type' => $category->type,
                 'name' => 'Range',
                 'count' => 2,
                 'total' => 30.0,

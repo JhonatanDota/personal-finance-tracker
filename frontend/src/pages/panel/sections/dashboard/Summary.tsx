@@ -5,7 +5,7 @@ import { SUMMARY_DELAY } from "../../../../constants/delay";
 import { getSummary } from "../../../../requests/statisticRequests";
 import { handleErrors } from "../../../../requests/handleErrors";
 
-import { SummaryResponse } from "../../../../models/StatisticModels";
+import { SummaryResponseModel } from "../../../../models/StatisticModels";
 
 import {
   HiOutlineChevronDoubleUp,
@@ -23,7 +23,7 @@ export default function Summary(props: SummaryProps) {
   const { filters } = props;
 
   const [loading, setLoading] = useState(true);
-  const [summary, setSummary] = useState<SummaryResponse>({
+  const [summary, setSummary] = useState<SummaryResponseModel>({
     income: {
       total: 0,
       count: 0,

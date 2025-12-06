@@ -30,16 +30,9 @@ type DashboardFiltersProps = {
 export default function DashboardFilters(props: DashboardFiltersProps) {
   const { setFilters } = props;
 
-  const { control, watch, reset } = useForm<DashboardFilterSchemaType>({
+  const { control, watch } = useForm<DashboardFilterSchemaType>({
     resolver: zodResolver(dashboardFilterSchemaData),
   });
-
-  useEffect(() => {
-    reset({
-      dateGe: format(startOfMonth(new Date()), "yyyy-MM-dd"),
-      dateLe: format(endOfMonth(new Date()), "yyyy-MM-dd"),
-    });
-  }, [reset]);
 
   const { dateGe, dateLe } = watch();
 

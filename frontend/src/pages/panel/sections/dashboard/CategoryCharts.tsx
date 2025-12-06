@@ -1,20 +1,18 @@
-import { useState, useEffect } from "react";
-
 import { pieMonetaryOptions } from "./components/charts/options";
 
 import { CategoryTypeEnum } from "../../../../enums/categoryEnum";
 
-import { ByCategoryModel } from "../../../../models/StatisticModels";
-
-import { getStatisticsByCategory } from "../../../../requests/statisticRequests";
-import { handleErrors } from "../../../../requests/handleErrors";
+import { useStatisticsByCategory } from "../../hooks/useStatisticsByCategory";
 
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
 } from "react-icons/hi2";
 
-import PieChart from "./components/charts/PieChart";
+import PieChart from "./components/charts/pie/PieChart";
+import PieChartLoader from "./components/charts/pie/PieChartLoader";
+import NoData from "./components/charts/pie/NoData";
+
 import SectionCard from "../../components/section/SectionCard";
 import SectionCardTitle from "../../components/section/SectionCardTitle";
 
@@ -24,22 +22,13 @@ type CategoryChartsProps = {
 
 export default function CategoryCharts(props: CategoryChartsProps) {
   const { filters } = props;
+  const { data = [], isFetching } = useStatisticsByCategory(filters);
 
-  const [byCategoryStatistics, setByCategoryStatistics] = useState<
-    ByCategoryModel[]
-  >([]);
-
-  async function fetchByCategoryStatistics() {
-    try {
-      const response = await getStatisticsByCategory(filters);
-      setByCategoryStatistics(response.data);
-    } catch (error) {
-      handleErrors(error);
-    }
-  }
+  const incomeData = buildData(CategoryTypeEnum.INCOME);
+  const expenseData = buildData(CategoryTypeEnum.EXPENSE);
 
   function buildData(categoryType: CategoryTypeEnum) {
-    const categoryStatistics = byCategoryStatistics.filter(
+    const categoryStatistics = data.filter(
       (category) => category.type === categoryType
     );
 
@@ -53,10 +42,6 @@ export default function CategoryCharts(props: CategoryChartsProps) {
     };
   }
 
-  useEffect(() => {
-    fetchByCategoryStatistics();
-  }, [filters]);
-
   return (
     <div className="grid md:grid-cols-2 gap-2">
       <SectionCard>
@@ -64,10 +49,17 @@ export default function CategoryCharts(props: CategoryChartsProps) {
           icon={<HiOutlineArrowTrendingUp />}
           title="Receitas por categoria"
         />
-        <PieChart
-          data={buildData(CategoryTypeEnum.INCOME)}
-          options={pieMonetaryOptions}
-        />
+
+        {isFetching ? (
+          <PieChartLoader />
+        ) : incomeData.labels.length ? (
+          <PieChart
+            data={buildData(CategoryTypeEnum.INCOME)}
+            options={pieMonetaryOptions}
+          />
+        ) : (
+          <NoData />
+        )}
       </SectionCard>
 
       <SectionCard>
@@ -76,10 +68,16 @@ export default function CategoryCharts(props: CategoryChartsProps) {
           title="Despesas por categoria"
         />
 
-        <PieChart
-          data={buildData(CategoryTypeEnum.EXPENSE)}
-          options={pieMonetaryOptions}
-        />
+        {isFetching ? (
+          <PieChartLoader />
+        ) : expenseData.labels.length ? (
+          <PieChart
+            data={buildData(CategoryTypeEnum.EXPENSE)}
+            options={pieMonetaryOptions}
+          />
+        ) : (
+          <NoData />
+        )}
       </SectionCard>
     </div>
   );

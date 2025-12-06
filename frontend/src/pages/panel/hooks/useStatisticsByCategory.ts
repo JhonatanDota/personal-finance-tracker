@@ -22,5 +22,6 @@ export function useStatisticsByCategory(filters: Record<string, string>) {
         handleErrors(error);
       }
     },
+    refetchOnWindowFocus: false,
   });
 }

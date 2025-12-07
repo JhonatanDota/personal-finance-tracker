@@ -133,6 +133,7 @@ export default function DashboardFilters(props: DashboardFiltersProps) {
         <FilterPick label="Esta semana" action={setCurrentWeekFilter} />
         <FilterPick label="Este mês" action={setCurrentMonthFilter} />
         <FilterPick label="Este ano" action={setCurrentYearFilter} />
+        <FilterPick label="Limpar filtros" action={reset} />
       </div>
     </SectionCard>
   );

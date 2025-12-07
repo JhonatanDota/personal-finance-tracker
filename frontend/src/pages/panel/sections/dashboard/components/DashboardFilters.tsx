@@ -1,9 +1,20 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startOfMonth, endOfMonth, format } from "date-fns";
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+} from "date-fns";
 
-import { toISOStringBr, parseDate } from "../../../../../utils/date";
+import {
+  toISOStringBr,
+  toISOString,
+  parseDate,
+} from "../../../../../utils/date";
 
 import {
   DashboardFilterSchemaType,
@@ -21,6 +32,7 @@ import Label from "../../../components/inputs/Label";
 import DateInput from "../../../components/inputs/DateInput";
 import InputContainer from "../../../components/inputs/InputContainer";
 
+import FilterPick from "../../../components/filter/FilterPick";
 import { FilterBadges } from "../../../components/filter/FilterBadge";
 
 type DashboardFiltersProps = {
@@ -30,7 +42,7 @@ type DashboardFiltersProps = {
 export default function DashboardFilters(props: DashboardFiltersProps) {
   const { setFilters } = props;
 
-  const { control, watch } = useForm<DashboardFilterSchemaType>({
+  const { control, watch, reset } = useForm<DashboardFilterSchemaType>({
     resolver: zodResolver(dashboardFilterSchemaData),
   });
 
@@ -53,6 +65,39 @@ export default function DashboardFilters(props: DashboardFiltersProps) {
     ].filter(Boolean);
 
     return options as FilterOption[];
+  }
+
+  function setCurrentWeekFilter(): void {
+    const today = new Date();
+    const start = startOfWeek(today);
+    const end = endOfWeek(today);
+
+    reset({
+      dateGe: toISOString(start),
+      dateLe: toISOString(end),
+    });
+  }
+
+  function setCurrentMonthFilter(): void {
+    const today = new Date();
+    const start = startOfMonth(today);
+    const end = endOfMonth(today);
+
+    reset({
+      dateGe: toISOString(start),
+      dateLe: toISOString(end),
+    });
+  }
+
+  function setCurrentYearFilter(): void {
+    const today = new Date();
+    const start = startOfYear(today);
+    const end = endOfYear(today);
+
+    reset({
+      dateGe: toISOString(start),
+      dateLe: toISOString(end),
+    });
   }
 
   return (
@@ -82,6 +127,12 @@ export default function DashboardFilters(props: DashboardFiltersProps) {
             control={control}
           />
         </InputContainer>
+      </div>
+
+      <div className="flex gap-2">
+        <FilterPick label="Esta semana" action={setCurrentWeekFilter} />
+        <FilterPick label="Este mês" action={setCurrentMonthFilter} />
+        <FilterPick label="Este ano" action={setCurrentYearFilter} />
       </div>
     </SectionCard>
   );

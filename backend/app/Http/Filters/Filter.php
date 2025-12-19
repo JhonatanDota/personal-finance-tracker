@@ -68,11 +68,28 @@ abstract class Filter
         foreach ($this->request->validated() as $name => $value) {
             $name = Str::camel($name);
 
-            if (!is_null($value) && method_exists($this, $name)) {
+            if ($this->checkValueHasValue($value) && method_exists($this, $name)) {
                 call_user_func_array([$this, $name], array_filter([$value]));
             }
         }
 
         return $this->builder;
+    }
+
+    /**
+     * Check if value has value.
+     * 
+     * @param mixed $value
+     * @return bool
+     */
+    private function checkValueHasValue(mixed $value)
+    {
+        if (is_array($value) && empty($value)) return false;
+
+        if (is_string($value) && empty($value)) return false;
+
+        if (is_null($value)) return false;
+
+        return true;
     }
 }

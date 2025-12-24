@@ -11,6 +11,11 @@ use App\Models\Transaction;
 
 class TransactionFilterRequest extends FormRequest
 {
+    private const ORDER_BY_COLUMNS_OPTIONS = [
+        'created_at',
+        '-created_at',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,6 +37,7 @@ class TransactionFilterRequest extends FormRequest
             'type' => ['sometimes', Rule::in(CategoryTypesEnum::values())],
             'category_id' => ['sometimes', 'nullable', 'integer'],
             'name' => ['sometimes', 'nullable', 'string', 'max:' . Transaction::NAME_MAX_LENGTH],
+            'order_by' => ['sometimes', 'string', Rule::in(self::ORDER_BY_COLUMNS_OPTIONS)],
         ];
     }
 
@@ -50,6 +56,9 @@ class TransactionFilterRequest extends FormRequest
 
             'name.string' => 'O campo name deve ser uma string.',
             'name.max' => 'O campo name deve ter no máximo ' . Transaction::NAME_MAX_LENGTH .  ' caracteres.',
+
+            'order_by.string' => 'O campo order_by deve ser uma string.',
+            'order_by.in' => 'O campo order_by deve conter um valor valido.',
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -53,6 +54,28 @@ abstract class Filter
     protected function column(string $column): string
     {
         return $this->table() . '.' . $column;
+    }
+
+    /**
+     * Check if column exists on current table.
+     * 
+     * @param string $column
+     * @return bool
+     */
+    protected function columnExists(string $column): bool
+    {
+        return Schema::hasColumn($this->table(), $column);
+    }
+
+    /**
+     * Returns "order by" direction by value.
+     * 
+     * @param string $value
+     * @return string
+     */
+    protected function orderByDirectionByValue(string $value): string
+    {
+        return Str::startsWith($value, '-') ? 'desc' : 'asc';
     }
 
     /**

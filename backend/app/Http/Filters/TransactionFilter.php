@@ -40,4 +40,26 @@ class TransactionFilter extends Filter
     {
         return $this->builder->where($this->column('name'), 'like', "%{$value}%");
     }
+
+    /**
+     * Order transactions by the given value.
+     *
+     * @param  string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function orderBy(string $value): Builder
+    {
+        $orderDirection = $this->orderByDirectionByValue($value);
+
+        // If order is desc, this means that string starts with "-" and we need to remove "-" from value
+        if ($orderDirection === 'desc') {
+            $value = substr($value, 1);
+        }
+
+        if (!$this->columnExists($value)) {
+            return $this->builder;
+        }
+
+        return $this->builder->orderBy($this->column($value), $orderDirection);
+    }
 }

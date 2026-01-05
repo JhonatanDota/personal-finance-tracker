@@ -29,14 +29,44 @@ class TransactionFilterOrderByTest extends TestCase
 
         Category::factory()->for($this->user)
             ->has(Transaction::factory(['created_at' => '2025-01-01 15:00:00']))
-            ->has(Transaction::factory(['created_at' => '2025-01-01 00:00:00']))
+            ->has(Transaction::factory(['created_at' => '2025-01-01 12:00:00']))
             ->has(Transaction::factory(['created_at' => '2025-01-03 00:00:00']))
             ->create();
+
+        // Assert can be ordered by create_at ASC
 
         $response = $this->json('GET', 'api/transactions', [
             'order_by' => 'created_at',
         ]);
 
-        dd($response->json());
+        $response->assertOk();
+
+        $extractedCreatedAtDates = array_map(function ($transaction) {
+            return $transaction['created_at'];
+        }, $response->json()['data']);
+
+        $this->assertEquals([
+            '2025-01-01 12:00:00',
+            '2025-01-01 15:00:00',
+            '2025-01-03 00:00:00',
+        ], $extractedCreatedAtDates);
+
+        // Assert can be ordered by create_at DESC
+
+        $response = $this->json('GET', 'api/transactions', [
+            'order_by' => '-created_at',
+        ]);
+
+        $response->assertOk();
+
+        $extractedCreatedAtDates = array_map(function ($transaction) {
+            return $transaction['created_at'];
+        }, $response->json()['data']);
+
+        $this->assertEquals([
+            '2025-01-03 00:00:00',
+            '2025-01-01 15:00:00',
+            '2025-01-01 12:00:00',
+        ], $extractedCreatedAtDates);
     }
 }

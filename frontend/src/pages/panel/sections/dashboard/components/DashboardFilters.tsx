@@ -129,11 +129,11 @@ export default function DashboardFilters(props: DashboardFiltersProps) {
         </InputContainer>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <FilterPick label="Esta semana" action={setCurrentWeekFilter} />
         <FilterPick label="Este mês" action={setCurrentMonthFilter} />
         <FilterPick label="Este ano" action={setCurrentYearFilter} />
-        <FilterPick label="Limpar filtros" action={reset} />
+        <FilterPick label="Limpar" action={reset} className="bg-warning" />
       </div>
     </SectionCard>
   );

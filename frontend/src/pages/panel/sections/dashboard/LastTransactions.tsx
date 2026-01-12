@@ -21,7 +21,7 @@ export default function LastTransactions() {
     data: transactionsData,
     isSuccess: isSuccessTransactions,
     isFetching: isFetchingTransactions,
-  } = useTransactions();
+  } = useTransactions({ orderBy: "-created_at" });
 
   const transactions = transactionsData?.data || [];
 

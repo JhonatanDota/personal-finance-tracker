@@ -7,13 +7,13 @@ import { SUMMARY_DELAY } from "../../../constants/delay";
 
 export const queryKey = "transactions";
 
-export function useTransactions() {
+export function useTransactions(params: Record<string, string | number> = {}) {
   return useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       try {
         const [response] = await Promise.all([
-          getTransactions({}),
+          getTransactions(params),
           new Promise((resolve) => setTimeout(resolve, SUMMARY_DELAY)),
         ]);
 

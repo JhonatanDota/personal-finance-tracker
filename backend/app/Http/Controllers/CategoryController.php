@@ -10,6 +10,9 @@ use Illuminate\Http\JsonResponse;
 
 use App\Repositories\CategoryRepository;
 
+use App\Http\Filters\CategoryFilter;
+
+use App\Http\Requests\Category\CategoryFilterRequest;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 
@@ -29,11 +32,14 @@ class CategoryController extends Controller
     /**
      * Get categories from current logged user.
      *
+     * @param CategoryFilterRequest $request
      * @return JsonResponse
      */
-    public function list(): JsonResponse
+    public function list(CategoryFilterRequest $request): JsonResponse
     {
-        $categories = $this->repository->getFromUser(Auth::user());
+        $filter = new CategoryFilter($request);
+
+        $categories = $this->repository->getFromUser(Auth::user(), $filter);
 
         return response()->json(CategoryResource::collection($categories));
     }

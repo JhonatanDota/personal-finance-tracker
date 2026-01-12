@@ -7,18 +7,21 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\User;
 use App\Models\Category;
 
+use App\Http\Filters\CategoryFilter;
+
 class CategoryRepository
 {
     /**
      * Get categories by user.
      *
      * @param User $user
+     * @param CategoryFilter $filter
      *
      * @return Collection
      */
-    public function getFromUser(User $user): Collection
+    public function getFromUser(User $user, CategoryFilter $filter): Collection
     {
-        return $user->categories;
+        return $user->categories()->filter($filter)->get();
     }
 
     /**

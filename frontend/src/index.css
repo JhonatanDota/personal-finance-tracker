@@ -8,6 +8,7 @@
     --color-primary: #050746;
     --color-secondary: #0f1385;
     --color-tertiary: #2d56d1;
+    --color-quaternary: #3A4A7A;
 
     --color-muted: #0203238e;
 
@@ -16,7 +17,7 @@
 
     --color-success: #17833f;
     --color-error: #f52525;
-    --color-warning: #ccd81f;
+    --color-warning: #ec7a2f;
 }
 
 body {

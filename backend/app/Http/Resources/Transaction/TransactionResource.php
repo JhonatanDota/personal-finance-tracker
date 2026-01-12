@@ -22,8 +22,8 @@ class TransactionResource extends JsonResource
             'value' => $this->value,
             'description' => $this->description,
             'date' => $this->date->format('Y-m-d'),
-            'created_at' => $this->created_at->format('Y-m-d H:m:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:m:s'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }

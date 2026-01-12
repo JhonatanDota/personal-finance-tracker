@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Category;
+namespace Tests\Feature\Category\List;
 
 use Tests\TestCase;
 

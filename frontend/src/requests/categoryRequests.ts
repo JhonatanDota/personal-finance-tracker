@@ -8,10 +8,14 @@ import {
   UpdateCategoryModel,
 } from "../models/categoryModels";
 
+import { PaginationParams } from "../types/pagination";
+
 const CATEGORIES_ROUTE = "categories";
 
-export async function getCategories(): Promise<AxiosResponse<CategoryModel[]>> {
-  return await requester().get(CATEGORIES_ROUTE);
+export async function getCategories(
+  params?: PaginationParams
+): Promise<AxiosResponse<CategoryModel[]>> {
+  return await requester().get(CATEGORIES_ROUTE, { params });
 }
 
 export async function addCategory(

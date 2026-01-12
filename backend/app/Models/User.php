@@ -14,6 +14,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use App\Notifications\ResetPasswordNotification;
 
+use App\Enums\CategoryTypesEnum;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -101,5 +103,15 @@ class User extends Authenticatable implements JWTSubject
     public function transactions(): HasManyThrough
     {
         return $this->HasManyThrough(Transaction::class, Category::class);
+    }
+
+    public function incomeTransactions(): HasManyThrough
+    {
+        return $this->transactions()->where('type', CategoryTypesEnum::INCOME);
+    }
+
+    public function expenseTransactions(): HasManyThrough
+    {
+        return $this->transactions()->where('type', CategoryTypesEnum::EXPENSE);
     }
 }

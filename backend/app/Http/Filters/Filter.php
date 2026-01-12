@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -56,6 +57,28 @@ abstract class Filter
     }
 
     /**
+     * Check if column exists on current table.
+     * 
+     * @param string $column
+     * @return bool
+     */
+    protected function columnExists(string $column): bool
+    {
+        return Schema::hasColumn($this->table(), $column);
+    }
+
+    /**
+     * Returns "order by" direction by value.
+     * 
+     * @param string $value
+     * @return string
+     */
+    protected function orderByDirectionByValue(string $value): string
+    {
+        return Str::startsWith($value, '-') ? 'desc' : 'asc';
+    }
+
+    /**
      * Apply the filters on the builder.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
@@ -68,11 +91,28 @@ abstract class Filter
         foreach ($this->request->validated() as $name => $value) {
             $name = Str::camel($name);
 
-            if (!is_null($value) && method_exists($this, $name)) {
+            if ($this->checkValueHasValue($value) && method_exists($this, $name)) {
                 call_user_func_array([$this, $name], array_filter([$value]));
             }
         }
 
         return $this->builder;
+    }
+
+    /**
+     * Check if value has value.
+     * 
+     * @param mixed $value
+     * @return bool
+     */
+    private function checkValueHasValue(mixed $value)
+    {
+        if (is_array($value) && empty($value)) return false;
+
+        if (is_string($value) && empty($value)) return false;
+
+        if (is_null($value)) return false;
+
+        return true;
     }
 }

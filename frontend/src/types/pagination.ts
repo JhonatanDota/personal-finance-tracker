@@ -14,3 +14,7 @@ export type PaginationParams = {
   page?: number;
   [key: string]: any;
 };
+
+export type RequestParams = {
+  [key: string]: any;
+};
